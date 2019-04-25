@@ -37,6 +37,8 @@ import org.lwjgl.opengl.GL11.*
 
 class GlApp {
     private var window: Long = 0
+    private val width = 1280
+    private val height = 720
     fun run(){
         System.out.println("Hello LWJGL " + Version.getVersion() + "!")
 
@@ -67,7 +69,7 @@ class GlApp {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE) // the window will be resizable
 
         // Create the window
-        window = glfwCreateWindow(300, 300, "Hello World!", NULL, NULL)
+        window = glfwCreateWindow(1280, 720, "OpenGL", NULL, NULL)
         if (window == NULL)
             throw RuntimeException("Failed to create the GLFW window")
 
@@ -111,15 +113,13 @@ class GlApp {
         // LWJGL detects the context that is current in the current thread,
         // creates the GLCapabilities instance and makes the OpenGL
         // bindings available for use.
+        val scene = GlScene()
         createCapabilities()
-
-        // Set the clear color
-        glClearColor(1.0f, 0.0f, 0.0f, 0.0f)
-
+        scene.onWindowSizeChanged(width,height)
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while (!glfwWindowShouldClose(window)) {
-            glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT) // clear the framebuffer
+            scene.draw()
 
             glfwSwapBuffers(window) // swap the color buffers
 
