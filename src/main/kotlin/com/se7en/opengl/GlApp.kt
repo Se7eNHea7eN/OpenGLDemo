@@ -32,7 +32,6 @@ import org.lwjgl.glfw.GLFW.glfwDefaultWindowHints
 import org.lwjgl.glfw.GLFW.glfwInit
 import org.lwjgl.glfw.GLFWErrorCallback
 import org.lwjgl.opengl.GL.createCapabilities
-import org.lwjgl.opengl.GL11.*
 
 
 class GlApp {
@@ -113,7 +112,7 @@ class GlApp {
         // LWJGL detects the context that is current in the current thread,
         // creates the GLCapabilities instance and makes the OpenGL
         // bindings available for use.
-        val scene = GlScene()
+        val scene = TestScene()
         createCapabilities()
         scene.onWindowSizeChanged(width,height)
         // Run the rendering loop until the user has attempted to close

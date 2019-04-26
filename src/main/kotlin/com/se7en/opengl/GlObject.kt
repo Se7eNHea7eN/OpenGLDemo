@@ -1,4 +1,4 @@
-package com.opengles_demo
+package com.se7en.opengl
 
 open class GlObject {
     val transform = Transform()
