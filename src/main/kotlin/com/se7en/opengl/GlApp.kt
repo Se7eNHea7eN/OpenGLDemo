@@ -112,8 +112,9 @@ class GlApp {
         // LWJGL detects the context that is current in the current thread,
         // creates the GLCapabilities instance and makes the OpenGL
         // bindings available for use.
-        val scene = TestScene()
         createCapabilities()
+        val scene = TestScene()
+
         scene.onWindowSizeChanged(width,height)
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.

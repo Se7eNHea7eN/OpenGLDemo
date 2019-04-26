@@ -12,7 +12,7 @@ import java.io.InputStreamReader
 
 class Bunny : GlMeshObject() {
     override fun createMesh(): Mesh {
-        val obj = ObjUtils.convertToRenderable(ObjReader.read(FileInputStream(File("odels/bunny.obj"))))
+        val obj = ObjUtils.convertToRenderable(ObjReader.read(this@Bunny.javaClass.classLoader.getResourceAsStream("models/bunny.obj")))
         return Mesh().apply {
             vertices = ObjData.getVertices(obj)
             normals = ObjData.getNormals(obj)

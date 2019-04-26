@@ -16,7 +16,6 @@ abstract class Material {
             if (value != null) {
                 shader.setVertexAttribArray("aPosition", 3, value.vertices!!)
                 shader.setVertexAttribArray("aNormal", 3, value.normals!!)
-
             }
         }
 
