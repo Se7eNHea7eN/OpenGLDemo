@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="07ecc891-cf0c-4cfa-a6f1-1f04513fbf7d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/material/Lambert.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/shaders/lambert.fsh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlCamera.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlCamera.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/TestScene.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/TestScene.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/material/Material.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/material/Material.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/material/Phong.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/material/Phong.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/shaders/phong.vsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/shaders/common.vsh" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -579,7 +572,14 @@
       <option name="project" value="LOCAL" />
       <updated>1556534489054</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Add lambert">
+      <created>1556535806182</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1556535806182</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -639,7 +639,7 @@
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="11" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="12" visible="true" weight="0.22993493" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="12" visible="true" weight="0.40455532" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -731,9 +731,10 @@
     <MESSAGE value="basic" />
     <MESSAGE value="obj render" />
     <MESSAGE value="bugfix" />
-    <MESSAGE value="update" />
     <MESSAGE value="idea" />
-    <option name="LAST_COMMIT_MESSAGE" value="idea" />
+    <MESSAGE value="Add lambert" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
