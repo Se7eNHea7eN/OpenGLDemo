@@ -127,6 +127,7 @@ class GlApp {
             // invoked during this call.
             glfwPollEvents()
         }
+        scene.destroy()
     }
 
 }
