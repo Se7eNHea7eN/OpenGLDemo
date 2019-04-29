@@ -35,7 +35,7 @@ class GlCamera : GlObject() {
 //        glEnable(GL_CULL_FACE)
         glEnable(GL_DEPTH_TEST)
         glDepthFunc(GL_LEQUAL)
-        glViewport(0, 0, width, height)
+//        glViewport(0, 0, width, height)
         recalculateProjectionMatrix()
     }
     private fun recalculateProjectionMatrix(){

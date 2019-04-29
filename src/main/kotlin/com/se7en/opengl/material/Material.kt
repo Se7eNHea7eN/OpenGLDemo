@@ -36,7 +36,7 @@ abstract class Material {
         pointLights.forEachIndexed { index, glPointLight ->
             shader.setUniformInt("pointlights[$index].enable", 1)
             shader.setUniform3fv("pointlights[$index].position", glPointLight.transform.position.toFloatArray())
-            shader.setUniform3fv("pointlights[$index].color", glPointLight.lightColor)
+            shader.setUniform3fv("pointlights[$index].color", glPointLight.lightColor.toFloatArray())
             shader.setUniform1fv("pointlights[$index].intensive", glPointLight.intensive)
         }
     }

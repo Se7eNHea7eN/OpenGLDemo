@@ -39,7 +39,7 @@ class GlApp {
     private val width = 960
     private val height = 544
     fun run(){
-        System.out.println("Hello LWJGL " + Version.getVersion() + "!")
+        System.out.println("Se7en's OpenGL Started!")
 
         init()
         loop()

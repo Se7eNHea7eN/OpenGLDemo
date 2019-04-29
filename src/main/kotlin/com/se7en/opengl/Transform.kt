@@ -34,7 +34,7 @@ class Transform {
     }
 
     fun lookAt(target: Vector3f) {
-        rotation = rotation.rotationTo(Vector3f(0f, 0f, 1f), (position - target).normalize())
+        rotation = rotation.rotationTo(Vector3f(0f, 0f, 1f), position - target)
     }
 
     //
