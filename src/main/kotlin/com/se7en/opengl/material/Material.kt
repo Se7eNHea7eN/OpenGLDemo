@@ -16,10 +16,7 @@ abstract class Material {
     abstract fun fragmentShader(): String
     var mesh: Mesh? = null
 
-    fun setEyePosition(eyePos:Vector3f){
-        shader.useProgram()
-        shader.setUniform3fv("eyePos", eyePos.toFloatArray())
-    }
+    var eyePos = Vector3f()
 
     fun setProjectionMatrix(projectionMatrix: FloatArray) {
         shader.useProgram()

@@ -1,5 +1,6 @@
 package com.se7en.opengl
 
+import com.se7en.opengl.material.Lambert
 import com.se7en.opengl.material.Material
 import com.se7en.opengl.material.Phong
 import org.joml.Vector3f
@@ -15,7 +16,7 @@ class TestScene : GlScene() {
     }
     private val teapot = object : GlObjMeshObject() {
         override fun objFilePath(): String = "models/teapot.obj"
-        override fun createMaterial(): Material = Phong()
+        override fun createMaterial(): Material = Lambert()
     }.apply {
         transform.position = Vector3f(3f,0f,0f)
     }

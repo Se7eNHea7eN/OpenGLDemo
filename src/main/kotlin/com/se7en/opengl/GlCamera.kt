@@ -38,7 +38,8 @@ class GlCamera : GlObject() {
 //        glViewport(0, 0, width, height)
         recalculateProjectionMatrix()
     }
-    private fun recalculateProjectionMatrix(){
+
+    private fun recalculateProjectionMatrix() {
         projectionMatrix = Matrix4f()
             .perspective(Math.toRadians(fov.toDouble()).toFloat(), width.toFloat() / height, zNear, zFar)
     }
@@ -56,7 +57,7 @@ class GlCamera : GlObject() {
         objects.forEach {
             if (it is GlRenderObject) {
                 it.material.setPointLights(GlScene.currentScene!!.pointLights)
-                it.material.setEyePosition(transform.position)
+                it.material.eyePos = transform.position
                 it.material.setProjectionMatrix(projectionMatrix.get(FloatArray(16)))
                 it.material.setViewMatrix(viewMatrix.get(FloatArray(16)))
                 it.render()
