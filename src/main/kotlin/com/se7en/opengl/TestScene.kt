@@ -15,9 +15,10 @@ class TestScene : GlScene() {
         transform.position = Vector3f(-3f,0f,0f)
     }
     private val teapot = object : GlObjMeshObject() {
-        override fun objFilePath(): String = "models/teapot.obj"
+        override fun objFilePath(): String = "models/bunny.obj"
         override fun createMaterial(): Material = Lambert()
     }.apply {
+        transform.scale = Vector3f(2f)
         transform.position = Vector3f(3f,0f,0f)
     }
 
