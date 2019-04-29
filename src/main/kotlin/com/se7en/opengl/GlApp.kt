@@ -36,8 +36,8 @@ import org.lwjgl.opengl.GL.createCapabilities
 
 class GlApp {
     private var window: Long = 0
-    private val width = 1280
-    private val height = 720
+    private val width = 960
+    private val height = 544
     fun run(){
         System.out.println("Hello LWJGL " + Version.getVersion() + "!")
 

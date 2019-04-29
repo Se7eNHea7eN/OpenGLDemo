@@ -1,20 +1,17 @@
 package com.se7en.opengl
 
-import com.se7en.opengl.material.Material
-import com.se7en.opengl.material.Phong
 import com.se7en.opengl.obj.ObjData
 import com.se7en.opengl.obj.ObjReader
 import com.se7en.opengl.obj.ObjUtils
 
-class Bunny : GlMeshObject() {
+abstract class GlObjMeshObject : GlMeshObject() {
     override fun createMesh(): Mesh {
-        val obj = ObjUtils.convertToRenderable(ObjReader.read(this@Bunny.javaClass.classLoader.getResourceAsStream("models/bunny.obj")))
+        val obj = ObjUtils.convertToRenderable(ObjReader.read(javaClass.classLoader.getResourceAsStream(objFilePath())))
         return Mesh().apply {
             vertices = ObjData.getVertices(obj)
             normals = ObjData.getNormals(obj)
             indices = ObjData.getFaceVertexIndices(obj)
         }
     }
-
-    override fun createMaterial(): Material = Phong()
+    abstract fun objFilePath() : String
 }

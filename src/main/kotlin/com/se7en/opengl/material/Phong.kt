@@ -1,5 +1,6 @@
 package com.se7en.opengl.material
 
+import com.se7en.opengl.Mesh
 import org.lwjgl.opengl.GL11.*
 
 class Phong: Material() {
@@ -11,7 +12,6 @@ class Phong: Material() {
     private var specularStrength = 1.5f
     private var shininess = 128f
     override fun render() {
-        super.render()
         if(mesh == null) return
         shader.useProgram()
         shader.setUniform3fv("objColor", objColor)
@@ -19,6 +19,8 @@ class Phong: Material() {
         shader.setUniform1fv("ambientStrength", ambientStrength)
         shader.setUniform1fv("specularStrength", specularStrength)
         shader.setUniform1fv("shininess", shininess)
+        shader.setVertexAttribArray("aPosition", 3, mesh!!.vertices!!)
+        shader.setVertexAttribArray("aNormal", 3, mesh!!.normals!!)
         glDrawElements(GL_TRIANGLES,  mesh!!.indices!!)
     }
 }

@@ -2,23 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="07ecc891-cf0c-4cfa-a6f1-1f04513fbf7d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlPointLight.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlRenderObject.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/shaders/point.fsh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/shaders/point.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlObjMeshObject.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/Bunny.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/Bunny.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/Bunny.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlApp.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlApp.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlCamera.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlCamera.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlMeshObject.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlMeshObject.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlObject.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlObject.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlScene.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlScene.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlRenderObject.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlRenderObject.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/MathExtend.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/MathExtend.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/TestScene.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/TestScene.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/Transform.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/Transform.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/material/Material.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/material/Material.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/material/Phong.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/material/Phong.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/models/teapot.obj" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/models/teapot.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/shaders/phong/phong.fsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/shaders/phong.fsh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/shaders/phong/phong.vsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/shaders/phong.vsh" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -52,31 +46,19 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/Bunny.kt">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlObject.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" selection-start-line="10" selection-end-line="11" />
-              <folding>
-                <element signature="e#26#217#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="187">
+              <caret line="11" selection-start-line="11" selection-end-line="11" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlScene.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/TestScene.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="441">
-              <caret line="33" column="5" lean-forward="true" selection-start-line="33" selection-start-column="5" selection-end-line="33" selection-end-column="5" />
+            <state relative-caret-position="425">
+              <caret line="25" selection-start-line="25" selection-end-line="25" />
               <folding>
                 <element signature="e#26#243#0" expanded="true" />
               </folding>
@@ -84,11 +66,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlCamera.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="22" column="97" selection-start-line="22" selection-start-column="97" selection-end-line="22" selection-end-column="97" />
+            <state relative-caret-position="440">
+              <caret line="52" column="41" selection-start-line="52" selection-start-column="41" selection-end-line="52" selection-end-column="41" />
               <folding>
                 <element signature="e#26#124#0" expanded="true" />
               </folding>
@@ -97,55 +79,86 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/models/teapot.obj">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/libs/joml-1.9.14.jar!/org/joml/Vector3f.class">
+        <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/src.zip!/java/lang/Math.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="28" column="11" selection-start-line="28" selection-start-column="11" selection-end-line="28" selection-end-column="11" />
+            <state relative-caret-position="747">
+              <caret line="234" column="25" selection-start-line="234" selection-start-column="25" selection-end-line="234" selection-end-column="25" />
               <folding>
-                <element signature="e#715#716#0" expanded="true" />
-                <element signature="e#744#745#0" expanded="true" />
+                <element signature="e#9016#9017#0" expanded="true" />
+                <element signature="e#9058#9059#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlObject.kt">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/Transform.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
+            <state relative-caret-position="304">
+              <caret line="36" column="35" selection-start-line="36" selection-start-column="35" selection-end-line="36" selection-end-column="35" />
+              <folding>
+                <element signature="e#26#103#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/shaders/phong.fsh">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/MathExtend.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-204">
-              <caret line="18" column="12" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="12" />
+            <state>
+              <caret column="24" lean-forward="true" selection-start-column="24" selection-end-column="24" />
+              <folding>
+                <element signature="e#25#77#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlMeshObject.kt">
+        <entry file="jar://$PROJECT_DIR$/libs/joml-1.9.14.jar!/org/joml/Vector3f.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="200">
+              <caret line="32" column="11" selection-start-line="32" selection-start-column="11" selection-end-line="32" selection-end-column="11" />
+              <folding>
+                <element signature="e#6467#6468#0" expanded="true" />
+                <element signature="e#6519#6520#0" expanded="true" />
+                <element signature="e#14180#14181#0" expanded="true" />
+                <element signature="e#14237#14238#0" expanded="true" />
+                <element signature="e#23737#23738#0" expanded="true" />
+                <element signature="e#23789#23790#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/libs/joml-1.9.14.jar!/org/joml/Quaternionf.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="211">
+              <caret line="1297" column="23" selection-start-line="1297" selection-start-column="23" selection-end-line="1297" selection-end-column="23" />
+              <folding>
+                <element signature="e#658#659#0" expanded="true" />
+                <element signature="e#687#688#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/material/Material.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
-              <caret line="4" column="37" selection-start-line="4" selection-start-column="37" selection-end-line="4" selection-end-column="37" />
+              <caret line="12" column="25" lean-forward="true" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/material/Phong.kt">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlRenderObject.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="17" selection-start-line="17" selection-end-line="17" />
+            <state relative-caret-position="238">
+              <caret line="14" column="19" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -169,6 +182,7 @@
       <find>A</find>
       <find>glCreateShader</find>
       <find>lightColor</find>
+      <find>add</find>
     </findStrings>
     <replaceStrings>
       <replace>OpenGL</replace>
@@ -199,32 +213,33 @@
         <option value="$PROJECT_DIR$/src/main/kotlin/com/opengles_demo/Transform.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlUtil.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/opengles_demo/GlObject.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/Transform.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/utils/ResourceUtils.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/Material.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlShader.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/utils/WavefrontMeshLoader.java" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/obj/Mtl.java" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/Mesh.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlApp.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/obj/DefaultMtl.java" />
         <option value="$PROJECT_DIR$/src/main/java/obj/DefaultMtl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/se7en/opengl/obj/DefaultMtl.java" />
         <option value="$PROJECT_DIR$/src/main/resources/shaders/phong/phong.fsh" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlRenderObject.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlPointObject.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlLight.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/MathExtend.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlMeshObject.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlPointLight.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/material/Material.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlScene.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/material/Phong.kt" />
         <option value="$PROJECT_DIR$/src/main/resources/shaders/phong.fsh" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlObject.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/Bunny.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/TestScene.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlObject.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlScene.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlObjMeshObject.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlMeshObject.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlApp.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlRenderObject.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/material/Phong.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/material/Material.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlCamera.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/MathExtend.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/Transform.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/TestScene.kt" />
       </list>
     </option>
   </component>
@@ -486,7 +501,14 @@
       <option name="project" value="LOCAL" />
       <updated>1556265956304</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="update">
+      <created>1556522374091</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1556522374091</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -526,7 +548,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20948827" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -537,7 +558,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.329718" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3383948" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.22885032" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.34056398" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -547,7 +568,7 @@
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="11" />
-      <window_info anchor="bottom" id="Version Control" order="12" weight="0.24728851" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="12" visible="true" weight="0.4284165" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -638,7 +659,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="basic" />
     <MESSAGE value="obj render" />
-    <option name="LAST_COMMIT_MESSAGE" value="obj render" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -683,9 +705,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/.idea/vcs.xml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/.idea/misc.xml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -724,13 +743,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
           <caret line="2" selection-start-line="2" selection-end-line="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/src.zip!/java/lang/Math.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1326">
-          <caret line="104" column="19" selection-start-line="104" selection-start-column="19" selection-end-line="104" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -840,13 +852,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlApp.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="116" selection-start-line="116" selection-end-line="116" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/src.zip!/java/lang/ClassLoader.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="103">
@@ -889,16 +894,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/Transform.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="20" column="8" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="8" />
-          <folding>
-            <element signature="e#26#103#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/shaders/point.vsh">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -906,27 +901,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" column="8" selection-start-line="6" selection-start-column="8" selection-end-line="6" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/libs/joml-1.9.14.jar!/org/joml/Quaternionf.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="1353" column="34" selection-start-line="1353" selection-start-column="34" selection-end-line="1353" selection-end-column="34" />
-          <folding>
-            <element signature="e#51008#51009#0" expanded="true" />
-            <element signature="e#51056#51057#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/MathExtend.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="56" selection-start-line="4" selection-start-column="56" selection-end-line="4" selection-end-column="56" />
-          <folding>
-            <element signature="e#25#77#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -951,66 +925,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/material/Material.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="50" selection-start-line="50" selection-end-line="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlRenderObject.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/material/Phong.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlMeshObject.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="37" selection-start-line="4" selection-start-column="37" selection-end-line="4" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/shaders/phong.fsh">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-204">
           <caret line="18" column="12" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlObject.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/Bunny.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" selection-start-line="10" selection-end-line="11" />
-          <folding>
-            <element signature="e#26#217#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/libs/joml-1.9.14.jar!/org/joml/Vector3f.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="28" column="11" selection-start-line="28" selection-start-column="11" selection-end-line="28" selection-end-column="11" />
-          <folding>
-            <element signature="e#715#716#0" expanded="true" />
-            <element signature="e#744#745#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1019,27 +937,149 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlScene.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
+        <state relative-caret-position="663">
+          <caret line="39" column="26" selection-start-line="39" selection-start-column="26" selection-end-line="39" selection-end-column="26" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/TestScene.kt">
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/Bunny.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="33" column="5" lean-forward="true" selection-start-line="33" selection-start-column="5" selection-end-line="33" selection-end-column="5" />
+        <state relative-caret-position="170">
+          <caret line="10" column="115" lean-forward="true" selection-start-line="10" selection-start-column="115" selection-end-line="10" selection-end-column="133" />
           <folding>
-            <element signature="e#26#243#0" expanded="true" />
+            <element signature="e#26#217#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlApp.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="40" column="14" lean-forward="true" selection-start-line="40" selection-start-column="14" selection-end-line="40" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlObjMeshObject.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="38" lean-forward="true" selection-start-line="6" selection-start-column="38" selection-end-line="6" selection-end-column="38" />
+          <folding>
+            <element signature="e#26#136#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlMeshObject.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="19" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/material/Phong.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="56" selection-start-line="22" selection-start-column="56" selection-end-line="22" selection-end-column="56" />
+          <folding>
+            <element signature="e#35#94#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlObject.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/src.zip!/java/lang/Math.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="747">
+          <caret line="234" column="25" selection-start-line="234" selection-start-column="25" selection-end-line="234" selection-end-column="25" />
+          <folding>
+            <element signature="e#9016#9017#0" expanded="true" />
+            <element signature="e#9058#9059#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/libs/joml-1.9.14.jar!/org/joml/Vector3f.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="32" column="11" selection-start-line="32" selection-start-column="11" selection-end-line="32" selection-end-column="11" />
+          <folding>
+            <element signature="e#6467#6468#0" expanded="true" />
+            <element signature="e#6519#6520#0" expanded="true" />
+            <element signature="e#14180#14181#0" expanded="true" />
+            <element signature="e#14237#14238#0" expanded="true" />
+            <element signature="e#23737#23738#0" expanded="true" />
+            <element signature="e#23789#23790#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/MathExtend.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="24" lean-forward="true" selection-start-column="24" selection-end-column="24" />
+          <folding>
+            <element signature="e#25#77#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/material/Material.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="12" column="25" lean-forward="true" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlRenderObject.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="19" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/libs/joml-1.9.14.jar!/org/joml/Quaternionf.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="211">
+          <caret line="1297" column="23" selection-start-line="1297" selection-start-column="23" selection-end-line="1297" selection-end-column="23" />
+          <folding>
+            <element signature="e#658#659#0" expanded="true" />
+            <element signature="e#687#688#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/GlCamera.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="97" selection-start-line="22" selection-start-column="97" selection-end-line="22" selection-end-column="97" />
+        <state relative-caret-position="440">
+          <caret line="52" column="41" selection-start-line="52" selection-start-column="41" selection-end-line="52" selection-end-column="41" />
           <folding>
             <element signature="e#26#124#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/Transform.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="36" column="35" selection-start-line="36" selection-start-column="35" selection-end-line="36" selection-end-column="35" />
+          <folding>
+            <element signature="e#26#103#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/com/se7en/opengl/TestScene.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
+          <folding>
+            <element signature="e#26#243#0" expanded="true" />
           </folding>
         </state>
       </provider>

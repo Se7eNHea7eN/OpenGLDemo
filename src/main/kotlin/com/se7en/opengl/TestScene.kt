@@ -2,29 +2,28 @@ package com.se7en.opengl
 
 import com.se7en.opengl.material.Material
 import com.se7en.opengl.material.Phong
-import com.se7en.opengl.obj.ObjData
-import com.se7en.opengl.obj.ObjReader
-import com.se7en.opengl.obj.ObjUtils
 import org.joml.Vector3f
 
 class TestScene : GlScene() {
-    //    private val bunny = Bunny()
-    private val teapot = object : GlMeshObject() {
-        override fun createMesh(): Mesh = Mesh().apply {
-            val obj =
-                ObjUtils.convertToRenderable(ObjReader.read(javaClass.classLoader.getResourceAsStream("models/teapot.obj")))
-            vertices = ObjData.getVertices(obj)
-            normals = ObjData.getNormals(obj)
-            indices = ObjData.getFaceVertexIndices(obj)
-        }
 
+    private val bunny = object : GlObjMeshObject() {
+        override fun objFilePath(): String = "models/bunny.obj"
         override fun createMaterial(): Material = Phong()
+    }.apply {
+        transform.scale = Vector3f(2f)
+        transform.position = Vector3f(-3f,0f,0f)
     }
+    private val teapot = object : GlObjMeshObject() {
+        override fun objFilePath(): String = "models/teapot.obj"
+        override fun createMaterial(): Material = Phong()
+    }.apply {
+        transform.position = Vector3f(3f,0f,0f)
+    }
+
     private val pointLight = GlPointLight()
 
     init {
-        mainCamera.lookAtPosition = Vector3f(0f,2f,0f)
-        mainCamera.transform.position = Vector3f(0f, 4f, -8f)
+        mainCamera.transform.position = Vector3f(0f, 4f, 10f)
         pointLight.transform.position = Vector3f(5f, 5f, 1.5f)
     }
 

@@ -8,9 +8,9 @@ abstract class GlRenderObject : GlObject() {
 
     init {
         material = createMaterial()
-
     }
     fun render() {
+        material.shader.useProgram()
         material.shader.setUniformMatrix4fv("modelMatrix",transform.matrix().get(FloatArray(16)))
         material.render()
     }

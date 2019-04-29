@@ -15,30 +15,24 @@ abstract class Material {
     abstract fun vertexShader(): String
     abstract fun fragmentShader(): String
     var mesh: Mesh? = null
-        set(value) {
-            field = value
-            if (value != null) {
-                shader.setVertexAttribArray("aPosition", 3, value.vertices!!)
-                shader.setVertexAttribArray("aNormal", 3, value.normals!!)
-            }
-        }
 
     fun setEyePosition(eyePos:Vector3f){
+        shader.useProgram()
         shader.setUniform3fv("eyePos", eyePos.toFloatArray())
     }
-    fun setLightPosition(lightPos:Vector3f){
-        shader.setUniform3fv("lightPos", lightPos.toFloatArray())
-    }
+
     fun setProjectionMatrix(projectionMatrix: FloatArray) {
+        shader.useProgram()
         shader.setUniformMatrix4fv("projectionMatrix", projectionMatrix)
     }
 
     fun setViewMatrix(viewMatrix: FloatArray) {
+        shader.useProgram()
         shader.setUniformMatrix4fv("viewMatrix", viewMatrix)
     }
 
-
     fun setPointLights(pointLights:List<GlPointLight>){
+        shader.useProgram()
         pointLights.forEachIndexed { index, glPointLight ->
             shader.setUniformInt("pointlights[$index].enable", 1)
             shader.setUniform3fv("pointlights[$index].position", glPointLight.transform.position.toFloatArray())
@@ -52,12 +46,9 @@ abstract class Material {
             ResourceUtils.ioResourceToByteBuffer(vertexShader(), 8192),
             ResourceUtils.ioResourceToByteBuffer(fragmentShader(), 8192)
         )
-        shader.useProgram()
     }
 
-    open fun render(){
-        setPointLights(GlScene.currentScene!!.pointLights)
-    }
+    abstract fun render()
 
     fun onDestroy(){
         shader.release()

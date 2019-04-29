@@ -13,8 +13,28 @@ class Transform {
         return rotation.normalizedPositiveY(Vector3f())
     }
 
+    fun down(): Vector3f {
+        return up().negate()
+    }
+
     fun forward(): Vector3f {
         return rotation.normalizedPositiveZ(Vector3f())
+    }
+
+    fun backward(): Vector3f{
+        return forward().negate()
+    }
+
+    fun right(): Vector3f {
+        return rotation.normalizedPositiveX(Vector3f())
+    }
+
+    fun left(): Vector3f{
+        return right().negate()
+    }
+
+    fun lookAt(target: Vector3f) {
+        rotation = rotation.rotationTo(Vector3f(0f, 0f, 1f), (position - target).normalize())
     }
 
     //
