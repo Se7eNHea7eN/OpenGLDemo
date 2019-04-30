@@ -1,21 +1,22 @@
 package com.se7en.opengl.material
 
 import com.se7en.opengl.toFloatArray
+import org.joml.Vector3f
 import org.lwjgl.opengl.GL11.*
 
 class Phong: Material() {
     override fun vertexShader(): String = "shaders/common.vsh"
     override fun fragmentShader(): String = "shaders/phong.fsh"
-    private var objColor = floatArrayOf(1f, 1f, 1f)
-    private var ambientColor = floatArrayOf(1f, 1f, 1f)
-    private var ambientStrength = 0.1f
-    private var specularStrength = 1.5f
-    private var shininess = 128f
+    var objColor = Vector3f(1f, 1f, 1f)
+    var ambientColor = Vector3f(1f, 1f, 1f)
+    var ambientStrength = 0.1f
+    var specularStrength = 1.5f
+    var shininess = 128f
     override fun render() {
         if(mesh == null) return
         shader.useProgram()
-        shader.setUniform3fv("objColor", objColor)
-        shader.setUniform3fv("ambientColor", ambientColor)
+        shader.setUniform3fv("objColor", objColor.toFloatArray())
+        shader.setUniform3fv("ambientColor", ambientColor.toFloatArray())
         shader.setUniform1fv("ambientStrength", ambientStrength)
         shader.setUniform1fv("specularStrength", specularStrength)
         shader.setUniform1fv("shininess", shininess)

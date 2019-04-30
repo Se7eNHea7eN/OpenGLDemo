@@ -5,7 +5,7 @@ open class GlObject {
     init {
         GlScene.currentScene?.addObject(this)
     }
-    open fun update(){
+    open fun update(deltaTime: Long){
     }
 
     open fun onDestroy(){

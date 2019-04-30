@@ -1,6 +1,7 @@
 package com.se7en.opengl
 
-import org.lwjgl.*
+import com.se7en.opengl.test.PhongTestScene
+import com.se7en.opengl.test.ShadowTestScene
 
 import org.lwjgl.glfw.Callbacks.*
 import org.lwjgl.glfw.GLFW.*
@@ -38,7 +39,7 @@ class GlApp {
     private var window: Long = 0
     private val width = 960
     private val height = 544
-    fun run(){
+    fun run() {
         System.out.println("Se7en's OpenGL Started!")
 
         init()
@@ -66,7 +67,7 @@ class GlApp {
         glfwDefaultWindowHints() // optional, the current window hints are already the default
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE) // the window will stay hidden after creation
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE) // the window will be resizable
-
+        glfwWindowHint(GLFW_SAMPLES, 4)
         // Create the window
         window = glfwCreateWindow(1280, 720, "OpenGL", NULL, NULL)
         if (window == NULL)
@@ -113,9 +114,9 @@ class GlApp {
         // creates the GLCapabilities instance and makes the OpenGL
         // bindings available for use.
         createCapabilities()
-        val scene = TestScene()
+        val scene = createScene()
 
-        scene.onWindowSizeChanged(width,height)
+        scene.onWindowSizeChanged(width, height)
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while (!glfwWindowShouldClose(window)) {
@@ -130,4 +131,5 @@ class GlApp {
         scene.destroy()
     }
 
+    protected open fun createScene(): GlScene = ShadowTestScene()
 }

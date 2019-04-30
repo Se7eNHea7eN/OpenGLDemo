@@ -24,6 +24,8 @@ class GlShader {
         glLinkProgram(program)
         val linkStatus = intArrayOf(GL_FALSE)
         glGetProgramiv(program, GL_LINK_STATUS, linkStatus)
+        print(glGetProgramInfoLog(program))
+
         if (linkStatus[0] != GL_TRUE) {
 //            Log.e(TAG, "Could not link program: " + glGetProgramInfoLog(program))
             throw RuntimeException(glGetProgramInfoLog(program))
@@ -50,7 +52,10 @@ class GlShader {
         glLinkProgram(program)
         val linkStatus = intArrayOf(GL_FALSE)
         glGetProgramiv(program, GL_LINK_STATUS, linkStatus)
+        print(glGetProgramInfoLog(program))
+
         if (linkStatus[0] != GL_TRUE) {
+
 //            Log.e(TAG, "Could not link program: " + glGetProgramInfoLog(program))
             throw RuntimeException(glGetProgramInfoLog(program))
         }
@@ -69,6 +74,8 @@ class GlShader {
         glLinkProgram(program)
         val linkStatus = intArrayOf(GL_FALSE)
         glGetProgramiv(program, GL_LINK_STATUS, linkStatus)
+        print(glGetProgramInfoLog(program))
+
         if (linkStatus[0] != GL_TRUE) {
 //            Log.e(TAG, "Could not link program: " + glGetProgramInfoLog(program))
             throw RuntimeException(glGetProgramInfoLog(program))

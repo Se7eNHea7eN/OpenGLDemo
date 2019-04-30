@@ -1,11 +1,14 @@
-package com.se7en.opengl
+package com.se7en.opengl.test
 
+import com.se7en.opengl.GlObjMeshObject
+import com.se7en.opengl.GlPointLight
+import com.se7en.opengl.GlScene
 import com.se7en.opengl.material.Lambert
 import com.se7en.opengl.material.Material
 import com.se7en.opengl.material.Phong
 import org.joml.Vector3f
 
-class TestScene : GlScene() {
+class PhongTestScene : GlScene() {
 
     private val bunny = object : GlObjMeshObject() {
         override fun objFilePath(): String = "models/bunny.obj"

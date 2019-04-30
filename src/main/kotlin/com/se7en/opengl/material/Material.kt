@@ -1,10 +1,7 @@
 package com.se7en.opengl.material
 
 import asiainnovations.com.opengles_demo.GlShader
-import com.se7en.opengl.GlPointLight
-import com.se7en.opengl.GlScene
-import com.se7en.opengl.Mesh
-import com.se7en.opengl.toFloatArray
+import com.se7en.opengl.*
 import com.se7en.opengl.utils.ResourceUtils
 import org.joml.Vector3f
 import java.nio.FloatBuffer
@@ -30,11 +27,21 @@ abstract class Material {
 
     fun setPointLights(pointLights:List<GlPointLight>){
         shader.useProgram()
+        shader.setUniformInt("pointLightCount",pointLights.size)
         pointLights.forEachIndexed { index, glPointLight ->
-            shader.setUniformInt("pointlights[$index].enable", 1)
-            shader.setUniform3fv("pointlights[$index].position", glPointLight.transform.position.toFloatArray())
-            shader.setUniform3fv("pointlights[$index].color", glPointLight.lightColor.toFloatArray())
-            shader.setUniform1fv("pointlights[$index].intensive", glPointLight.intensive)
+            shader.setUniform3fv("pointLights[$index].position", glPointLight.transform.position.toFloatArray())
+            shader.setUniform3fv("pointLights[$index].color", glPointLight.lightColor.toFloatArray())
+            shader.setUniform1fv("pointLights[$index].intensive", glPointLight.intensive)
+        }
+    }
+
+    fun setDirectionLights(pointLights:List<GlDirectionLight>){
+        shader.useProgram()
+        shader.setUniformInt("directionLightCount",pointLights.size)
+        pointLights.forEachIndexed { index, glPointLight ->
+            shader.setUniform3fv("directionLights[$index].direction", glPointLight.transform.forward().toFloatArray())
+            shader.setUniform3fv("directionLights[$index].color", glPointLight.lightColor.toFloatArray())
+            shader.setUniform1fv("directionLights[$index].intensive", glPointLight.intensive)
         }
     }
 
