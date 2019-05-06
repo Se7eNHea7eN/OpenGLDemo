@@ -132,7 +132,7 @@ class GlCamera : GlObject() {
 
 
 
-//        glViewport(0, 0, width, height)
+        glViewport(0, 0, width, height)
 
         val viewMatrix = Matrix4f().setLookAt(
             transform.position, transform.forward(), transform.up()
