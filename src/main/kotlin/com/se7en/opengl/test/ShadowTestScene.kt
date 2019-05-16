@@ -33,18 +33,18 @@ class ShadowTestScene : GlScene() {
         transform.position = Vector3f(3f, 0f, 0f)
     }
 
-//    private val pointLight1 = object :GlPointLight(){
-//        init {
-//            transform.position = Vector3f(5f, 5f, 1.5f)
-//            lightColor = Vector3f(1f, 1f, 1f)
-//            intensive = 0.75f
-//        }
-//
-//        override fun update(deltaTime: Long) {
-//            super.update(deltaTime)
-//            transform.position.rotateAxis(3f / 1000f * deltaTime, 0f, 1f, 0f)
-//        }
-//    }
+    private val pointLight1 = object :GlPointLight(){
+        init {
+            transform.position = Vector3f(5f, 5f, 1.5f)
+            lightColor = Vector3f(1f, 1f, 1f)
+            intensive = 0.75f
+        }
+
+        override fun update(deltaTime: Long) {
+            super.update(deltaTime)
+            transform.position.rotateAxis(3f / 1000f * deltaTime, 0f, 1f, 0f)
+        }
+    }
 
 
     //    private val pointLight2 = object :GlPointLight(){
@@ -60,10 +60,10 @@ class ShadowTestScene : GlScene() {
 //        }
 //    }
 
-    private val directionLight = GlDirectionLight().apply {
-        transform.rotation.rotateX(120f)
-        transform.rotation.rotateY(30f)
-    }
+//    private val directionLight = GlDirectionLight().apply {
+//        transform.rotation.rotateX(120f)
+//        transform.rotation.rotateY(30f)
+//    }
 
     init {
         mainCamera.transform.position = Vector3f(0f, 4f, 10f)
