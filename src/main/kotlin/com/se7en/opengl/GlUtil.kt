@@ -1,5 +1,6 @@
 package com.se7en.opengl
 
+import com.se7en.opengl.utils.Debug
 import org.lwjgl.opengl.GL20.*
 import org.lwjgl.opengl.GL30.*
 import java.nio.ByteBuffer
@@ -15,7 +16,7 @@ object GlUtil {
     fun checkNoGLES2Error(msg: String) {
         val error = glGetError()
         if (error != GL_NO_ERROR) {
-            throw RuntimeException("$msg: GLES20 error: $error")
+            Debug.log("GlUtil","$msg: GLES20 error: $error")
         }
     }
 

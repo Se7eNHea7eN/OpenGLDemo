@@ -1,6 +1,7 @@
 package asiainnovations.com.opengles_demo
 
 import com.se7en.opengl.GlUtil
+import com.se7en.opengl.utils.Debug
 import org.lwjgl.BufferUtils
 import org.lwjgl.PointerBuffer
 import org.lwjgl.opengl.GL20.*
@@ -9,7 +10,7 @@ import java.nio.FloatBuffer
 
 // Helper class for handling OpenGL shaders and shader programs.
 class GlShader {
-
+    private val TAG = "GlShader"
     public var program: Int = 0
 
     constructor(vertexSource: String, fragmentSource: String) {
@@ -191,7 +192,7 @@ class GlShader {
         }
         val location = glGetUniformLocation(program, label)
         if (location < 0) {
-            throw RuntimeException("Could not locate uniform '$label' in program")
+            Debug.log(TAG,"Could not locate uniform '$label' in program")
         }
         return location
     }
