@@ -98,6 +98,11 @@ class GlCamera : GlObject() {
 
     fun render(objects: List<GlObject>) {
         renderShadowMap(objects)
+//        renderDepthTexture()
+        renderScene(objects)
+    }
+
+    private fun renderDepthTexture() {
         depthVisualShader.useProgram()
         val vertexBuffer: FloatBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.CUBE.size * 4)
             .order(ByteOrder.nativeOrder())
@@ -107,12 +112,13 @@ class GlCamera : GlObject() {
                 position(0)
             }
 
-        val textureMappingBuffer: FloatBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.TEXTURE_NO_ROTATION.size * 4)
-            .order(ByteOrder.nativeOrder())
-            .asFloatBuffer().apply {
-                put(TextureRotationUtil.TEXTURE_NO_ROTATION)
-                position(0)
-            }
+        val textureMappingBuffer: FloatBuffer =
+            ByteBuffer.allocateDirect(TextureRotationUtil.TEXTURE_NO_ROTATION.size * 4)
+                .order(ByteOrder.nativeOrder())
+                .asFloatBuffer().apply {
+                    put(TextureRotationUtil.TEXTURE_NO_ROTATION)
+                    position(0)
+                }
 
         depthVisualShader.setVertexAttribArray("position", 2, vertexBuffer)
         depthVisualShader.setVertexAttribArray("inputTextureCoordinate", 2, textureMappingBuffer)
@@ -120,7 +126,7 @@ class GlCamera : GlObject() {
         glViewport(0, 0, width, height)
 
         glBindTexture(GL_TEXTURE_2D, depthTexture)
-//        glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, shadowMapSize, shadowMapSize);
+        //        glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, shadowMapSize, shadowMapSize);
         glClearColor(0f, 0f, 0f, 0f)
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
         glEnable(GL_TEXTURE_2D)
@@ -129,7 +135,6 @@ class GlCamera : GlObject() {
         glUniform1i(depthVisualShader.getUniformLocation("inputImageTexture"), 0)
 
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4)
-//        renderScene(objects)
     }
 
     private fun renderScene(objects: List<GlObject>) {
@@ -157,7 +162,7 @@ class GlCamera : GlObject() {
         shadowMappingShader.useProgram()
         glBindFramebuffer(GL_FRAMEBUFFER, fbo)
         glClearColor(0f, 0f, 0f, 0f)
-        glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
+        glClear(GL_DEPTH_BUFFER_BIT)
         glViewport(0, 0, shadowMapSize, shadowMapSize)
 
         objects.forEach {
@@ -173,6 +178,8 @@ class GlCamera : GlObject() {
                 objects.forEach { renderObject ->
                     if (renderObject is GlRenderObject) {
                         if (renderObject.material.mesh != null) {
+                            shadowMappingShader.setUniformMatrix4fv("modelMatrix",renderObject.transform.matrix().get(FloatArray(16)))
+
                             shadowMappingShader.setVertexAttribArray(
                                 "aPosition",
                                 3,
@@ -180,7 +187,6 @@ class GlCamera : GlObject() {
                             )
                             glDrawElements(GL_TRIANGLES, renderObject.material.mesh!!.indices!!)
                         }
-                        renderObject.render()
                     }
                 }
             }
