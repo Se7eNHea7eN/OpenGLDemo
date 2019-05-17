@@ -4,6 +4,11 @@ import asiainnovations.com.opengles_demo.GlShader
 import com.se7en.opengl.*
 import com.se7en.opengl.utils.ResourceUtils
 import org.joml.Vector3f
+import org.lwjgl.opengl.GL11.*
+import org.lwjgl.opengl.GL13.*
+import org.lwjgl.opengl.GL20.*
+import org.lwjgl.opengl.GL41
+
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
 
@@ -25,25 +30,37 @@ abstract class Material {
         shader.setUniformMatrix4fv("viewMatrix", viewMatrix)
     }
 
-    fun setPointLights(pointLights:List<GlPointLight>){
+    fun setLights(lights: List<GlAbstractLight>) {
         shader.useProgram()
-        shader.setUniformInt("pointLightCount",pointLights.size)
-        pointLights.forEachIndexed { index, glPointLight ->
-            shader.setUniform3fv("pointLights[$index].position", glPointLight.transform.position.toFloatArray())
-            shader.setUniform3fv("pointLights[$index].color", glPointLight.lightColor.toFloatArray())
-            shader.setUniform1fv("pointLights[$index].intensive", glPointLight.intensive)
+        shader.setUniformInt("pointLightCount", lights.count { it is GlPointLight })
+        shader.setUniformInt("directionLightCount", lights.count { it is GlDirectionLight })
+        glEnable(GL_TEXTURE_2D)
+        lights.forEachIndexed { index, light ->
+            if (light is GlPointLight) {
+                shader.setUniform3fv("pointLights[$index].position", light.transform.position.toFloatArray())
+                shader.setUniform3fv("pointLights[$index].color", light.lightColor.toFloatArray())
+                shader.setUniform1fv("pointLights[$index].intensive", light.intensive)
+                shader.setUniformMatrix4fv(
+                    "pointLights[$index].matrix",
+                    light.lightVPMatrix().get(FloatArray(16))
+                )
+
+                glActiveTexture(GL_TEXTURE0 + index)
+                glBindTexture(GL_TEXTURE_2D, light.depthTexture)
+                glUniform1i(shader.getUniformLocation("pointLights[$index].depthTexture"), index)
+            } else if (light is GlDirectionLight) {
+                shader.setUniform3fv("directionLights[$index].direction", light.transform.forward().toFloatArray())
+                shader.setUniform3fv("directionLights[$index].color", light.lightColor.toFloatArray())
+                shader.setUniform1fv("directionLights[$index].intensive", light.intensive)
+                shader.setUniformMatrix4fv("directionLights[$index].matrix", light.lightVPMatrix().get(FloatArray(16)))
+
+                glActiveTexture(GL_TEXTURE0 + index)
+                glBindTexture(GL_TEXTURE_2D, light.depthTexture)
+                glUniform1i(shader.getUniformLocation("directionLights[$index].depthTexture"), index)
+            }
         }
     }
 
-    fun setDirectionLights(pointLights:List<GlDirectionLight>){
-        shader.useProgram()
-        shader.setUniformInt("directionLightCount",pointLights.size)
-        pointLights.forEachIndexed { index, glPointLight ->
-            shader.setUniform3fv("directionLights[$index].direction", glPointLight.transform.forward().toFloatArray())
-            shader.setUniform3fv("directionLights[$index].color", glPointLight.lightColor.toFloatArray())
-            shader.setUniform1fv("directionLights[$index].intensive", glPointLight.intensive)
-        }
-    }
 
     init {
         shader = GlShader(
@@ -54,7 +71,7 @@ abstract class Material {
 
     abstract fun render()
 
-    fun onDestroy(){
+    fun onDestroy() {
         shader.release()
     }
 }

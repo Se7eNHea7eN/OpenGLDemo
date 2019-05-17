@@ -3,6 +3,8 @@ struct PointLight
     vec3 position;
     vec3 color;
     float intensive;
+    mat4 matrix;
+    sampler2D depthTexture;
 };
 
 
@@ -15,6 +17,8 @@ struct DirectionLight
     vec3 direction;
     vec3 color;
     float intensive;
+    mat4 matrix;
+    sampler2D depthTexture;
 };
 
 uniform DirectionLight directionLights[8];
@@ -33,7 +37,6 @@ uniform float specularStrength;
 uniform float shininess;
 
 
-uniform sampler2D depthTexture;
 
 void main()
 {

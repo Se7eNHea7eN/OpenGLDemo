@@ -7,8 +7,7 @@ open class GlScene {
 
     val mainCamera = GlCamera()
     protected val objects = ArrayList<GlObject>()
-    val pointLights = ArrayList<GlPointLight>()
-    val directionLights = ArrayList<GlDirectionLight>()
+
     private var lastDrawTime: Long = 0
     init {
         currentScene = this
@@ -32,10 +31,6 @@ open class GlScene {
 
     fun addObject(obj: GlObject) {
         objects.add(obj)
-        if(obj is GlPointLight)
-            pointLights.add(obj)
-        else if (obj is GlDirectionLight)
-            directionLights.add(obj)
     }
 
     fun destroy(){

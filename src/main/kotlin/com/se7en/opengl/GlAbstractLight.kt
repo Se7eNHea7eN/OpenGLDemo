@@ -1,8 +1,149 @@
 package com.se7en.opengl
 
+import asiainnovations.com.opengles_demo.GlShader
+import com.se7en.opengl.utils.ResourceUtils
+import org.joml.Matrix4f
 import org.joml.Vector3f
+import org.lwjgl.opengl.GL41
+import java.nio.ByteBuffer
 
-abstract class GlAbstractLight :GlObject() {
+abstract class GlAbstractLight : GlObject() {
     var lightColor = Vector3f(1f, 1f, 1f)
     var intensive = 1f
+
+    internal val shadowMapSize = 1024
+
+    internal var depthTexture: Int = 0
+    internal var fbo: Int = 0
+    var shadowMappingShader = GlShader(
+        ResourceUtils.ioResourceToByteBuffer("shaders/shadowMapping.vsh", 8192),
+        ResourceUtils.ioResourceToByteBuffer("shaders/shadowMapping.fsh", 8192)
+    )
+
+    init {
+        /**
+         * Create the texture storing the depth values of the light-render.
+         */
+        depthTexture = GL41.glGenTextures()
+        GL41.glBindTexture(GL41.GL_TEXTURE_2D, depthTexture)
+        GL41.glTexParameteri(GL41.GL_TEXTURE_2D, GL41.GL_TEXTURE_MIN_FILTER, GL41.GL_NEAREST)
+        GL41.glTexParameteri(GL41.GL_TEXTURE_2D, GL41.GL_TEXTURE_MAG_FILTER, GL41.GL_NEAREST)
+        GL41.glTexParameteri(GL41.GL_TEXTURE_2D, GL41.GL_TEXTURE_WRAP_S, GL41.GL_CLAMP_TO_EDGE)
+        GL41.glTexParameteri(GL41.GL_TEXTURE_2D, GL41.GL_TEXTURE_WRAP_T, GL41.GL_CLAMP_TO_EDGE)
+        GL41.glTexImage2D(
+            GL41.GL_TEXTURE_2D,
+            0,
+            GL41.GL_DEPTH_COMPONENT,
+            shadowMapSize,
+            shadowMapSize,
+            0,
+            GL41.GL_DEPTH_COMPONENT,
+            GL41.GL_UNSIGNED_BYTE,
+            null as ByteBuffer?
+        )
+        GL41.glBindTexture(GL41.GL_TEXTURE_2D, 0)
+        /**
+         * Create the FBO to render the depth values of the light-render into the
+         * depth texture.
+         */
+        fbo = GL41.glGenFramebuffers()
+        GL41.glBindFramebuffer(GL41.GL_FRAMEBUFFER, fbo)
+        GL41.glBindTexture(GL41.GL_TEXTURE_2D, depthTexture)
+        GL41.glDrawBuffer(GL41.GL_NONE)
+        GL41.glReadBuffer(GL41.GL_NONE)
+        GL41.glFramebufferTexture2D(GL41.GL_FRAMEBUFFER, GL41.GL_DEPTH_ATTACHMENT, GL41.GL_TEXTURE_2D, depthTexture, 0)
+        val fboStatus = GL41.glCheckFramebufferStatus(GL41.GL_FRAMEBUFFER)
+        if (fboStatus != GL41.GL_FRAMEBUFFER_COMPLETE) {
+            throw AssertionError("Could not create FBO: $fboStatus")
+        }
+        GL41.glBindTexture(GL41.GL_TEXTURE_2D, 0)
+        GL41.glBindFramebuffer(GL41.GL_FRAMEBUFFER, 0)
+    }
+
+    fun lightVPMatrix() : Matrix4f{
+        val lightProjectionMatrix =
+            Matrix4f().setPerspective(Math.toRadians(45.0).toFloat(), 1.0f, 0.01f, 1000f)
+        val lightViewMatrix =
+            Matrix4f().lookAt(transform.position, transform.forward(), transform.up())
+        return lightProjectionMatrix.mul(lightViewMatrix)
+    }
+
+    private fun renderShadowMap(objects: List<GlObject>) {
+        shadowMappingShader.useProgram()
+        GL41.glBindFramebuffer(GL41.GL_FRAMEBUFFER, fbo)
+        GL41.glClearColor(0f, 0f, 0f, 0f)
+        GL41.glClear(GL41.GL_DEPTH_BUFFER_BIT)
+        GL41.glViewport(0, 0, shadowMapSize, shadowMapSize)
+
+        objects.forEach {
+
+
+
+            shadowMappingShader.setUniformMatrix4fv("vpMatrix", lightVPMatrix().get(FloatArray(16)))
+            /* Only clear depth buffer, since we don't have a color draw buffer */
+            objects.forEach { renderObject ->
+                if (renderObject is GlRenderObject) {
+                    if (renderObject.material.mesh != null) {
+                        shadowMappingShader.setUniformMatrix4fv(
+                            "modelMatrix",
+                            renderObject.transform.matrix().get(FloatArray(16))
+                        )
+
+                        shadowMappingShader.setVertexAttribArray(
+                            "aPosition",
+                            3,
+                            renderObject.material.mesh!!.vertices!!
+                        )
+                        GL41.glDrawElements(GL41.GL_TRIANGLES, renderObject.material.mesh!!.indices!!)
+                    }
+                }
+            }
+        }
+
+        GL41.glBindVertexArray(0)
+        GL41.glBindFramebuffer(GL41.GL_FRAMEBUFFER, 0)
+        GL41.glUseProgram(0)
+    }
+
+    //    var depthVisualShader = GlShader(
+//        ResourceUtils.ioResourceToByteBuffer("shaders/rect.vsh", 8192),
+//        ResourceUtils.ioResourceToByteBuffer("shaders/depthTexture.fsh", 8192)
+//    )
+
+
+
+//    private fun renderDepthTexture() {
+//        depthVisualShader.useProgram()
+//        val vertexBuffer: FloatBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.CUBE.size * 4)
+//            .order(ByteOrder.nativeOrder())
+//            .asFloatBuffer()
+//            .apply {
+//                put(floatArrayOf(-1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f))
+//                position(0)
+//            }
+//
+//        val textureMappingBuffer: FloatBuffer =
+//            ByteBuffer.allocateDirect(TextureRotationUtil.TEXTURE_NO_ROTATION.size * 4)
+//                .order(ByteOrder.nativeOrder())
+//                .asFloatBuffer().apply {
+//                    put(TextureRotationUtil.TEXTURE_NO_ROTATION)
+//                    position(0)
+//                }
+//
+//        depthVisualShader.setVertexAttribArray("position", 2, vertexBuffer)
+//        depthVisualShader.setVertexAttribArray("inputTextureCoordinate", 2, textureMappingBuffer)
+//
+//        glViewport(0, 0, width, height)
+//
+//        glBindTexture(GL_TEXTURE_2D, depthTexture)
+//        //        glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, shadowMapSize, shadowMapSize);
+//        glClearColor(0f, 0f, 0f, 0f)
+//        glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
+//        glEnable(GL_TEXTURE_2D)
+//        glActiveTexture(GL_TEXTURE0)
+//        glBindTexture(GL_TEXTURE_2D, depthTexture)
+//        glUniform1i(depthVisualShader.getUniformLocation("inputImageTexture"), 0)
+//
+//        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4)
+//    }
 }
