@@ -4,10 +4,6 @@ import asiainnovations.com.opengles_demo.GlShader
 import com.asiainnovations.onlyu.video.gl.TextureRotationUtil
 import com.se7en.opengl.utils.ResourceUtils
 import org.joml.Matrix4f
-import org.joml.Vector3f
-import org.lwjgl.opengl.GL11
-import org.lwjgl.opengl.GL11.*
-import org.lwjgl.opengl.GL30.*
 import org.lwjgl.opengl.GL41.*
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -41,9 +37,9 @@ class GlCamera : GlObject() {
         ResourceUtils.ioResourceToByteBuffer("shaders/shadowMapping.fsh", 8192)
     )
 
-    var rectShader = GlShader(
+    var depthVisualShader = GlShader(
         ResourceUtils.ioResourceToByteBuffer("shaders/rect.vsh", 8192),
-        ResourceUtils.ioResourceToByteBuffer("shaders/rect.fsh", 8192)
+        ResourceUtils.ioResourceToByteBuffer("shaders/depthTexture.fsh", 8192)
     )
 
     internal val shadowMapSize = 1024
@@ -102,29 +98,35 @@ class GlCamera : GlObject() {
 
     fun render(objects: List<GlObject>) {
         renderShadowMap(objects)
-        rectShader.useProgram()
+        depthVisualShader.useProgram()
         val vertexBuffer: FloatBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.CUBE.size * 4)
             .order(ByteOrder.nativeOrder())
             .asFloatBuffer()
             .apply {
-                put(TextureRotationUtil.CUBE)
+                put(floatArrayOf(-1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f))
                 position(0)
             }
 
         val textureMappingBuffer: FloatBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.TEXTURE_NO_ROTATION.size * 4)
             .order(ByteOrder.nativeOrder())
             .asFloatBuffer().apply {
-                put(TextureRotationUtil.getRotation(0, false, false))
+                put(TextureRotationUtil.TEXTURE_NO_ROTATION)
                 position(0)
             }
 
-        rectShader.setVertexAttribArray("position", 2, vertexBuffer)
-        rectShader.setVertexAttribArray("inputTextureCoordinate", 2, textureMappingBuffer)
-        //激活纹理单元0
-        glActiveTexture(GL_TEXTURE0)
-        //绑定纹理
+        depthVisualShader.setVertexAttribArray("position", 2, vertexBuffer)
+        depthVisualShader.setVertexAttribArray("inputTextureCoordinate", 2, textureMappingBuffer)
+
+        glViewport(0, 0, width, height)
+
         glBindTexture(GL_TEXTURE_2D, depthTexture)
-        glUniform1i(rectShader.getUniformLocation("inputImageTexture"), 0)
+//        glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, shadowMapSize, shadowMapSize);
+        glClearColor(0f, 0f, 0f, 0f)
+        glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
+        glEnable(GL_TEXTURE_2D)
+        glActiveTexture(GL_TEXTURE0)
+        glBindTexture(GL_TEXTURE_2D, depthTexture)
+        glUniform1i(depthVisualShader.getUniformLocation("inputImageTexture"), 0)
 
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4)
 //        renderScene(objects)
@@ -154,35 +156,35 @@ class GlCamera : GlObject() {
     private fun renderShadowMap(objects: List<GlObject>) {
         shadowMappingShader.useProgram()
         glBindFramebuffer(GL_FRAMEBUFFER, fbo)
-        glClearColor(1f, 0f, 0f, 1f)
+        glClearColor(0f, 0f, 0f, 0f)
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
         glViewport(0, 0, shadowMapSize, shadowMapSize)
-//
-//        objects.forEach {
-//            if (it is GlPointLight) {
-//                val lightProjectionMatrix =
-//                    Matrix4f().setPerspective(Math.toRadians(fov.toDouble()).toFloat(), 1.0f, 0.1f, 60.0f)
-//                val lightViewMatrix =
-//                    Matrix4f().lookAt(it.transform.position, it.transform.forward(), it.transform.up())
-//
-//                shadowMappingShader.setUniformMatrix4fv("projectionMatrix", lightProjectionMatrix.get(FloatArray(16)))
-//                shadowMappingShader.setUniformMatrix4fv("viewMatrix", lightViewMatrix.get(FloatArray(16)))
-//                /* Only clear depth buffer, since we don't have a color draw buffer */
-//                objects.forEach { renderObject ->
-//                    if (renderObject is GlRenderObject) {
-//                        if (renderObject.material.mesh != null) {
-//                            shadowMappingShader.setVertexAttribArray(
-//                                "aPosition",
-//                                3,
-//                                renderObject.material.mesh!!.vertices!!
-//                            )
-//                            glDrawElements(GL_TRIANGLES, renderObject.material.mesh!!.indices!!)
-//                        }
-//                        renderObject.render()
-//                    }
-//                }
-//            }
-//        }
+
+        objects.forEach {
+            if (it is GlPointLight) {
+                val lightProjectionMatrix =
+                    Matrix4f().setPerspective(Math.toRadians(fov.toDouble()).toFloat(), 1.0f, zNear, zFar)
+                val lightViewMatrix =
+                    Matrix4f().lookAt(it.transform.position, it.transform.forward(), it.transform.up())
+
+                shadowMappingShader.setUniformMatrix4fv("projectionMatrix", lightProjectionMatrix.get(FloatArray(16)))
+                shadowMappingShader.setUniformMatrix4fv("viewMatrix", lightViewMatrix.get(FloatArray(16)))
+                /* Only clear depth buffer, since we don't have a color draw buffer */
+                objects.forEach { renderObject ->
+                    if (renderObject is GlRenderObject) {
+                        if (renderObject.material.mesh != null) {
+                            shadowMappingShader.setVertexAttribArray(
+                                "aPosition",
+                                3,
+                                renderObject.material.mesh!!.vertices!!
+                            )
+                            glDrawElements(GL_TRIANGLES, renderObject.material.mesh!!.indices!!)
+                        }
+                        renderObject.render()
+                    }
+                }
+            }
+        }
 
         glBindVertexArray(0)
         glBindFramebuffer(GL_FRAMEBUFFER, 0)

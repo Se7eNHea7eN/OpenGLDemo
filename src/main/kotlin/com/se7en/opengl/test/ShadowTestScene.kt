@@ -9,9 +9,9 @@ import com.se7en.opengl.material.Phong
 import org.joml.Vector3f
 
 class ShadowTestScene : GlScene() {
-    private val room = RoomObject().apply {
-        transform.scale = Vector3f(10f)
-    }
+//    private val room = RoomObject().apply {
+//        transform.scale = Vector3f(10f)
+//    }
     private val bunny = object : GlObjMeshObject() {
         override fun objFilePath(): String = "models/bunny.obj"
         override fun createMaterial(): Material = Phong().apply {
