@@ -4,6 +4,7 @@ import asiainnovations.com.opengles_demo.GlShader
 import com.se7en.opengl.utils.ResourceUtils
 import org.joml.Matrix4f
 import org.joml.Vector3f
+import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL41
 import org.lwjgl.opengl.GL41.*
 import java.nio.ByteBuffer
@@ -29,8 +30,10 @@ abstract class GlAbstractLight : GlObject() {
         glBindTexture(GL_TEXTURE_2D, depthTexture)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER)
+        glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, floatArrayOf(1.0f,1.0f,1.0f,1.0f))
+
         glTexImage2D(
             GL_TEXTURE_2D,
             0,

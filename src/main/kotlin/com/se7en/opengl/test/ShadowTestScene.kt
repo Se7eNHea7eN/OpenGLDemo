@@ -22,22 +22,22 @@ class ShadowTestScene : GlScene() {
         }
     }.apply {
         transform.scale = Vector3f(2f)
-        transform.position = Vector3f(-3f, 0f, 0f)
+        transform.position = Vector3f(-2f, 0f, 0f)
     }
     private val teapot = object : GlObjMeshObject() {
-        override fun objFilePath(): String = "models/bunny.obj"
+        override fun objFilePath(): String = "models/teapot.obj"
         override fun createMaterial(): Material = Phong().apply {
             objColor = Vector3f(0f, 0f, 1f)
             shininess = 64f
         }
     }.apply {
-        transform.scale = Vector3f(2f)
-        transform.position = Vector3f(3f, 0f, 0f)
+        transform.scale = Vector3f(0.75f)
+        transform.position = Vector3f(2f, 0f, 0f)
     }
 
     private val pointLight1 = object :GlPointLight(){
         init {
-            transform.position = Vector3f(5f, 5f, 1.5f)
+            transform.position = Vector3f(5f, 5f, 5f)
             lightColor = Vector3f(1f, 1f, 1f)
             intensive = 0.75f
         }
