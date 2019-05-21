@@ -63,8 +63,9 @@ class ShadowTestScene : GlScene() {
 //    }
 
 //    private val directionLight = GlDirectionLight().apply {
-//        transform.rotation.rotateX(120f)
-//        transform.rotation.rotateY(30f)
+//        transform.position = Vector3f(0f,5f,0f)
+//        transform.lookAt(Vector3f(0f,0f,0f))
+////        transform.rotation.rotateZ(30f)
 //    }
 
     init {
@@ -74,6 +75,6 @@ class ShadowTestScene : GlScene() {
 
     override fun update(deltaTime: Long) {
         super.update(deltaTime)
-//        directionLight.transform.rotation.rotateX(0.001f*deltaTime)
+//        directionLight.transform.rotation.rotateY(0.01f*deltaTime)
     }
 }

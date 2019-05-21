@@ -54,6 +54,9 @@ class GlCamera : GlObject() {
 
     fun render(objects: List<GlObject>) {
         renderScene(objects)
+//        objects.filter { it is GlAbstractLight }.forEach {
+//            (it as GlAbstractLight).renderDepthTexture(width,height)
+//        }
     }
 
     private fun renderScene(objects: List<GlObject>) {
