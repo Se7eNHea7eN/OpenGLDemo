@@ -10,7 +10,8 @@ import org.joml.Vector3f
 
 class ShadowTestScene : GlScene() {
     private val room = RoomObject().apply {
-        transform.scale = Vector3f(10f)
+        transform.scale = Vector3f(100f)
+        projectShadow = false
     }
 
     private val bunny = object : GlObjMeshObject() {

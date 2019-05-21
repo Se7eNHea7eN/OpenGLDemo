@@ -4,6 +4,7 @@ import com.se7en.opengl.material.Material
 
 abstract class GlRenderObject : GlObject() {
     var material: Material
+    var projectShadow = true
     protected abstract fun createMaterial(): Material
 
     init {

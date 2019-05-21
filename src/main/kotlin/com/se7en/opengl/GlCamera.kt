@@ -57,14 +57,17 @@ class GlCamera : GlObject() {
     }
 
     private fun renderScene(objects: List<GlObject>) {
-        glClearColor(0f, 0f, 0f, 0f)
-        glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
-        glViewport(0, 0, width, height)
 
         val viewMatrix = Matrix4f().setLookAt(
             transform.position, transform.forward(), transform.up()
         )
 
+        objects.filter { it is GlAbstractLight }.forEach {
+            (it as GlAbstractLight).renderShadowMap(objects)
+        }
+        glClearColor(0f, 0f, 0f, 0f)
+        glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
+        glViewport(0, 0, width, height)
         objects.forEach {
             if (it is GlRenderObject) {
                 it.material.setLights(objects.filter { o -> o is GlAbstractLight } as List<GlAbstractLight>)
