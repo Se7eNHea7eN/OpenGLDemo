@@ -42,20 +42,18 @@ float ShadowCalculation(vec4 fragPosLightSpace,vec3 lightDir,sampler2D shadowMap
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
     // 变换到[0,1]的范围
     projCoords = projCoords * 0.5 + 0.5;
+    if(projCoords.z > 1.0)
+        return 0.0;
 
-    if (projCoords.x >= 0.0 && projCoords.x <=1.0 && projCoords.y >= 0.0 && projCoords.y <=1.0){
-
-        // 取得最近点的深度(使用[0,1]范围下的fragPosLight当坐标)
-        float closestDepth = texture(shadowMap, projCoords.xy).r;
-        // 取得当前片元在光源视角下的深度
-        float currentDepth = projCoords.z;
-        // 检查当前片元是否在阴影中
-        float bias = max(0.0001 * (1.0 - dot(vNormal, lightDir)), 0.00001);
-        float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
-        //float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
-        return shadow;
-    }
-    return 0.;
+    // 取得最近点的深度(使用[0,1]范围下的fragPosLight当坐标)
+    float closestDepth = texture(shadowMap, projCoords.xy).r;
+    // 取得当前片元在光源视角下的深度
+    float currentDepth = projCoords.z;
+    // 检查当前片元是否在阴影中
+    float bias = max(0.0001 * (1.0 - dot(vNormal, lightDir)), 0.00001);
+    float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
+    //float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+    return shadow;
 
 }
 
