@@ -26,8 +26,11 @@ uniform int directionLightCount;
 
 varying vec3 vPosition;
 varying vec3 vNormal;
+varying vec2 vTexCoord;
 
 uniform vec3 objColor;
+uniform sampler2D objTexture;
+uniform int useTexture;
 
 uniform float ambientStrength;
 uniform vec3 ambientColor;
@@ -134,8 +137,11 @@ void main()
 
         specular += (1-shadow) * specularStrength * spec * directionLight.color* directionLight.intensive;
     }
+    vec3 baseColor = objColor;
+    if(useTexture)
+        baseColor = texture2D(objTexture,vTexCoord);
 
-    vec3 color =  (ambient + diffuse + specular)  * objColor;
+    vec3 color =  (ambient + diffuse + specular)  * baseColor;
     gl_FragColor = vec4(color,1.0);
 }
 

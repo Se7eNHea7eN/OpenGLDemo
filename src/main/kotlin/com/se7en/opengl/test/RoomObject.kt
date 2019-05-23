@@ -57,6 +57,12 @@ class RoomObject : GlMeshObject() {
 //            ,8,9,10,9,11,10
         )
 
+        val _texCoords = floatArrayOf(
+            0.0f, 1.0f,
+            1.0f, 1.0f,
+            0.0f, 0.0f,
+            1.0f, 0.0f
+            )
         return Mesh().apply {
             vertices = ByteBuffer.allocateDirect(_vertices.size * 4).order(ByteOrder.nativeOrder()).asFloatBuffer().put(_vertices).apply {
                 position(0)
@@ -67,8 +73,12 @@ class RoomObject : GlMeshObject() {
             indices = ByteBuffer.allocateDirect(_indices.size*4).order(ByteOrder.nativeOrder()).asIntBuffer().put(_indices).apply {
                 position(0)
             }
+            texCoords =  ByteBuffer.allocateDirect(_texCoords.size*4).order(ByteOrder.nativeOrder()).asFloatBuffer().put(_texCoords).apply {
+                position(0)
+            }
         }
     }
-
-    override fun createMaterial(): Material = Phong()
+    override fun createMaterial(): Material = object : Phong(){
+        override fun texturePath(): String =  "textures/wood.jpg"
+    }
 }
