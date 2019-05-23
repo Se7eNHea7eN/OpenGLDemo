@@ -71,7 +71,7 @@ abstract class GlAbstractLight : GlObject() {
 
     fun lightVPMatrix() : Matrix4f{
         val lightViewMatrix =
-            Matrix4f().lookAt(transform.position, transform.forward(), transform.up())
+            Matrix4f().lookAt(transform.position, Vector3f(), transform.up())
         return lightProjectionMatrix().mul(lightViewMatrix)
     }
 

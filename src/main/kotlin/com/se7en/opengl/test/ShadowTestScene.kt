@@ -1,12 +1,11 @@
 package com.se7en.opengl.test
 
-import com.se7en.opengl.GlDirectionLight
-import com.se7en.opengl.GlObjMeshObject
-import com.se7en.opengl.GlPointLight
-import com.se7en.opengl.GlScene
+import com.se7en.opengl.*
 import com.se7en.opengl.material.Material
 import com.se7en.opengl.material.Phong
+import com.se7en.opengl.utils.Debug
 import org.joml.Vector3f
+import org.lwjgl.system.MathUtil
 
 class ShadowTestScene : GlScene() {
     private val room = RoomObject().apply {
@@ -24,6 +23,7 @@ class ShadowTestScene : GlScene() {
         transform.scale = Vector3f(2f)
         transform.position = Vector3f(-2f, 0f, 0f)
     }
+
     private val teapot = object : GlObjMeshObject() {
         override fun objFilePath(): String = "models/teapot.obj"
         override fun createMaterial(): Material = Phong().apply {
@@ -70,12 +70,18 @@ class ShadowTestScene : GlScene() {
 //    }
 
     init {
-        mainCamera.transform.position = Vector3f(0f, 4f, 10f)
-        mainCamera.transform.rotation.rotateX(-30f)
+        mainCamera.transform.position = Vector3f(0f, 6f, 10f)
+        mainCamera.transform.rotation.rotateY(Math.toRadians(180.0).toFloat())
+        mainCamera.transform.rotation.rotateX(Math.toRadians(20.0).toFloat())
+//        mainCamera.transform.rotation.rotateX(-90f)
     }
 
     override fun update(deltaTime: Long) {
         super.update(deltaTime)
 //        directionLight.transform.rotation.rotateY(0.01f*deltaTime)
+//        mainCamera.transform.rotation.rotateAxis(0.001f*deltaTime,1f,0f,0f)
+//        mainCamera.transform.rotation.rotateX(-0.001f*deltaTime)
+//        bunny.transform.rotation.rotateX(0.001f*deltaTime)
+//        Debug.log("${mainCamera.transform.forward() }")
     }
 }
