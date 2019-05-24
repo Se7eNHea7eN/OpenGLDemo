@@ -1,5 +1,6 @@
 package com.se7en.opengl
 
+import com.se7en.opengl.lighting.GlAbstractLight
 import org.joml.Matrix4f
 import org.lwjgl.opengl.GL41.*
 

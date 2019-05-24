@@ -2,6 +2,9 @@ package com.se7en.opengl.material
 
 import asiainnovations.com.opengles_demo.GlShader
 import com.se7en.opengl.*
+import com.se7en.opengl.lighting.GlAbstractLight
+import com.se7en.opengl.lighting.GlDirectionLight
+import com.se7en.opengl.lighting.GlPointLight
 import com.se7en.opengl.utils.ResourceUtils
 import org.joml.Vector3f
 import org.lwjgl.opengl.GL20.*

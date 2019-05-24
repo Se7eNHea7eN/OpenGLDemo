@@ -4,6 +4,7 @@ import com.se7en.opengl.*
 import com.se7en.opengl.geometry.RoomObject
 import com.se7en.opengl.geometry.Sphere
 import com.se7en.opengl.input.Input
+import com.se7en.opengl.lighting.GlPointLight
 import com.se7en.opengl.material.Illumination
 import com.se7en.opengl.material.Material
 import com.se7en.opengl.material.Phong
