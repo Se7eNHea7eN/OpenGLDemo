@@ -1,8 +1,7 @@
-package com.se7en.opengl.test
+package com.se7en.opengl.geometry
 
 import com.se7en.opengl.GlMeshObject
 import com.se7en.opengl.Mesh
-import com.se7en.opengl.material.Lambert
 import com.se7en.opengl.material.Material
 import com.se7en.opengl.material.Phong
 import java.nio.ByteBuffer

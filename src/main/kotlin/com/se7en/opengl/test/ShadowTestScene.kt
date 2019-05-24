@@ -1,6 +1,7 @@
 package com.se7en.opengl.test
 
 import com.se7en.opengl.*
+import com.se7en.opengl.geometry.RoomObject
 import com.se7en.opengl.geometry.Sphere
 import com.se7en.opengl.material.Illumination
 import com.se7en.opengl.material.Material
@@ -10,13 +11,13 @@ import org.joml.Vector3f
 class ShadowTestScene : GlScene() {
     private val room = RoomObject().apply {
         transform.localScale = Vector3f(10f)
-        projectShadow = false
+//        projectShadow = false
     }
 
     private val bunny = object : GlObjMeshObject() {
         override fun objFilePath(): String = "models/bunny.obj"
         override fun createMaterial(): Material = Phong().apply {
-            objColor = Vector3f(1f, 0f, 0f)
+            objColor = RED
             specularStrength = 0.5f
         }
     }.apply {
@@ -27,7 +28,7 @@ class ShadowTestScene : GlScene() {
     private val teapot = object : GlObjMeshObject() {
         override fun objFilePath(): String = "models/teapot.obj"
         override fun createMaterial(): Material = Phong().apply {
-            objColor = Vector3f(0f, 0f, 1f)
+            objColor = BLUE
             shininess = 64f
         }
     }.apply {
@@ -36,11 +37,10 @@ class ShadowTestScene : GlScene() {
     }
 
 
-
     private val pointLight1 = object : GlPointLight() {
         init {
             transform.localPosition = Vector3f(5f, 5f, 5f)
-            lightColor = Vector3f(1f, 1f, 1f)
+            lightColor = WHITE
             intensive = 0.5f
         }
 
@@ -54,7 +54,7 @@ class ShadowTestScene : GlScene() {
     private val pointLight2 = object : GlPointLight() {
         init {
             transform.localPosition = Vector3f(-5f, 5f, 5f)
-            lightColor = Vector3f(1f, 1f, 1f)
+            lightColor = WHITE
 
             intensive = 0.5f
         }
