@@ -1,6 +1,5 @@
 package com.se7en.opengl
 
-import com.se7en.opengl.test.PhongTestScene
 import com.se7en.opengl.test.ShadowTestScene
 
 import org.lwjgl.glfw.Callbacks.*
@@ -32,13 +31,22 @@ import org.lwjgl.glfw.GLFW.GLFW_VISIBLE
 import org.lwjgl.glfw.GLFW.glfwDefaultWindowHints
 import org.lwjgl.glfw.GLFW.glfwInit
 import org.lwjgl.glfw.GLFWErrorCallback
+import org.lwjgl.glfw.GLFWKeyCallback
 import org.lwjgl.opengl.GL.createCapabilities
 
 
 class GlApp {
     private var window: Long = 0
-    private val width = 1280
-    private val height = 720
+    private val windowWidth = 1280
+    private val windowHeight = 720
+
+    private var width = windowWidth
+    private var height = windowHeight
+
+    private var isFullScreen = false
+
+    private val keyDown = BooleanArray(GLFW_KEY_LAST)
+    private var currentScene:GlScene ? = null
     fun run() {
         System.out.println("Se7en's OpenGL Started!")
 
@@ -68,8 +76,21 @@ class GlApp {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE) // the window will stay hidden after creation
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE) // the window will be resizable
         glfwWindowHint(GLFW_SAMPLES, 4)
+
+        val primaryMonitor = glfwGetPrimaryMonitor()
+        val vidmode = glfwGetVideoMode(primaryMonitor)
+
         // Create the window
-        window = glfwCreateWindow(width, height, "OpenGL", NULL, NULL)
+        window = if (isFullScreen) {
+            width = vidmode!!.width()
+            height = vidmode.height()
+            glfwCreateWindow(width, height, "OpenGL", primaryMonitor, NULL)
+        } else {
+            width = windowWidth
+            height = windowHeight
+            glfwCreateWindow(width, height, "OpenGL", NULL, NULL)
+        }
+
         if (window == NULL)
             throw RuntimeException("Failed to create the GLFW window")
 
@@ -88,7 +109,6 @@ class GlApp {
             glfwGetWindowSize(window, pWidth, pHeight)
 
             // Get the resolution of the primary monitor
-            val vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor())
 
             // Center the window
             glfwSetWindowPos(
@@ -97,7 +117,16 @@ class GlApp {
                 (vidmode.height() - pHeight.get(0)) / 2
             )
         } // the stack frame is popped automatically
-
+        glfwSetKeyCallback(window, object : GLFWKeyCallback() {
+            override fun invoke(window: Long, key: Int, scancode: Int, action: Int, mods: Int) {
+                if (key == GLFW_KEY_UNKNOWN)
+                    return
+                if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
+                    glfwSetWindowShouldClose(window, true)
+                }
+                keyDown[key] = action == GLFW_PRESS || action == GLFW_REPEAT
+            }
+        })
         // Make the OpenGL context current
         glfwMakeContextCurrent(window)
         // Enable v-sync
@@ -107,6 +136,27 @@ class GlApp {
         glfwShowWindow(window)
     }
 
+    private fun switchFullScreen() {
+        isFullScreen = !isFullScreen
+
+        val primaryMonitor = glfwGetPrimaryMonitor()
+        val vidmode = glfwGetVideoMode(primaryMonitor)
+
+        if (isFullScreen) {
+            width = vidmode!!.width()
+            height = vidmode.height()
+            glfwSetWindowMonitor(window, primaryMonitor, 0, 0, width, height, 60)
+        } else {
+            width = windowWidth
+            height = windowHeight
+            glfwSetWindowMonitor(window, NULL,
+                (vidmode!!.width() - width) / 2,
+                (vidmode.height() - height) / 2,
+                width, height, 60)
+        }
+        currentScene?.onWindowSizeChanged(width, height)
+    }
+
     private fun loop() {
         // This line is critical for LWJGL's interoperation with GLFW's
         // OpenGL context, or any context that is managed externally.
@@ -114,13 +164,18 @@ class GlApp {
         // creates the GLCapabilities instance and makes the OpenGL
         // bindings available for use.
         createCapabilities()
-        val scene = createScene()
+        currentScene = createScene()
 
-        scene.onWindowSizeChanged(width, height)
+        currentScene?.onWindowSizeChanged(width, height)
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while (!glfwWindowShouldClose(window)) {
-            scene.draw()
+            if (keyDown[GLFW_KEY_F11]) {
+                keyDown[GLFW_KEY_F11] = false
+                switchFullScreen()
+            }
+            currentScene?.updateControls(keyDown)
+            currentScene?.draw()
 
             glfwSwapBuffers(window) // swap the color buffers
 
@@ -128,7 +183,8 @@ class GlApp {
             // invoked during this call.
             glfwPollEvents()
         }
-        scene.destroy()
+        currentScene?.destroy()
+        currentScene = null
     }
 
     protected open fun createScene(): GlScene = ShadowTestScene()

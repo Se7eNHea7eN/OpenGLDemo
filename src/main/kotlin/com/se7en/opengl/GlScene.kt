@@ -12,15 +12,19 @@ open class GlScene {
     init {
         currentScene = this
     }
-    fun onWindowSizeChanged(width: Int, height: Int) {
+    open fun onWindowSizeChanged(width: Int, height: Int) {
         mainCamera.onWindowSizeChanged(width, height)
         lastDrawTime = System.currentTimeMillis()
     }
 
-    fun draw() {
+    open fun draw() {
         update(System.currentTimeMillis() - lastDrawTime)
         lastDrawTime = System.currentTimeMillis()
         mainCamera.render(objects)
+    }
+
+    open fun updateControls(keyDown: BooleanArray) {
+
     }
 
     protected open fun update(deltaTime: Long) {
@@ -33,7 +37,7 @@ open class GlScene {
         objects.add(obj)
     }
 
-    fun destroy(){
+    open fun destroy(){
         objects.forEach {
             it.onDestroy()
         }
