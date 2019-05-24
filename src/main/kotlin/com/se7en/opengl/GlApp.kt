@@ -1,5 +1,6 @@
 package com.se7en.opengl
 
+import com.se7en.opengl.input.Input
 import com.se7en.opengl.test.ShadowTestScene
 
 import org.lwjgl.glfw.Callbacks.*
@@ -30,6 +31,7 @@ import org.lwjgl.glfw.GLFW.GLFW_FALSE
 import org.lwjgl.glfw.GLFW.GLFW_VISIBLE
 import org.lwjgl.glfw.GLFW.glfwDefaultWindowHints
 import org.lwjgl.glfw.GLFW.glfwInit
+import org.lwjgl.glfw.GLFWCursorPosCallback
 import org.lwjgl.glfw.GLFWErrorCallback
 import org.lwjgl.glfw.GLFWKeyCallback
 import org.lwjgl.opengl.GL.createCapabilities
@@ -45,8 +47,9 @@ class GlApp {
 
     private var isFullScreen = false
 
-    private val keyDown = BooleanArray(GLFW_KEY_LAST)
     private var currentScene:GlScene ? = null
+
+    private val input = Input()
     fun run() {
         System.out.println("Se7en's OpenGL Started!")
 
@@ -124,7 +127,13 @@ class GlApp {
                 if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
                     glfwSetWindowShouldClose(window, true)
                 }
-                keyDown[key] = action == GLFW_PRESS || action == GLFW_REPEAT
+                input.keyDown[key] = action == GLFW_PRESS || action == GLFW_REPEAT
+            }
+        })
+        glfwSetCursorPosCallback(window, object : GLFWCursorPosCallback() {
+            override fun invoke(window: Long, xpos: Double, ypos: Double) {
+                input.mouseX = xpos
+                input.mouseY = ypos
             }
         })
         // Make the OpenGL context current
@@ -167,14 +176,19 @@ class GlApp {
         currentScene = createScene()
 
         currentScene?.onWindowSizeChanged(width, height)
+        var lastUpdateTime: Long = 0
+
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while (!glfwWindowShouldClose(window)) {
-            if (keyDown[GLFW_KEY_F11]) {
-                keyDown[GLFW_KEY_F11] = false
+            if (input.keyDown[GLFW_KEY_F11]) {
+                input.keyDown[GLFW_KEY_F11] = false
                 switchFullScreen()
             }
-            currentScene?.updateControls(keyDown)
+            val time = System.currentTimeMillis()
+            val deltaTime = time - lastUpdateTime
+            currentScene?.update(deltaTime)
+            currentScene?.updateControls(deltaTime,input,width,height)
             currentScene?.draw()
 
             glfwSwapBuffers(window) // swap the color buffers
@@ -182,6 +196,7 @@ class GlApp {
             // Poll for window events. The key callback above will only be
             // invoked during this call.
             glfwPollEvents()
+            lastUpdateTime = time
         }
         currentScene?.destroy()
         currentScene = null

@@ -1,5 +1,7 @@
 package com.se7en.opengl
 
+import com.se7en.opengl.input.Input
+
 open class GlScene {
     companion object {
         var currentScene: GlScene? = null
@@ -8,26 +10,21 @@ open class GlScene {
     val mainCamera = GlCamera()
     protected val objects = ArrayList<GlObject>()
 
-    private var lastDrawTime: Long = 0
     init {
         currentScene = this
     }
     open fun onWindowSizeChanged(width: Int, height: Int) {
         mainCamera.onWindowSizeChanged(width, height)
-        lastDrawTime = System.currentTimeMillis()
     }
 
     open fun draw() {
-        update(System.currentTimeMillis() - lastDrawTime)
-        lastDrawTime = System.currentTimeMillis()
         mainCamera.render(objects)
     }
 
-    open fun updateControls(keyDown: BooleanArray) {
-
+    open fun updateControls(deltaTime : Long,input: Input, width: Int, height: Int) {
     }
 
-    protected open fun update(deltaTime: Long) {
+    open fun update(deltaTime: Long) {
         objects.forEach {
             it.update(deltaTime)
         }

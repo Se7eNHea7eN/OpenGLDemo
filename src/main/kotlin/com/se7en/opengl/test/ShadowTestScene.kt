@@ -3,6 +3,7 @@ package com.se7en.opengl.test
 import com.se7en.opengl.*
 import com.se7en.opengl.geometry.RoomObject
 import com.se7en.opengl.geometry.Sphere
+import com.se7en.opengl.input.Input
 import com.se7en.opengl.material.Illumination
 import com.se7en.opengl.material.Material
 import com.se7en.opengl.material.Phong
@@ -13,6 +14,7 @@ class ShadowTestScene : GlScene() {
         transform.localScale = Vector3f(10f)
 //        projectShadow = false
     }
+
 
     private val bunny = object : GlObjMeshObject() {
         override fun objFilePath(): String = "models/bunny.obj"
@@ -66,7 +68,7 @@ class ShadowTestScene : GlScene() {
     }
 
 
-    private val sphere1 = object : Sphere(){
+    private val sphere1 = object : Sphere() {
         override fun createMaterial(): Material = Illumination().apply {
             objColor = Vector3f(1f, 1f, 1f)
         }
@@ -78,7 +80,7 @@ class ShadowTestScene : GlScene() {
     }
 
 
-    private val sphere2 = object : Sphere(){
+    private val sphere2 = object : Sphere() {
         override fun createMaterial(): Material = Illumination().apply {
             objColor = Vector3f(1f, 1f, 1f)
         }
@@ -99,15 +101,28 @@ class ShadowTestScene : GlScene() {
         mainCamera.transform.localPosition = Vector3f(0f, 6f, 10f)
         mainCamera.transform.localRotation.rotateY(Math.toRadians(180.0).toFloat())
         mainCamera.transform.localRotation.rotateX(Math.toRadians(20.0).toFloat())
-//        mainCamera.transform.localRotation.rotateX(-90f)
     }
 
     override fun update(deltaTime: Long) {
         super.update(deltaTime)
-//        directionLight.transform.localRotation.rotateY(0.01f*deltaTime)
-//        mainCamera.transform.localRotation.rotateAxis(0.001f*deltaTime,1f,0f,0f)
-//        mainCamera.transform.localRotation.rotateX(-0.001f*deltaTime)
-//        bunny.transform.localRotation.rotateX(0.001f*deltaTime)
-//        Debug.log("${mainCamera.transform.forward() }")
+    }
+
+    var mouseXLastFrame = 0.0
+    var mouseYLastFrame = 0.0
+    override fun updateControls(deltaTime: Long, input: Input, width: Int, height: Int) {
+        super.updateControls(deltaTime, input, width, height)
+        if (mouseXLastFrame != 0.0 && mouseYLastFrame != 0.0) {
+            val deltaX = input.mouseX - mouseXLastFrame
+            val deltaY = input.mouseY - mouseYLastFrame
+
+            mainCamera.transform.localRotation.rotateAxis((deltaY / width).toFloat(), mainCamera.transform.left())
+            mainCamera.transform.localRotation.rotateAxis((deltaX / width).toFloat(), mainCamera.transform.up())
+//            mainCamera.transform.localRotation.getEulerAnglesXYZ(Vector3f()).apply {
+//                mainCamera.transform.localRotation.rotateAxis(z,mainCamera.transform.backward())
+//            }
+        }
+
+        mouseXLastFrame = input.mouseX
+        mouseYLastFrame = input.mouseY
     }
 }

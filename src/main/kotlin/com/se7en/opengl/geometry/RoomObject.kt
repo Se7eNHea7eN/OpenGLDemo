@@ -16,20 +16,20 @@ class RoomObject : GlMeshObject() {
             -1.0f, 0f, -1.0f,   //2
             -1.0f, 0f, 1.0f     //3
             // Left face
-            ,-1.0f, 1.0f, -1.0f,//4
-            -1.0f, -1.0f, -1.0f,//5
-            -1.0f, 1.0f, 1.0f,  //6
-            -1.0f, -1.0f, 1.0f  //7
+            , -1.0f, 2.0f, -1.0f,//4
+            -1.0f, 0.0f, -1.0f,//5
+            -1.0f, 2.0f, 1.0f,  //6
+            -1.0f, 0.0f, 1.0f  //7
             // Right face
-            ,1.0f, 1.0f, 1.0f,  //8
-            1.0f, -1.0f, 1.0f,  //9
-            1.0f, 1.0f, -1.0f,  //10
-            1.0f, -1.0f, -1.0f //11
+            , 1.0f, 2.0f, 1.0f,  //8
+            1.0f, 0.0f, 1.0f,  //9
+            1.0f, 2.0f, -1.0f,  //10
+            1.0f, 0.0f, -1.0f //11
             // Front
-            ,1.0f, -1.0f, -1.0f,  //8
-            1.0f, 1.0f, -1.0f,  //9
-            -1.0f, -1.0f, -1.0f,  //10
-            -1.0f, 1.0f, -1.0f //11
+            , 1.0f, 0.0f, -1.0f,  //8
+            1.0f, 2.0f, -1.0f,  //9
+            -1.0f, 0.0f, -1.0f,  //10
+            -1.0f, 2.0f, -1.0f //11
         )
 
         val _normals = floatArrayOf(
@@ -39,28 +39,28 @@ class RoomObject : GlMeshObject() {
             0.0f, 1.0f, 0.0f,
             0.0f, 1.0f, 0.0f
 //            // Left face
-            ,1.0f, 0.0f, 0.0f,
+            , 1.0f, 0.0f, 0.0f,
             1.0f, 0.0f, 0.0f,
             1.0f, 0.0f, 0.0f,
             1.0f, 0.0f, 0.0f
 //            // Right face
-            ,-1.0f, 0.0f, 0.0f,
+            , -1.0f, 0.0f, 0.0f,
             -1.0f, 0.0f, 0.0f,
             -1.0f, 0.0f, 0.0f,
             -1.0f, 0.0f, 0.0f
             // Front
-            ,0.0f,0.0f,1.0f,
-            0.0f,0.0f,1.0f,
-            0.0f,0.0f,1.0f,
-            0.0f,0.0f,1.0f
+            , 0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f
         )
 
         val _indices = intArrayOf(
             // Bottom face
-            0,1,2,1,3,2
-            ,4,5,6,5,7,6
-            ,8,9,10,9,11,10
-            ,12,13,14,13,15,14
+            0, 1, 2, 1, 3, 2
+            , 4, 5, 6, 5, 7, 6
+            , 8, 9, 10, 9, 11, 10
+            , 12, 13, 14, 13, 15, 14
         )
 
         val _texCoords = floatArrayOf(
@@ -83,23 +83,29 @@ class RoomObject : GlMeshObject() {
             2.0f, 1.627f,
             0.0f, 0.0f,
             0.0f, 1.627f
-            )
+        )
         return Mesh().apply {
-            vertices = ByteBuffer.allocateDirect(_vertices.size * 4).order(ByteOrder.nativeOrder()).asFloatBuffer().put(_vertices).apply {
+            vertices = ByteBuffer.allocateDirect(_vertices.size * 4).order(ByteOrder.nativeOrder()).asFloatBuffer()
+                .put(_vertices).apply {
                 position(0)
             }
-            normals = ByteBuffer.allocateDirect(_normals.size * 4).order(ByteOrder.nativeOrder()).asFloatBuffer().put(_normals).apply {
+            normals = ByteBuffer.allocateDirect(_normals.size * 4).order(ByteOrder.nativeOrder()).asFloatBuffer()
+                .put(_normals).apply {
                 position(0)
             }
-            indices = ByteBuffer.allocateDirect(_indices.size*4).order(ByteOrder.nativeOrder()).asIntBuffer().put(_indices).apply {
-                position(0)
-            }
-            texCoords =  ByteBuffer.allocateDirect(_texCoords.size*4).order(ByteOrder.nativeOrder()).asFloatBuffer().put(_texCoords).apply {
+            indices =
+                ByteBuffer.allocateDirect(_indices.size * 4).order(ByteOrder.nativeOrder()).asIntBuffer().put(_indices)
+                    .apply {
+                        position(0)
+                    }
+            texCoords = ByteBuffer.allocateDirect(_texCoords.size * 4).order(ByteOrder.nativeOrder()).asFloatBuffer()
+                .put(_texCoords).apply {
                 position(0)
             }
         }
     }
-    override fun createMaterial(): Material = object : Phong(){
-        override fun texturePath(): String =  "textures/wood1.jpg"
+
+    override fun createMaterial(): Material = object : Phong() {
+        override fun texturePath(): String = "textures/wood1.jpg"
     }
 }
