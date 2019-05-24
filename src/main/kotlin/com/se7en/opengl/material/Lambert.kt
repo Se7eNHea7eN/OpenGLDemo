@@ -7,10 +7,12 @@ class Lambert : Material() {
 
     override fun fragmentShader(): String = "shaders/lambert.fsh"
 
-    private var objColor = floatArrayOf(1f, 1f, 1f)
-    private var ambientColor = floatArrayOf(1f, 1f, 1f)
-    private var ambientStrength = 0.1f
-
+    var objColor = floatArrayOf(1f, 1f, 1f)
+    var ambientColor = floatArrayOf(1f, 1f, 1f)
+    var ambientStrength = 0.1f
+    init {
+        enableLighting = true
+    }
     override fun render() {
         if(mesh == null) return
         shader.useProgram()

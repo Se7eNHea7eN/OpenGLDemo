@@ -1,7 +1,6 @@
 package com.se7en.opengl
 
 import org.joml.Matrix4f
-import org.joml.Vector3f
 import org.lwjgl.opengl.GL41.*
 
 
@@ -53,7 +52,7 @@ class GlCamera : GlObject() {
 
     private fun renderScene(objects: List<GlObject>) {
         val viewMatrix = Matrix4f().setLookAt(
-            transform.position, transform.position + transform.forward() , transform.up()
+            transform.localPosition, transform.localPosition + transform.forward() , transform.up()
         )
 
         objects.filter { it is GlAbstractLight }.forEach {
@@ -66,8 +65,9 @@ class GlCamera : GlObject() {
 
         objects.forEach {
             if (it is GlRenderObject) {
-                it.material.setLights(objects.filter { o -> o is GlAbstractLight } as List<GlAbstractLight>)
-                it.material.eyePos = transform.position
+                if(it.material.enableLighting)
+                    it.material.setLights(objects.filter { o -> o is GlAbstractLight } as List<GlAbstractLight>)
+                it.material.eyePos = transform.localPosition
                 it.material.setProjectionMatrix(projectionMatrix.get(FloatArray(16)))
                 it.material.setViewMatrix(viewMatrix.get(FloatArray(16)))
                 it.render()

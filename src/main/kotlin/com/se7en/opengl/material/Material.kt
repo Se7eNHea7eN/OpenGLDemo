@@ -4,16 +4,11 @@ import asiainnovations.com.opengles_demo.GlShader
 import com.se7en.opengl.*
 import com.se7en.opengl.utils.ResourceUtils
 import org.joml.Vector3f
-import org.lwjgl.opengl.GL11.*
-import org.lwjgl.opengl.GL13.*
 import org.lwjgl.opengl.GL20.*
-import org.lwjgl.opengl.GL41
-
-import java.nio.FloatBuffer
-import java.nio.IntBuffer
 
 abstract class Material {
     val shader: GlShader
+    var enableLighting = false
     abstract fun vertexShader(): String
     abstract fun fragmentShader(): String
     var mesh: Mesh? = null
@@ -37,7 +32,7 @@ abstract class Material {
         glEnable(GL_TEXTURE_2D)
         lights.forEachIndexed { index, light ->
             if (light is GlPointLight) {
-                shader.setUniform3fv("pointLights[$index].position", light.transform.position.toFloatArray())
+                shader.setUniform3fv("pointLights[$index].position", light.transform.localPosition.toFloatArray())
                 shader.setUniform3fv("pointLights[$index].color", light.lightColor.toFloatArray())
                 shader.setUniform1fv("pointLights[$index].intensive", light.intensive)
                 shader.setUniformMatrix4fv(

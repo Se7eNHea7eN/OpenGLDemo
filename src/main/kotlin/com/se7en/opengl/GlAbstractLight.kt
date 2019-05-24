@@ -5,8 +5,6 @@ import com.asiainnovations.onlyu.video.gl.TextureRotationUtil
 import com.se7en.opengl.utils.ResourceUtils
 import org.joml.Matrix4f
 import org.joml.Vector3f
-import org.lwjgl.opengl.GL11
-import org.lwjgl.opengl.GL41
 import org.lwjgl.opengl.GL41.*
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -71,7 +69,7 @@ abstract class GlAbstractLight : GlObject() {
 
     fun lightVPMatrix() : Matrix4f{
         val lightViewMatrix =
-            Matrix4f().lookAt(transform.position, Vector3f(), transform.up())
+            Matrix4f().lookAt(transform.localPosition, Vector3f(), transform.up())
         return lightProjectionMatrix().mul(lightViewMatrix)
     }
 
@@ -133,7 +131,7 @@ abstract class GlAbstractLight : GlObject() {
                     position(0)
                 }
 
-        depthVisualShader.setVertexAttribArray("position", 2, vertexBuffer)
+        depthVisualShader.setVertexAttribArray("localPosition", 2, vertexBuffer)
         depthVisualShader.setVertexAttribArray("inputTextureCoordinate", 2, textureMappingBuffer)
 
         glViewport(0, 0, width, height)

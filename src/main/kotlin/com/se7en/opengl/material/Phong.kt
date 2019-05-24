@@ -34,6 +34,7 @@ open class Phong : Material() {
     protected open fun texturePath(): String = ""
 
     init {
+        enableLighting = true
         if (texturePath().isNotEmpty()) {
             try {
                 texture = glGenTextures()
