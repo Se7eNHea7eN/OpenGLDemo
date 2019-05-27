@@ -69,9 +69,8 @@ class GlCamera : GlObject() {
                 if(it.material.enableLighting)
                     it.material.setLights(objects.filter { o -> o is GlAbstractLight } as List<GlAbstractLight>)
                 it.material.eyePos = transform.localPosition
-                it.material.setProjectionMatrix(projectionMatrix.get(FloatArray(16)))
-                it.material.setViewMatrix(viewMatrix.get(FloatArray(16)))
-                it.render()
+
+                it.render(viewMatrix,projectionMatrix)
             }
         }
     }

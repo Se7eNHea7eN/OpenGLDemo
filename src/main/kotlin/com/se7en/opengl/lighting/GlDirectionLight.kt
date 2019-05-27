@@ -6,7 +6,6 @@ import com.se7en.opengl.GlRenderObject
 import com.se7en.opengl.utils.ResourceUtils
 import org.joml.Matrix4f
 import org.joml.Vector3f
-import org.lwjgl.opengl.GL41
 import org.lwjgl.opengl.GL41.*
 import java.nio.ByteBuffer
 
@@ -84,7 +83,7 @@ class GlDirectionLight : GlAbstractLight() {
             /* Only clear depth buffer, since we don't have a color draw buffer */
             objects.forEach { renderObject ->
                 if (renderObject is GlRenderObject) {
-                    if (renderObject.projectShadow && renderObject.material.mesh != null) {
+                    if (renderObject.castShadow && renderObject.material.mesh != null) {
                         shadowMappingShader.setUniformMatrix4fv(
                             "modelMatrix",
                             renderObject.transform.matrix().get(FloatArray(16))

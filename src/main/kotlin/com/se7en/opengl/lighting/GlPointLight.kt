@@ -3,12 +3,11 @@ package com.se7en.opengl.lighting
 import asiainnovations.com.opengles_demo.GlShader
 import com.se7en.opengl.GlObject
 import com.se7en.opengl.GlRenderObject
+import com.se7en.opengl.plus
 import com.se7en.opengl.toFloatArray
 import com.se7en.opengl.utils.ResourceUtils
 import org.joml.Matrix4f
 import org.joml.Vector3f
-import org.lwjgl.opengl.GL20
-import org.lwjgl.opengl.GL41
 import org.lwjgl.opengl.GL41.*
 import java.nio.ByteBuffer
 
@@ -33,6 +32,11 @@ open class GlPointLight : GlAbstractLight() {
          */
         depthTexture = glGenTextures()
         glBindTexture(GL_TEXTURE_CUBE_MAP, depthTexture)
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE)
 
         for (i in 0..5){
             glTexImage2D(
@@ -46,13 +50,6 @@ open class GlPointLight : GlAbstractLight() {
                 GL_UNSIGNED_BYTE,
                 null as ByteBuffer?
             )
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE)
-
-
         }
 
         glBindTexture(GL_TEXTURE_2D, 0)
@@ -102,7 +99,7 @@ open class GlPointLight : GlAbstractLight() {
 
         for (i in 0 .. 5){
             shadowMappingShader.setUniformMatrix4fv("shadowMatrices[$i]",
-                Matrix4f().lookAt(transform.worldPosition,centerDirs[i],upDirs[i]).get(FloatArray(16))
+                Matrix4f().lookAt(transform.worldPosition,transform.worldPosition + centerDirs[i],upDirs[i]).get(FloatArray(16))
             )
         }
         shadowMappingShader.setUniform1fv("farPlane",far)
@@ -112,7 +109,7 @@ open class GlPointLight : GlAbstractLight() {
             /* Only clear depth buffer, since we don't have a color draw buffer */
             objects.forEach { renderObject ->
                 if (renderObject is GlRenderObject) {
-                    if (renderObject.projectShadow && renderObject.material.mesh != null) {
+                    if (renderObject.castShadow && renderObject.material.mesh != null) {
                         shadowMappingShader.setUniformMatrix4fv(
                             "modelMatrix",
                             renderObject.transform.matrix().get(FloatArray(16))

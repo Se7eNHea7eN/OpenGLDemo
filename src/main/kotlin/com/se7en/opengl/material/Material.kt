@@ -6,6 +6,7 @@ import com.se7en.opengl.lighting.GlAbstractLight
 import com.se7en.opengl.lighting.GlDirectionLight
 import com.se7en.opengl.lighting.GlPointLight
 import com.se7en.opengl.utils.ResourceUtils
+import org.joml.Matrix4f
 import org.joml.Vector3f
 import org.lwjgl.opengl.GL13
 import org.lwjgl.opengl.GL20.*
@@ -20,10 +21,6 @@ abstract class Material {
 
     var eyePos = Vector3f()
 
-    fun setProjectionMatrix(projectionMatrix: FloatArray) {
-        shader.useProgram()
-        shader.setUniformMatrix4fv("projectionMatrix", projectionMatrix)
-    }
 
     fun setViewMatrix(viewMatrix: FloatArray) {
         shader.useProgram()
@@ -70,7 +67,11 @@ abstract class Material {
         )
     }
 
-    abstract fun render()
+    abstract fun render(
+        viewMatrix: Matrix4f,
+        projectionMatrix: Matrix4f,
+        modelMatrix: Matrix4f
+    )
 
     fun onDestroy() {
         shader.release()

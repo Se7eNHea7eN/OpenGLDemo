@@ -11,11 +11,22 @@ import com.se7en.opengl.material.Phong
 import org.joml.Vector3f
 
 class ShadowTestScene : GlScene() {
-    private val room = RoomObject().apply {
-        transform.localScale = Vector3f(10f)
-//        projectShadow = false
+    private val skybox = object : GlSkyBox() {
+        override fun skyBoxTextures(): Array<String> =
+            arrayOf(
+                "textures/space/space_right1.jpg",
+                "textures/space/space_left2.jpg",
+                "textures/space/space_top3.jpg",
+                "textures/space/space_bottom4.jpg",
+                "textures/space/space_front5.jpg",
+                "textures/space/space_back6.jpg"
+            )
     }
 
+    private val room = RoomObject().apply {
+        transform.localScale = Vector3f(10f)
+//        castShadow = false
+    }
 
     private val bunny = object : GlObjMeshObject() {
         override fun objFilePath(): String = "models/bunny.obj"
@@ -74,7 +85,7 @@ class ShadowTestScene : GlScene() {
             objColor = Vector3f(1f, 1f, 1f)
         }
     }.apply {
-        projectShadow = false
+        castShadow = false
         transform.localScale = Vector3f(0.5f)
         transform.localPosition = Vector3f(0f, 0f, 0f)
         transform.parent = pointLight1.transform
@@ -86,7 +97,7 @@ class ShadowTestScene : GlScene() {
             objColor = Vector3f(1f, 1f, 1f)
         }
     }.apply {
-        projectShadow = false
+        castShadow = false
         transform.localScale = Vector3f(0.5f)
         transform.localPosition = Vector3f(0f, 0f, 0f)
         transform.parent = pointLight2.transform
