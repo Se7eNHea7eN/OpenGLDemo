@@ -10,6 +10,13 @@ class Transform {
     var localPosition = Vector3f(0f, 0f, 0f)
     var localRotation = Quaternionf()
     var localScale = Vector3f(1f, 1f, 1f)
+
+    var worldPosition : Vector3f = Vector3f()
+        get() {
+            if(parent == null)
+                return localPosition
+            return parent!!.worldPosition + localPosition
+        }
     //
     fun up(): Vector3f {
         return localRotation.normalizedPositiveY(Vector3f())

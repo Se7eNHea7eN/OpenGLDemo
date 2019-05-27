@@ -58,8 +58,8 @@ abstract class Sphere : GlMeshObject() {
                     texCoords!!.put(t)
                 }
             }
-            var k1 = 0
-            var k2 = 0
+            var k1 : Int
+            var k2 : Int
             for (i in 0 until stackCount) {
                 k1 = i * (sectorCount + 1)     // beginning of current stack
                 k2 = k1 + sectorCount + 1      // beginning of next stack
