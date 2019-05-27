@@ -2,6 +2,7 @@ package com.se7en.opengl
 
 import com.se7en.opengl.input.Input
 import com.se7en.opengl.test.ShadowTestScene
+import com.se7en.opengl.test.SkyBoxTest
 
 import org.lwjgl.glfw.Callbacks.*
 import org.lwjgl.glfw.GLFW.*
@@ -202,5 +203,5 @@ class GlApp {
         currentScene = null
     }
 
-    protected open fun createScene(): GlScene = ShadowTestScene()
+    protected open fun createScene(): GlScene = SkyBoxTest()
 }

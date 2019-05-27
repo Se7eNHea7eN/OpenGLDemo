@@ -120,11 +120,11 @@ object GlUtil {
     }
 
 
-    fun createTextureFromResource(texturePath : String) : GlTexture{
+    fun createTextureFromResource(texturePath : String,textureType : Int = GL_TEXTURE_2D) : GlTexture{
         val texture = glGenTextures()
-        glBindTexture(GL_TEXTURE_2D, texture)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+        glBindTexture(textureType, texture)
+        glTexParameteri(textureType, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+        glTexParameteri(textureType, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
         val width = BufferUtils.createIntBuffer(1)
         val height = BufferUtils.createIntBuffer(1)
         val components = BufferUtils.createIntBuffer(1)
@@ -146,7 +146,7 @@ object GlUtil {
         )
 
         glTexImage2D(
-            GL_TEXTURE_2D,
+            textureType,
             0,
             GL_RGBA,
             width.get(0),
