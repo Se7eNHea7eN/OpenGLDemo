@@ -13,7 +13,6 @@ abstract class GlRenderObject : GlObject() {
     }
 
     fun render(viewMatrix: Matrix4f, projectionMatrix: Matrix4f) {
-        material.shader.useProgram()
         material.render(viewMatrix, projectionMatrix,transform.matrix())
     }
 

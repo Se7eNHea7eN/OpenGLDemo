@@ -74,11 +74,10 @@ class GlShader {
         glAttachShader(program, fragmentShader)
 
         glLinkProgram(program)
-        val linkStatus = intArrayOf(GL_FALSE)
-        glGetProgramiv(program, GL_LINK_STATUS, linkStatus)
+        val linkStatus = glGetProgrami(program, GL_LINK_STATUS)
         print(glGetProgramInfoLog(program))
 
-        if (linkStatus[0] != GL_TRUE) {
+        if (linkStatus != GL_TRUE) {
 //            Log.e(TAG, "Could not link program: " + glGetProgramInfoLog(program))
             throw RuntimeException(glGetProgramInfoLog(program))
         }

@@ -2,9 +2,13 @@ package com.se7en.opengl.material
 
 import com.se7en.opengl.GlUtil
 import org.joml.Matrix4f
+import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL13
 import org.lwjgl.opengl.GL41.*
+import java.io.IOException
 import java.nio.ByteBuffer
+import java.nio.ByteOrder
+import org.lwjgl.stb.STBImage.*
 
 abstract class SkyBoxMat : Material() {
     override fun vertexShader(): String = "shaders/skybox.vsh"
@@ -12,51 +16,84 @@ abstract class SkyBoxMat : Material() {
 
     internal var skyBoxTexture: Int = 0
 
-    abstract fun skyBoxTextures() : Array<String>
-
+    abstract fun skyBoxTextures(): Array<String>
+    val quadVertices = BufferUtils.createByteBuffer(4 * 2 * 6).apply {
+        asFloatBuffer().apply{
+            put(-1.0f).put(-1.0f)
+            put(1.0f).put(-1.0f)
+            put(1.0f).put(1.0f)
+            put(1.0f).put(1.0f)
+            put(-1.0f).put(1.0f)
+            put(-1.0f).put(-1.0f)
+        }
+    }
     init {
         skyBoxTexture = glGenTextures()
+        GlUtil.checkNoGLES2Error("glGenTextures")
+
         glBindTexture(GL_TEXTURE_CUBE_MAP, skyBoxTexture)
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE)
-        val textures = skyBoxTextures().map {
-            GlUtil.createTextureFromResource(it,GL_TEXTURE_CUBE_MAP)
-        }
-        for (i in 0..5){
-            glTexImage2D(
-                GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-                0,
-                GL_DEPTH_COMPONENT,
-                textures[i].width,
-                textures[i].height,
-                0,
-                GL_DEPTH_COMPONENT,
-                GL_UNSIGNED_BYTE,
-                null as ByteBuffer?
+        GlUtil.checkNoGLES2Error("glBindTexture")
+
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_GENERATE_MIPMAP, GL_TRUE)
+
+        GlUtil.checkNoGLES2Error("glTexParameteri")
+        skyBoxTextures().forEachIndexed { index, s ->
+            val width = BufferUtils.createIntBuffer(1)
+            val height = BufferUtils.createIntBuffer(1)
+            val components = BufferUtils.createIntBuffer(1)
+
+            var imgArray = javaClass.classLoader.getResourceAsStream(s).readBytes()
+
+            val imgBuffer = ByteBuffer.allocateDirect(imgArray.size)
+                .order(ByteOrder.nativeOrder())
+                .apply {
+                    put(imgArray)
+                    position(0)
+                }
+            if (!stbi_info_from_memory(imgBuffer, width, height, components))
+                throw IOException("Failed to read image information: " + stbi_failure_reason()!!)
+
+            val data = stbi_load_from_memory(
+                imgBuffer, width, height, components,
+                4
             )
+
+            glTexImage2D(
+                GL_TEXTURE_CUBE_MAP_POSITIVE_X + index,
+                0,
+                GL_RGB8,
+                width.get(0),
+                height.get(0),
+                0,
+                GL_RGB,
+                GL_UNSIGNED_BYTE,
+                data)
+            stbi_image_free(data)
         }
         glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS)
-
     }
+
     override fun render(
         viewMatrix: Matrix4f,
         projectionMatrix: Matrix4f,
         modelMatrix: Matrix4f
     ) {
-        if (mesh == null) return
         shader.useProgram()
         shader.setUniformMatrix4fv("projectionMatrix", projectionMatrix.get(FloatArray(16)))
         shader.setUniformMatrix4fv("viewMatrix", viewMatrix.get(FloatArray(16)))
-
-        shader.setVertexAttribArray("position", 3, mesh!!.vertices!!)
+        glVertexPointer(2, GL_FLOAT, 0, quadVertices)
 
         glEnable(GL13.GL_TEXTURE_CUBE_MAP)
-        glActiveTexture(GL_TEXTURE_CUBE_MAP)
+        glActiveTexture(GL_TEXTURE0)
         glBindTexture(GL_TEXTURE_CUBE_MAP, skyBoxTexture)
-        shader.setUniformInt("skybox", 0)
-        glDrawElements(GL_TRIANGLES, mesh!!.indices!!)
+        shader.setUniformInt("tex",0)
+
+        glDrawArrays(GL_TRIANGLES, 0, 6)
+
+
+
+//        glDrawElements(GL_TRIANGLES, mesh!!.indices!!)
     }
 }
