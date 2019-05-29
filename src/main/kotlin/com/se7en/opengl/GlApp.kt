@@ -203,5 +203,5 @@ class GlApp {
         currentScene = null
     }
 
-    protected open fun createScene(): GlScene = ShadowTestScene()
+    protected open fun createScene(): GlScene = SkyBoxTest()
 }

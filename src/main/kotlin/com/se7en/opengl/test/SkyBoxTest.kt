@@ -2,6 +2,7 @@ package com.se7en.opengl.test
 
 import com.se7en.opengl.GlScene
 import com.se7en.opengl.GlSkyBox
+import org.lwjgl.opengl.GL11.*
 
 class SkyBoxTest : GlScene() {
     private val skybox = object : GlSkyBox() {
@@ -15,5 +16,11 @@ class SkyBoxTest : GlScene() {
                 "textures/space/space_back6.jpg"
             )
     }
+    init {
 
+        glEnableClientState(GL_VERTEX_ARRAY)
+        glEnable(GL_DEPTH_TEST)
+        glEnable(GL_CULL_FACE)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE)
+    }
 }
