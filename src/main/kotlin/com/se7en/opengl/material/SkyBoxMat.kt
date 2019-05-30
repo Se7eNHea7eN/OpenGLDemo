@@ -3,6 +3,8 @@ package com.se7en.opengl.material
 import com.se7en.opengl.GlUtil
 import org.joml.Matrix4f
 import org.lwjgl.BufferUtils
+import org.lwjgl.opengl.GL11
+import org.lwjgl.opengl.GL11.*
 import org.lwjgl.opengl.GL13
 import org.lwjgl.opengl.GL41.*
 import java.io.IOException
@@ -73,6 +75,11 @@ abstract class SkyBoxMat : Material() {
             stbi_image_free(data)
         }
         glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS)
+
+        GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY)
+        GL11.glEnable(GL11.GL_DEPTH_TEST)
+        GL11.glEnable(GL11.GL_CULL_FACE)
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE)
     }
 
     override fun render(
@@ -90,9 +97,5 @@ abstract class SkyBoxMat : Material() {
         shader.setUniformInt("tex",0)
 
         glDrawArrays(GL_TRIANGLES, 0, 6)
-
-
-
-//        glDrawElements(GL_TRIANGLES, mesh!!.indices!!)
     }
 }

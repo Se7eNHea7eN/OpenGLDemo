@@ -11,18 +11,6 @@ import com.se7en.opengl.material.Phong
 import org.joml.Vector3f
 
 class ShadowTestScene : GlScene() {
-    private val skybox = object : GlSkyBox() {
-        override fun skyBoxTextures(): Array<String> =
-            arrayOf(
-                "textures/space/space_right1.jpg",
-                "textures/space/space_left2.jpg",
-                "textures/space/space_top3.jpg",
-                "textures/space/space_bottom4.jpg",
-                "textures/space/space_front5.jpg",
-                "textures/space/space_back6.jpg"
-            )
-    }
-
     private val room = RoomObject().apply {
         transform.localScale = Vector3f(10f)
 //        castShadow = false
@@ -65,19 +53,18 @@ class ShadowTestScene : GlScene() {
     }
 
 
-    private val pointLight2 = object : GlPointLight() {
-        init {
-            transform.localPosition = Vector3f(-5f, 5f, 5f)
-            lightColor = WHITE
-
-            intensive = 0.5f
-        }
-
-        override fun update(deltaTime: Long) {
-            super.update(deltaTime)
-            transform.localPosition.rotateAxis(2f / 1000f * deltaTime, 0f, 1f, 0f)
-        }
-    }
+//    private val pointLight2 = object : GlPointLight() {
+//        init {
+//            transform.localPosition = Vector3f(-5f, 5f, 5f)
+//            lightColor = WHITE
+//            intensive = 0.5f
+//        }
+//
+//        override fun update(deltaTime: Long) {
+//            super.update(deltaTime)
+//            transform.localPosition.rotateAxis(2f / 1000f * deltaTime, 0f, 1f, 0f)
+//        }
+//    }
 
 
     private val sphere1 = object : Sphere() {
@@ -92,16 +79,16 @@ class ShadowTestScene : GlScene() {
     }
 
 
-    private val sphere2 = object : Sphere() {
-        override fun createMaterial(): Material = Illumination().apply {
-            objColor = Vector3f(1f, 1f, 1f)
-        }
-    }.apply {
-        castShadow = false
-        transform.localScale = Vector3f(0.5f)
-        transform.localPosition = Vector3f(0f, 0f, 0f)
-        transform.parent = pointLight2.transform
-    }
+//    private val sphere2 = object : Sphere() {
+//        override fun createMaterial(): Material = Illumination().apply {
+//            objColor = Vector3f(1f, 1f, 1f)
+//        }
+//    }.apply {
+//        castShadow = false
+//        transform.localScale = Vector3f(0.5f)
+//        transform.localPosition = Vector3f(0f, 0f, 0f)
+//        transform.parent = pointLight2.transform
+//    }
 
 //    private val directionLight = GlDirectionLight().apply {
 //        transform.localPosition = Vector3f(0f,5f,0f)
@@ -115,10 +102,6 @@ class ShadowTestScene : GlScene() {
         mainCamera.transform.localRotation.rotateX(Math.toRadians(20.0).toFloat())
     }
 
-    override fun update(deltaTime: Long) {
-        super.update(deltaTime)
-    }
-
     var mouseXLastFrame = 0.0
     var mouseYLastFrame = 0.0
     override fun updateControls(deltaTime: Long, input: Input, width: Int, height: Int) {
@@ -129,9 +112,6 @@ class ShadowTestScene : GlScene() {
 
             mainCamera.transform.localRotation.rotateAxis((deltaY / width).toFloat(), mainCamera.transform.left())
             mainCamera.transform.localRotation.rotateAxis((deltaX / width).toFloat(), mainCamera.transform.up())
-//            mainCamera.transform.localRotation.getEulerAnglesXYZ(Vector3f()).apply {
-//                mainCamera.transform.localRotation.rotateAxis(z,mainCamera.transform.backward())
-//            }
         }
 
         mouseXLastFrame = input.mouseX

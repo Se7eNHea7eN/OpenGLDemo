@@ -11,4 +11,7 @@ abstract class GlAbstractLight : GlObject() {
     var intensive = 1f
 
     abstract fun renderShadowMap(objects: List<GlObject>)
+
+    open fun drawDebugShadowMap(viewMatrix: Matrix4f,
+                                projectionMatrix: Matrix4f){}
 }

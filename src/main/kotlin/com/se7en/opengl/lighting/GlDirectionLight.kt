@@ -78,24 +78,22 @@ class GlDirectionLight : GlAbstractLight() {
         glClear(GL_DEPTH_BUFFER_BIT)
         glViewport(0, 0, shadowMapSize, shadowMapSize)
         glCullFace(GL_FRONT)
-        objects.forEach {
-            shadowMappingShader.setUniformMatrix4fv("vpMatrix", lightVPMatrix().get(FloatArray(16)))
-            /* Only clear depth buffer, since we don't have a color draw buffer */
-            objects.forEach { renderObject ->
-                if (renderObject is GlRenderObject) {
-                    if (renderObject.castShadow && renderObject.material.mesh != null) {
-                        shadowMappingShader.setUniformMatrix4fv(
-                            "modelMatrix",
-                            renderObject.transform.matrix().get(FloatArray(16))
-                        )
+        shadowMappingShader.setUniformMatrix4fv("vpMatrix", lightVPMatrix().get(FloatArray(16)))
+        /* Only clear depth buffer, since we don't have a color draw buffer */
+        objects.forEach { renderObject ->
+            if (renderObject is GlRenderObject) {
+                if (renderObject.castShadow && renderObject.material.mesh != null) {
+                    shadowMappingShader.setUniformMatrix4fv(
+                        "modelMatrix",
+                        renderObject.transform.matrix().get(FloatArray(16))
+                    )
 
-                        shadowMappingShader.setVertexAttribArray(
-                            "aPosition",
-                            3,
-                            renderObject.material.mesh!!.vertices!!
-                        )
-                        glDrawElements(GL_TRIANGLES, renderObject.material.mesh!!.indices!!)
-                    }
+                    shadowMappingShader.setVertexAttribArray(
+                        "aPosition",
+                        3,
+                        renderObject.material.mesh!!.vertices!!
+                    )
+                    glDrawElements(GL_TRIANGLES, renderObject.material.mesh!!.indices!!)
                 }
             }
         }
@@ -111,7 +109,7 @@ class GlDirectionLight : GlAbstractLight() {
 //            ResourceUtils.ioResourceToByteBuffer("shaders/depthTexture.fsh", 8192)
 //        )
 //
-//    fun renderDepthTexture(width : Int,height:Int) {
+//    fun drawDebugShadowMap(width : Int,height:Int) {
 //        depthVisualShader.useProgram()
 //        val vertexBuffer: FloatBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.CUBE.size * 4)
 //            .order(ByteOrder.nativeOrder())
