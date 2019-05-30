@@ -2,6 +2,7 @@ package com.se7en.opengl.test
 
 import com.se7en.opengl.GlScene
 import com.se7en.opengl.GlSkyBox
+import com.se7en.opengl.input.Input
 import org.lwjgl.opengl.GL11.*
 
 class SkyBoxTest : GlScene() {
@@ -22,5 +23,23 @@ class SkyBoxTest : GlScene() {
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_CULL_FACE)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE)
+    }
+    var mouseXLastFrame = 0.0
+    var mouseYLastFrame = 0.0
+    override fun updateControls(deltaTime: Long, input: Input, width: Int, height: Int) {
+        super.updateControls(deltaTime, input, width, height)
+        if (mouseXLastFrame != 0.0 && mouseYLastFrame != 0.0) {
+            val deltaX = input.mouseX - mouseXLastFrame
+            val deltaY = input.mouseY - mouseYLastFrame
+
+            mainCamera.transform.localRotation.rotateAxis((deltaY / width).toFloat(), mainCamera.transform.left())
+            mainCamera.transform.localRotation.rotateAxis((deltaX / width).toFloat(), mainCamera.transform.up())
+//            mainCamera.transform.localRotation.getEulerAnglesXYZ(Vector3f()).apply {
+//                mainCamera.transform.localRotation.rotateAxis(z,mainCamera.transform.backward())
+//            }
+        }
+
+        mouseXLastFrame = input.mouseX
+        mouseYLastFrame = input.mouseY
     }
 }

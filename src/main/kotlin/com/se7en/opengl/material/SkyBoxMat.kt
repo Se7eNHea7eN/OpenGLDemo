@@ -63,11 +63,11 @@ abstract class SkyBoxMat : Material() {
             glTexImage2D(
                 GL_TEXTURE_CUBE_MAP_POSITIVE_X + index,
                 0,
-                GL_RGB8,
+                GL_RGBA,
                 width.get(0),
                 height.get(0),
                 0,
-                GL_RGB,
+                GL_RGBA,
                 GL_UNSIGNED_BYTE,
                 data)
             stbi_image_free(data)
@@ -81,8 +81,7 @@ abstract class SkyBoxMat : Material() {
         modelMatrix: Matrix4f
     ) {
         shader.useProgram()
-        shader.setUniformMatrix4fv("projectionMatrix", projectionMatrix.get(FloatArray(16)))
-        shader.setUniformMatrix4fv("viewMatrix", viewMatrix.get(FloatArray(16)))
+        shader.setUniformMatrix4fv("invViewProjection",Matrix4f().set(projectionMatrix).mul(viewMatrix).invert().get(FloatArray(16)))
         glVertexPointer(2, GL_FLOAT, 0, quadVertices)
 
         glEnable(GL13.GL_TEXTURE_CUBE_MAP)
