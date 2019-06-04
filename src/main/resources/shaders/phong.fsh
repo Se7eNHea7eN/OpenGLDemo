@@ -1,13 +1,14 @@
-struct PointLight
+#version 330 core
+
+uniform PointLight
 {
     vec3 position;
     vec3 color;
     float intensive;
-    samplerCube depthTexture;
+    samplerCubeShadow depthTexture;
     float farPlane;
-};
+} pointLights[8];
 
-uniform PointLight pointLights[8];
 uniform int pointLightCount;
 
 
@@ -23,9 +24,9 @@ struct DirectionLight
 uniform DirectionLight directionLights[8];
 uniform int directionLightCount;
 
-varying vec3 vPosition;
-varying vec3 vNormal;
-varying vec2 vTexCoord;
+in vec3 vPosition;
+in vec3 vNormal;
+in vec2 vTexCoord;
 
 uniform vec3 objColor;
 uniform sampler2D objTexture;
@@ -37,6 +38,8 @@ uniform vec3 ambientColor;
 uniform vec3 eyePos;
 uniform float specularStrength;
 uniform float shininess;
+
+out vec4 FragColor;
 
 float PointShadowCalculation(vec3 fragPos,PointLight pointLight)
 {
@@ -152,11 +155,11 @@ void main()
 
         specular += (1-shadow) * specularStrength * spec * directionLight.color* directionLight.intensive;
     }
-    vec3 baseColor = objColor;
-    if(useTexture)
+    vec4 baseColor = objColor;
+    if(useTexture != 0)
         baseColor = texture2D(objTexture,vTexCoord);
 
-    vec3 color =  (ambient + diffuse + specular)  * baseColor;
-    gl_FragColor = vec4(color,1.0);
+    vec3 color =  (ambient + diffuse + specular)  * baseColor.rgb;
+    FragColor = vec4(color,1.0);
 }
 

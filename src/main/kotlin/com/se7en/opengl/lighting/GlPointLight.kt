@@ -43,6 +43,8 @@ open class GlPointLight : GlAbstractLight() {
     }
 
     init {
+        glEnable(GL_DEPTH_TEST)
+        glEnable(GL_CULL_FACE)
         /**
          * Create the texture storing the depth values of the light-render.
          */
@@ -80,6 +82,7 @@ open class GlPointLight : GlAbstractLight() {
         }
         glBindTexture(GL_TEXTURE_CUBE_MAP, 0)
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
+
     }
 //
 //    override fun lightProjectionMatrix(): Matrix4f =
@@ -90,6 +93,7 @@ open class GlPointLight : GlAbstractLight() {
         glBindFramebuffer(GL_FRAMEBUFFER, fbo)
         glClear(GL_DEPTH_BUFFER_BIT)
         glViewport(0, 0, shadowMapSize, shadowMapSize)
+
         val centerDirs = arrayOf(
             Vector3f(1f, 0f, 0f),
             Vector3f(-1f, 0f, 0f),
@@ -107,10 +111,19 @@ open class GlPointLight : GlAbstractLight() {
             Vector3f(0f, -1f, 0f)
         )
 
+        val shadowProj = Matrix4f().perspective(Math.toRadians(90.0).toFloat(), 1.0f, 0.01f, 1000f)
+
+
         for (i in 0..5) {
             shadowMappingShader.setUniformMatrix4fv(
                 "shadowMatrices[$i]",
-                Matrix4f().lookAt(transform.worldPosition, transform.worldPosition + centerDirs[i], upDirs[i]).get(
+                Matrix4f().set(shadowProj).mul(
+                    Matrix4f().lookAt(
+                        transform.worldPosition,
+                        transform.worldPosition + centerDirs[i],
+                        upDirs[i]
+                    )
+                ).get(
                     FloatArray(16)
                 )
             )

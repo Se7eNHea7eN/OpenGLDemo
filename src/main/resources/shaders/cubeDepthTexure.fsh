@@ -11,6 +11,6 @@ float LinearizeDepth(in float depth)
 
 void main(void) {
     float d = textureCube(tex, dir).x;
-    gl_FragColor =  vec4(d,d,d,1.0);
+    gl_FragColor = vec4(d,d,d,1.0);
     gl_FragDepth = 0.9999999;
 }
