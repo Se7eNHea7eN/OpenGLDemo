@@ -57,9 +57,11 @@ class RoomObject : GlMeshObject() {
 
         val _indices = intArrayOf(
             // Bottom face
-            0, 1, 2, 1, 3, 2
-            , 4, 5, 6, 5, 7, 6
-            , 8, 9, 10, 9, 11, 10
+            2, 1, 0, 2, 3,1
+            // Left face
+            , 6, 5, 4, 6, 7, 5
+            //            // Right face
+            , 10, 9, 8, 10, 11, 9
             , 12, 13, 14, 13, 15, 14
         )
 
@@ -67,9 +69,9 @@ class RoomObject : GlMeshObject() {
             2.0f, 0.0f,
             2.0f, 1.627f,
             0.0f, 0.0f,
-            0.0f, 1.627f,
+            0.0f, 1.627f
 
-            2.0f, 0.0f,
+            ,2.0f, 0.0f,
             2.0f, 1.627f,
             0.0f, 0.0f,
             0.0f, 1.627f,

@@ -1,16 +1,18 @@
-#version 330 core
+#version 430 core
 
-uniform PointLight
+struct PointLight
 {
     vec3 position;
     vec3 color;
     float intensive;
-    samplerCubeShadow depthTexture;
+    //samplerCubeShadow depthTexture;
     float farPlane;
-} pointLights[8];
+};
+
+uniform PointLight pointLights[8];
+uniform samplerCube pointLightCubeShadows[8];
 
 uniform int pointLightCount;
-
 
 struct DirectionLight
 {
@@ -18,10 +20,11 @@ struct DirectionLight
     vec3 color;
     float intensive;
     mat4 matrix;
-    sampler2D depthTexture;
+    //sampler2D depthTexture;
 };
-
 uniform DirectionLight directionLights[8];
+uniform sampler2D directionLightShadows[8];
+
 uniform int directionLightCount;
 
 in vec3 vPosition;
@@ -41,19 +44,24 @@ uniform float shininess;
 
 out vec4 FragColor;
 
-float PointShadowCalculation(vec3 fragPos,PointLight pointLight)
+float PointShadowCalculation(vec3 fragPos,PointLight pointLight,samplerCube shadowMap)
 {
     vec3 fragToLight = fragPos - pointLight.position;
-    float closestDepth = texture(pointLight.depthTexture, fragToLight).r;
+    float closestDepth = texture(shadowMap, fragToLight).r;
+    if(closestDepth < 0){
+       closestDepth = 1.0;
+    }
 
     closestDepth *= pointLight.farPlane;
+
+
     // Now get current linear depth as the length between the fragment and light position
     float currentDepth = length(fragToLight);
     // Now test for shadows
-    float bias = 0.0001;
+    float bias = 0.05;
 
     float shadow = currentDepth -  bias > closestDepth ? 1.0 : 0.0;
-
+    //shadow = 0.;
     return shadow;
 }
 
@@ -86,7 +94,6 @@ float ShadowCalculation(vec4 fragPosLightSpace,vec3 lightDir,sampler2D shadowMap
     shadow /= 9.0;
 
     return shadow;
-
 }
 
 
@@ -106,7 +113,7 @@ void main()
         vec3 lightDir = normalize(pointLight.position - vPosition);
 
      // 计算阴影
-        float shadow = PointShadowCalculation(vPosition,pointLight);
+        float shadow = PointShadowCalculation(vPosition,pointLight,pointLightCubeShadows[i]);
 
         //计算法线和入射光向量的点积。两个向量都是单位向量，实际结果为夹角的余弦值。如果是钝角余弦值可能出现负值，这里最小值限制为0。
         float diff = max(dot(norm, lightDir), 0.0);
@@ -132,13 +139,13 @@ void main()
         //法线向量单位化
         vec3 norm = normalize(vNormal);
         //入射光向量单位化
-        vec3 lightDir = directionLight.direction;
+        vec3 lightDir = normalize(directionLight.direction);
 
      // 计算阴影
-        float shadow = ShadowCalculation(directionLight.matrix * vec4(vPosition,1.),lightDir,directionLight.depthTexture);
+        float shadow = ShadowCalculation(directionLight.matrix * vec4(vPosition,1.),lightDir,directionLightShadows[i]);
 
         //计算法线和入射光向量的点积。两个向量都是单位向量，实际结果为夹角的余弦值。如果是钝角余弦值可能出现负值，这里最小值限制为0。
-        float diff = max(dot(norm, lightDir), 0.0);
+        float diff = max(dot(norm, -lightDir), 0.0);
         //夹角的余弦值和光照颜色相乘得到漫反射色值
         diffuse += (1-shadow) * diff * directionLight.color * directionLight.intensive;
 
@@ -155,7 +162,7 @@ void main()
 
         specular += (1-shadow) * specularStrength * spec * directionLight.color* directionLight.intensive;
     }
-    vec4 baseColor = objColor;
+    vec4 baseColor = vec4(objColor,1.0);
     if(useTexture != 0)
         baseColor = texture2D(objTexture,vTexCoord);
 

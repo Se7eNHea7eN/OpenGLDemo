@@ -1,18 +1,11 @@
 package com.se7en.opengl.lighting
 
 import asiainnovations.com.opengles_demo.GlShader
-import com.se7en.opengl.GlObject
-import com.se7en.opengl.GlRenderObject
-import com.se7en.opengl.plus
-import com.se7en.opengl.toFloatArray
+import com.se7en.opengl.*
 import com.se7en.opengl.utils.ResourceUtils
 import org.joml.Matrix4f
 import org.joml.Vector3f
 import org.lwjgl.BufferUtils
-import org.lwjgl.opengl.GL11
-import org.lwjgl.opengl.GL11.*
-import org.lwjgl.opengl.GL13
-import org.lwjgl.opengl.GL20
 import org.lwjgl.opengl.GL41.*
 import java.nio.ByteBuffer
 
@@ -44,7 +37,7 @@ open class GlPointLight : GlAbstractLight() {
 
     init {
         glEnable(GL_DEPTH_TEST)
-        glEnable(GL_CULL_FACE)
+        //glEnable(GL_CULL_FACE)
         /**
          * Create the texture storing the depth values of the light-render.
          */
@@ -53,6 +46,10 @@ open class GlPointLight : GlAbstractLight() {
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_GENERATE_MIPMAP, GL_TRUE)
+
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+        glTexParameterfv(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_BORDER_COLOR, floatArrayOf(1.0f,1.0f,1.0f,1.0f))
 
         for (i in 0..5) {
             glTexImage2D(
@@ -85,13 +82,11 @@ open class GlPointLight : GlAbstractLight() {
 
     }
 //
-//    override fun lightProjectionMatrix(): Matrix4f =
-//        Matrix4f().setPerspective(Math.toRadians(90.0).toFloat(), 1.0f, near, far)
 
     override fun renderShadowMap(objects: List<GlObject>) {
         shadowMappingShader.useProgram()
         glBindFramebuffer(GL_FRAMEBUFFER, fbo)
-        glClear(GL_DEPTH_BUFFER_BIT)
+        glClear( GL_DEPTH_BUFFER_BIT)
         glViewport(0, 0, shadowMapSize, shadowMapSize)
 
         val centerDirs = arrayOf(
@@ -102,6 +97,7 @@ open class GlPointLight : GlAbstractLight() {
             Vector3f(0f, 0f, 1f),
             Vector3f(0f, 0f, -1f)
         )
+
         val upDirs = arrayOf(
             Vector3f(0f, -1f, 0f),
             Vector3f(0f, -1f, 0f),
@@ -111,16 +107,15 @@ open class GlPointLight : GlAbstractLight() {
             Vector3f(0f, -1f, 0f)
         )
 
-        val shadowProj = Matrix4f().perspective(Math.toRadians(90.0).toFloat(), 1.0f, 0.01f, 1000f)
-
+        val shadowProj = Matrix4f().perspective(Math.toRadians(90.0).toFloat(), 1.0f, near, far)
 
         for (i in 0..5) {
             shadowMappingShader.setUniformMatrix4fv(
                 "shadowMatrices[$i]",
                 Matrix4f().set(shadowProj).mul(
                     Matrix4f().lookAt(
-                        transform.worldPosition,
-                        transform.worldPosition + centerDirs[i],
+                        transform.position,
+                        transform.position + centerDirs[i],
                         upDirs[i]
                     )
                 ).get(
@@ -129,7 +124,7 @@ open class GlPointLight : GlAbstractLight() {
             )
         }
         shadowMappingShader.setUniform1fv("farPlane", far)
-        shadowMappingShader.setUniform3fv("lightPos", transform.worldPosition.toFloatArray())
+        shadowMappingShader.setUniform3fv("lightPos", transform.position.toFloatArray())
 
         objects.forEach { renderObject ->
             if (renderObject is GlRenderObject) {
@@ -149,7 +144,7 @@ open class GlPointLight : GlAbstractLight() {
                 }
             }
         }
-        GL20.glDisableVertexAttribArray(shadowMappingShader.getAttribLocation("aPosition"))
+        //glDisableVertexAttribArray(shadowMappingShader.getAttribLocation("aPosition"))
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
     }
 
@@ -163,10 +158,10 @@ open class GlPointLight : GlAbstractLight() {
         viewMatrix: Matrix4f,
         projectionMatrix: Matrix4f
     ) {
-        GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY)
-        GL11.glEnable(GL11.GL_DEPTH_TEST)
-        GL11.glEnable(GL11.GL_CULL_FACE)
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE)
+        glEnableClientState(GL_VERTEX_ARRAY)
+        glEnable(GL_DEPTH_TEST)
+        glEnable(GL_CULL_FACE)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE)
 
         glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS)
         depthVisualShader.useProgram()

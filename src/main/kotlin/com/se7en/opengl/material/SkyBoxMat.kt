@@ -78,7 +78,6 @@ abstract class SkyBoxMat : Material() {
 
         GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY)
         GL11.glEnable(GL11.GL_DEPTH_TEST)
-        GL11.glEnable(GL11.GL_CULL_FACE)
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE)
     }
 
@@ -87,6 +86,7 @@ abstract class SkyBoxMat : Material() {
         projectionMatrix: Matrix4f,
         modelMatrix: Matrix4f
     ) {
+        glEnable(GL_CULL_FACE)
         shader.useProgram()
         shader.setUniformMatrix4fv("invViewProjection",Matrix4f().set(projectionMatrix).mul(viewMatrix).invert().get(FloatArray(16)))
         glVertexPointer(2, GL_FLOAT, 0, quadVertices)
@@ -97,5 +97,6 @@ abstract class SkyBoxMat : Material() {
         shader.setUniformInt("tex",0)
 
         glDrawArrays(GL_TRIANGLES, 0, 6)
+        glDisable(GL_CULL_FACE)
     }
 }

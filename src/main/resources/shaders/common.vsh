@@ -1,4 +1,4 @@
-#version 330 core
+#version 430 core
 
 uniform mat4 projectionMatrix;
 uniform mat4 modelMatrix;

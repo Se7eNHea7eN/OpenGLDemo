@@ -1,11 +1,11 @@
 package com.se7en.opengl.lighting
 
 import asiainnovations.com.opengles_demo.GlShader
-import com.se7en.opengl.GlObject
-import com.se7en.opengl.GlRenderObject
+import com.se7en.opengl.*
 import com.se7en.opengl.utils.ResourceUtils
 import org.joml.Matrix4f
 import org.joml.Vector3f
+import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL41.*
 import java.nio.ByteBuffer
 
@@ -22,14 +22,15 @@ class GlDirectionLight : GlAbstractLight() {
         ResourceUtils.ioResourceToByteBuffer("shaders/directionLightDepth.fsh", 8192)
     )
 
-    fun lightVPMatrix() : Matrix4f{
+
+    fun lightVPMatrix(): Matrix4f {
         val lightViewMatrix =
-            Matrix4f().lookAt(transform.localPosition, Vector3f(), transform.up())
+            Matrix4f().lookAt(transform.position, transform.position + 100f * transform.forward(), transform.up())
         return lightProjectionMatrix().mul(lightViewMatrix)
     }
 
-    fun lightProjectionMatrix(): Matrix4f
-            = Matrix4f().setOrtho(-10f,10f,-10f,10f, 0.01f, 1000f)
+    fun lightProjectionMatrix(): Matrix4f = Matrix4f().setOrtho(-10f, 10f, -10f, 10f, 0.01f, 1000f)
+
 
     init {
         /**
@@ -72,17 +73,22 @@ class GlDirectionLight : GlAbstractLight() {
         glBindTexture(GL_TEXTURE_2D, 0)
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
     }
+
     override fun renderShadowMap(objects: List<GlObject>) {
         shadowMappingShader.useProgram()
+        GL11.glDisable(GL11.GL_CULL_FACE)
         glBindFramebuffer(GL_FRAMEBUFFER, fbo)
         glClear(GL_DEPTH_BUFFER_BIT)
         glViewport(0, 0, shadowMapSize, shadowMapSize)
-        glCullFace(GL_FRONT)
-        shadowMappingShader.setUniformMatrix4fv("vpMatrix", lightVPMatrix().get(FloatArray(16)))
+//        glCullFace(GL_FRONT)
         /* Only clear depth buffer, since we don't have a color draw buffer */
         objects.forEach { renderObject ->
             if (renderObject is GlRenderObject) {
                 if (renderObject.castShadow && renderObject.material.mesh != null) {
+
+                    val vp = lightVPMatrix()
+                    shadowMappingShader.setUniformMatrix4fv("vpMatrix", vp.get(FloatArray(16)))
+
                     shadowMappingShader.setUniformMatrix4fv(
                         "modelMatrix",
                         renderObject.transform.matrix().get(FloatArray(16))
@@ -97,7 +103,7 @@ class GlDirectionLight : GlAbstractLight() {
                 }
             }
         }
-        glCullFace(GL_BACK)
+//        glCullFace(GL_BACK)
         glBindVertexArray(0)
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
         glUseProgram(0)

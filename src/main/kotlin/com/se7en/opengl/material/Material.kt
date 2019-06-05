@@ -34,7 +34,7 @@ abstract class Material {
         glEnable(GL_TEXTURE_2D)
         lights.forEachIndexed { index, light ->
             if (light is GlPointLight) {
-                shader.setUniform3fv("pointLights[$index].position", light.transform.worldPosition.toFloatArray())
+                shader.setUniform3fv("pointLights[$index].position", light.transform.position.toFloatArray())
                 shader.setUniform3fv("pointLights[$index].color", light.lightColor.toFloatArray())
                 shader.setUniform1fv("pointLights[$index].intensive", light.intensive)
                 shader.setUniform1fv("pointLights[$index].farPlane", light.far)
@@ -45,7 +45,7 @@ abstract class Material {
 
                 glActiveTexture(GL_TEXTURE0 + index)
                 glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, light.depthTexture)
-                glUniform1i(shader.getUniformLocation("pointLights[$index].depthTexture"), index)
+                glUniform1i(shader.getUniformLocation("pointLightCubeShadows[$index]"), index)
             } else if (light is GlDirectionLight) {
                 shader.setUniform3fv("directionLights[$index].direction", light.transform.forward().toFloatArray())
                 shader.setUniform3fv("directionLights[$index].color", light.lightColor.toFloatArray())
@@ -54,7 +54,7 @@ abstract class Material {
 
                 glActiveTexture(GL_TEXTURE0 + index)
                 glBindTexture(GL_TEXTURE_2D, light.depthTexture)
-                glUniform1i(shader.getUniformLocation("directionLights[$index].depthTexture"), index)
+                glUniform1i(shader.getUniformLocation("directionLightShadows[$index]"), index)
             }
         }
     }

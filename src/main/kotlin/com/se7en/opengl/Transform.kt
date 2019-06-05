@@ -11,15 +11,22 @@ class Transform {
     var localRotation = Quaternionf()
     var localScale = Vector3f(1f, 1f, 1f)
 
-    var worldPosition : Vector3f = Vector3f()
+    var position : Vector3f = Vector3f()
         get() {
             if(parent == null)
                 return localPosition
-            return parent!!.worldPosition + localPosition
+            return parent!!.position + localPosition
         }
-    //
+
+    var rotation : Quaternionf = Quaternionf()
+        get(){
+            if(parent == null)
+                return localRotation
+            return localRotation.mul(parent!!.rotation, Quaternionf())
+        }
+
     fun up(): Vector3f {
-        return localRotation.normalizedPositiveY(Vector3f())
+        return rotation.normalizedPositiveY(Vector3f())
     }
 
     fun down(): Vector3f {
@@ -27,7 +34,7 @@ class Transform {
     }
 
     fun forward(): Vector3f {
-        return localRotation.normalizedPositiveZ(Vector3f())
+        return rotation.normalizedPositiveZ(Vector3f())
     }
 
     fun backward(): Vector3f {
@@ -35,7 +42,7 @@ class Transform {
     }
 
     fun right(): Vector3f {
-        return localRotation.normalizedPositiveX(Vector3f())
+        return rotation.normalizedPositiveX(Vector3f())
     }
 
     fun left(): Vector3f {
