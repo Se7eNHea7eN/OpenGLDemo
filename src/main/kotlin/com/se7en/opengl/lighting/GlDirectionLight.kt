@@ -1,6 +1,7 @@
 package com.se7en.opengl.lighting
 
 import asiainnovations.com.opengles_demo.GlShader
+import com.asiainnovations.onlyu.video.gl.TextureRotationUtil
 import com.se7en.opengl.*
 import com.se7en.opengl.utils.ResourceUtils
 import org.joml.Matrix4f
@@ -8,6 +9,8 @@ import org.joml.Vector3f
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL41.*
 import java.nio.ByteBuffer
+import java.nio.ByteOrder
+import java.nio.FloatBuffer
 
 class GlDirectionLight : GlAbstractLight() {
 
@@ -25,7 +28,7 @@ class GlDirectionLight : GlAbstractLight() {
 
     fun lightVPMatrix(): Matrix4f {
         val lightViewMatrix =
-            Matrix4f().lookAt(transform.position, transform.position + 100f * transform.forward(), transform.up())
+            Matrix4f().lookAt(transform.position, transform.position + transform.forward(), transform.up())
         return lightProjectionMatrix().mul(lightViewMatrix)
     }
 
@@ -109,44 +112,44 @@ class GlDirectionLight : GlAbstractLight() {
         glUseProgram(0)
     }
 
-//    var depthVisualShader =
-//        GlShader(
-//            ResourceUtils.ioResourceToByteBuffer("shaders/rect.vsh", 8192),
-//            ResourceUtils.ioResourceToByteBuffer("shaders/depthTexture.fsh", 8192)
-//        )
-//
-//    fun drawDebugShadowMap(width : Int,height:Int) {
-//        depthVisualShader.useProgram()
-//        val vertexBuffer: FloatBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.CUBE.size * 4)
-//            .order(ByteOrder.nativeOrder())
-//            .asFloatBuffer()
-//            .apply {
-//                put(floatArrayOf(-1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f))
-//                position(0)
-//            }
-//
-//        val textureMappingBuffer: FloatBuffer =
-//            ByteBuffer.allocateDirect(TextureRotationUtil.TEXTURE_NO_ROTATION.size * 4)
-//                .order(ByteOrder.nativeOrder())
-//                .asFloatBuffer().apply {
-//                    put(TextureRotationUtil.TEXTURE_NO_ROTATION)
-//                    position(0)
-//                }
-//
-//        depthVisualShader.setVertexAttribArray("localPosition", 2, vertexBuffer)
-//        depthVisualShader.setVertexAttribArray("inputTextureCoordinate", 2, textureMappingBuffer)
-//
-//        glViewport(0, 0, width, height)
-//
-//        glBindTexture(GL_TEXTURE_2D, depthTexture)
-//        //        glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, shadowMapSize, shadowMapSize);
-//        glClearColor(0f, 0f, 0f, 0f)
-//        glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
-//        glEnable(GL_TEXTURE_2D)
-//        glActiveTexture(GL_TEXTURE0)
-//        glBindTexture(GL_TEXTURE_2D, depthTexture)
-//        glUniform1i(depthVisualShader.getUniformLocation("inputImageTexture"), 0)
-//
-//        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4)
-//    }
+    var depthVisualShader =
+        GlShader(
+            ResourceUtils.ioResourceToByteBuffer("shaders/rect.vsh", 8192),
+            ResourceUtils.ioResourceToByteBuffer("shaders/depthTexture.fsh", 8192)
+        )
+
+    override fun drawDebugShadowMap(viewMatrix: Matrix4f,
+                           projectionMatrix: Matrix4f) {
+        depthVisualShader.useProgram()
+        val vertexBuffer: FloatBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.CUBE.size * 4)
+            .order(ByteOrder.nativeOrder())
+            .asFloatBuffer()
+            .apply {
+                put(floatArrayOf(-1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f))
+                position(0)
+            }
+
+        val textureMappingBuffer: FloatBuffer =
+            ByteBuffer.allocateDirect(TextureRotationUtil.TEXTURE_NO_ROTATION.size * 4)
+                .order(ByteOrder.nativeOrder())
+                .asFloatBuffer().apply {
+                    put(TextureRotationUtil.TEXTURE_NO_ROTATION)
+                    position(0)
+                }
+
+        depthVisualShader.setVertexAttribArray("position", 2, vertexBuffer)
+        depthVisualShader.setVertexAttribArray("inputTextureCoordinate", 2, textureMappingBuffer)
+
+
+        glBindTexture(GL_TEXTURE_2D, depthTexture)
+        //        glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, shadowMapSize, shadowMapSize);
+        glClearColor(0f, 0f, 0f, 0f)
+        glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
+        glEnable(GL_TEXTURE_2D)
+        glActiveTexture(GL_TEXTURE0)
+        glBindTexture(GL_TEXTURE_2D, depthTexture)
+        glUniform1i(depthVisualShader.getUniformLocation("inputImageTexture"), 0)
+
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4)
+    }
 }

@@ -93,7 +93,7 @@ class ShadowTestScene : GlScene() {
 
     private val directionLightParent = GlObject().apply {
         transform.localRotation.rotateX(Math.toRadians(-90.0).toFloat())
-        transform.localRotation.rotateZ(Math.toRadians(15.0).toFloat())
+        transform.localRotation.rotateZ(Math.toRadians(5.0).toFloat())
     }
 
     private val directionLight = GlDirectionLight().apply {
@@ -106,7 +106,7 @@ class ShadowTestScene : GlScene() {
 
     override fun update(deltaTime: Long) {
         super.update(deltaTime)
-        directionLightParent.transform.localRotation.rotateZ(0.0001f*deltaTime.toFloat())
+//        directionLightParent.transform.localRotation.rotateZ(0.001f*deltaTime.toFloat())
     }
 
     init {

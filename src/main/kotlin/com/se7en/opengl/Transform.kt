@@ -15,7 +15,7 @@ class Transform {
         get() {
             if(parent == null)
                 return localPosition
-            return parent!!.position + localPosition
+            return parent!!.position +  localPosition
         }
 
     var rotation : Quaternionf = Quaternionf()
