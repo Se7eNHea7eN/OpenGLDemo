@@ -1,14 +1,12 @@
-package com.se7en.opengl.test
+package com.se7en.opengl.testscene
 
 import com.se7en.opengl.*
 import com.se7en.opengl.geometry.RoomObject
-import com.se7en.opengl.geometry.Sphere
 import com.se7en.opengl.input.Input
 import com.se7en.opengl.lighting.GlDirectionLight
-import com.se7en.opengl.lighting.GlPointLight
-import com.se7en.opengl.material.Illumination
 import com.se7en.opengl.material.Material
 import com.se7en.opengl.material.Phong
+import com.se7en.opengl.utils.Debug
 import org.joml.Vector3f
 
 class ShadowTestScene : GlScene() {
@@ -92,14 +90,13 @@ class ShadowTestScene : GlScene() {
 //    }
 
     private val directionLightParent = GlObject().apply {
-        transform.localRotation.rotateX(Math.toRadians(-90.0).toFloat())
-        transform.localRotation.rotateZ(Math.toRadians(5.0).toFloat())
+        transform.localRotation.rotateY(Math.toRadians(45.0).toFloat())
     }
 
     private val directionLight = GlDirectionLight().apply {
         transform.parent = directionLightParent.transform
         transform.localPosition = Vector3f(0f, 100f, 0f)
-
+        transform.localRotation.rotateX(Math.toRadians(-90.0).toFloat())
 //        transform.lookAt(Vector3f(0f,0f,0f))
 //        transform.localRotation.rotateZ(30f)
     }
@@ -113,6 +110,8 @@ class ShadowTestScene : GlScene() {
         mainCamera.transform.localPosition = Vector3f(0f, 6f, 10f)
         mainCamera.transform.localRotation.rotateY(Math.toRadians(180.0).toFloat())
         mainCamera.transform.localRotation.rotateX(Math.toRadians(20.0).toFloat())
+        Debug.log(directionLight.transform.position.toString())
+        Debug.log(directionLight.transform.forward().toString())
     }
 
     var mouseXLastFrame = 0.0

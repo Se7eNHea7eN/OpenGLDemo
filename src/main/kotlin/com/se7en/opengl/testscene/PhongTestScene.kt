@@ -1,4 +1,4 @@
-package com.se7en.opengl.test
+package com.se7en.opengl.testscene
 
 import com.se7en.opengl.GlObjMeshObject
 import com.se7en.opengl.lighting.GlPointLight

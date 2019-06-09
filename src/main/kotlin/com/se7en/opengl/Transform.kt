@@ -1,8 +1,10 @@
 package com.se7en.opengl
 
+import com.se7en.opengl.utils.Debug
 import org.joml.Quaternionf
 import org.joml.Vector3f
 import org.joml.Matrix4f
+import org.joml.Vector4f
 
 class Transform {
     var parent: Transform? = null
@@ -15,14 +17,16 @@ class Transform {
         get() {
             if(parent == null)
                 return localPosition
-            return parent!!.position +  localPosition
+            val positionUnderParent = Vector4f(localPosition,1f).mul(parent!!.matrix())
+            return Vector3f(positionUnderParent.x,positionUnderParent.y,positionUnderParent.z)
         }
 
     var rotation : Quaternionf = Quaternionf()
         get(){
             if(parent == null)
                 return localRotation
-            return localRotation.mul(parent!!.rotation, Quaternionf())
+
+            return localRotation.premul(parent!!.rotation, Quaternionf())
         }
 
     fun up(): Vector3f {
@@ -34,6 +38,7 @@ class Transform {
     }
 
     fun forward(): Vector3f {
+
         return rotation.normalizedPositiveZ(Vector3f())
     }
 

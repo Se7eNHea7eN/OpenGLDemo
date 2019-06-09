@@ -1,8 +1,9 @@
 package com.se7en.opengl
 
 import com.se7en.opengl.input.Input
-import com.se7en.opengl.test.ShadowTestScene
-import com.se7en.opengl.test.SkyBoxTest
+import com.se7en.opengl.testscene.ShadowTestScene
+import com.se7en.opengl.utils.Debug
+import org.joml.Vector3f
 
 import org.lwjgl.glfw.Callbacks.*
 import org.lwjgl.glfw.GLFW.*

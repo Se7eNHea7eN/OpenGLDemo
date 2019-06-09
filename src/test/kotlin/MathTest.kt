@@ -1,3 +1,4 @@
+import com.se7en.opengl.Transform
 import org.joml.AxisAngle4f
 import org.joml.Matrix4f
 import org.junit.Assert.assertEquals
@@ -28,4 +29,15 @@ class MathTest {
 //
 //        assertEquals(matrix1, matrix2)
 //    }
+
+    @Test
+    fun quaternion() {
+        val parent = Transform()
+        val transform = Transform()
+        transform.localPosition = Vector3f(0f,100f,0f)
+        transform.parent = parent;
+        parent.localRotation.rotateLocalZ(Math.toRadians(180.0).toFloat())
+        assertEquals(transform.position,  Vector3f(0f,-100f,0f))
+    }
+
 }

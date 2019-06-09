@@ -3,6 +3,7 @@ package com.se7en.opengl.lighting
 import asiainnovations.com.opengles_demo.GlShader
 import com.asiainnovations.onlyu.video.gl.TextureRotationUtil
 import com.se7en.opengl.*
+import com.se7en.opengl.utils.Debug
 import com.se7en.opengl.utils.ResourceUtils
 import org.joml.Matrix4f
 import org.joml.Vector3f
@@ -27,8 +28,10 @@ class GlDirectionLight : GlAbstractLight() {
 
 
     fun lightVPMatrix(): Matrix4f {
+        val eyePos = transform.position
+
         val lightViewMatrix =
-            Matrix4f().lookAt(transform.position, transform.position + transform.forward(), transform.up())
+            Matrix4f().lookAt(eyePos, eyePos + transform.forward(), transform.up())
         return lightProjectionMatrix().mul(lightViewMatrix)
     }
 
