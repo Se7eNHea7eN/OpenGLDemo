@@ -1,5 +1,6 @@
 package com.se7en.opengl
 
+import com.se7en.opengl.lighting.GlAbstractLight
 import org.joml.Matrix4f
 import org.lwjgl.opengl.GL41.*
 
@@ -20,7 +21,7 @@ class GlCamera : GlObject() {
             recalculateProjectionMatrix()
         }
 
-    var zFar = 1000.0f
+    var zFar = 100.0f
         set(value) {
             field = value
             recalculateProjectionMatrix()
@@ -45,8 +46,16 @@ class GlCamera : GlObject() {
 
     fun render(objects: List<GlObject>) {
         renderScene(objects)
+//
+//        val viewMatrix = Matrix4f().setLookAt(
+//            transform.localPosition, transform.localPosition + transform.forward() , transform.up()
+//        )
 //        objects.filter { it is GlAbstractLight }.forEach {
-//            (it as GlAbstractLight).renderDepthTexture(width,height)
+//            (it as GlAbstractLight).renderShadowMap(objects)
+//            glClearColor(0f, 0f, 0f, 0f)
+//            glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
+//            glViewport(0, 0, width, height)
+//            (it as GlAbstractLight).drawDebugShadowMap(viewMatrix,projectionMatrix)
 //        }
     }
 
@@ -56,7 +65,8 @@ class GlCamera : GlObject() {
         )
 
         objects.filter { it is GlAbstractLight }.forEach {
-            (it as GlAbstractLight).renderShadowMap(objects)
+            if((it as GlAbstractLight).projectShadow)
+                it.renderShadowMap(objects)
         }
 
         glClearColor(0f, 0f, 0f, 0f)
@@ -64,13 +74,12 @@ class GlCamera : GlObject() {
         glViewport(0, 0, width, height)
 
         objects.forEach {
-            if (it is GlRenderObject) {
+            if (it is GlRenderObject && it.doRender) {
                 if(it.material.enableLighting)
-                    it.material.setLights(objects.filter { o -> o is GlAbstractLight } as List<GlAbstractLight>)
+                    it.material.setLights(objects.filter { o -> o is GlAbstractLight} as List<GlAbstractLight>)
                 it.material.eyePos = transform.localPosition
-                it.material.setProjectionMatrix(projectionMatrix.get(FloatArray(16)))
-                it.material.setViewMatrix(viewMatrix.get(FloatArray(16)))
-                it.render()
+
+                it.render(viewMatrix,projectionMatrix)
             }
         }
     }

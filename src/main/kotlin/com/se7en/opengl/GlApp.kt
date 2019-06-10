@@ -1,7 +1,9 @@
 package com.se7en.opengl
 
 import com.se7en.opengl.input.Input
-import com.se7en.opengl.test.ShadowTestScene
+import com.se7en.opengl.testscene.ShadowTestScene
+import com.se7en.opengl.utils.Debug
+import org.joml.Vector3f
 
 import org.lwjgl.glfw.Callbacks.*
 import org.lwjgl.glfw.GLFW.*
@@ -35,6 +37,7 @@ import org.lwjgl.glfw.GLFWCursorPosCallback
 import org.lwjgl.glfw.GLFWErrorCallback
 import org.lwjgl.glfw.GLFWKeyCallback
 import org.lwjgl.opengl.GL.createCapabilities
+import java.lang.Exception
 
 
 class GlApp {
@@ -176,7 +179,7 @@ class GlApp {
         currentScene = createScene()
 
         currentScene?.onWindowSizeChanged(width, height)
-        var lastUpdateTime: Long = 0
+        var lastUpdateTime: Long =  System.currentTimeMillis()
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
@@ -187,9 +190,23 @@ class GlApp {
             }
             val time = System.currentTimeMillis()
             val deltaTime = time - lastUpdateTime
-            currentScene?.update(deltaTime)
-            currentScene?.updateControls(deltaTime,input,width,height)
-            currentScene?.draw()
+            try{
+                currentScene?.update(deltaTime)
+            }catch (e: Exception){
+                Debug.log(e.message)
+            }
+            try{
+                currentScene?.updateControls(deltaTime,input,width,height)
+            }catch (e: Exception){
+                Debug.log(e.message)
+            }
+            try{
+                currentScene?.draw()
+            }catch (e: Exception){
+                Debug.log(e.message)
+            }
+
+
 
             glfwSwapBuffers(window) // swap the color buffers
 
@@ -203,4 +220,5 @@ class GlApp {
     }
 
     protected open fun createScene(): GlScene = ShadowTestScene()
+//    protected open fun createScene(): GlScene = SkyBoxTest()
 }

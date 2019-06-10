@@ -1,5 +1,6 @@
 package com.se7en.opengl.material
 
+import org.joml.Matrix4f
 import org.lwjgl.opengl.GL11.*
 
 class Lambert : Material() {
@@ -13,8 +14,16 @@ class Lambert : Material() {
     init {
         enableLighting = true
     }
-    override fun render() {
+    override fun render(
+        viewMatrix: Matrix4f,
+        projectionMatrix: Matrix4f,
+        modelMatrix: Matrix4f
+    ) {
         if(mesh == null) return
+        shader.setUniformMatrix4fv("projectionMatrix", projectionMatrix.get(FloatArray(16)))
+        shader.setUniformMatrix4fv("viewMatrix", viewMatrix.get(FloatArray(16)))
+        shader.setUniformMatrix4fv("modelMatrix",modelMatrix.get(FloatArray(16)))
+
         shader.useProgram()
         shader.setUniform3fv("objColor", objColor)
         shader.setUniform3fv("ambientColor", ambientColor)

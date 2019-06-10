@@ -1,16 +1,17 @@
+#version 330 core
+
 struct PointLight
 {
     vec3 position;
     vec3 color;
     float intensive;
-    mat4 matrix;
-    sampler2D depthTexture;
+    float farPlane;
 };
 
-
 uniform PointLight pointLights[8];
-uniform int pointLightCount;
+uniform samplerCube pointLightCubeShadows[8];
 
+uniform int pointLightCount;
 
 struct DirectionLight
 {
@@ -18,15 +19,15 @@ struct DirectionLight
     vec3 color;
     float intensive;
     mat4 matrix;
-    sampler2D depthTexture;
 };
-
 uniform DirectionLight directionLights[8];
+uniform sampler2D directionLightShadows[8];
+
 uniform int directionLightCount;
 
-varying vec3 vPosition;
-varying vec3 vNormal;
-varying vec2 vTexCoord;
+in vec3 vPosition;
+in vec3 vNormal;
+in vec2 vTexCoord;
 
 uniform vec3 objColor;
 uniform sampler2D objTexture;
@@ -38,6 +39,21 @@ uniform vec3 ambientColor;
 uniform vec3 eyePos;
 uniform float specularStrength;
 uniform float shininess;
+
+out vec4 FragColor;
+
+float PointShadowCalculation(vec3 fragPos,PointLight pointLight,samplerCube shadowMap)
+{
+    vec3 fragToLight = fragPos - pointLight.position;
+    float closestDepth = texture(shadowMap, fragToLight).r;
+
+    closestDepth *= pointLight.farPlane;
+
+    float currentDepth = length(fragToLight);
+    float bias = 0.005;
+    float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
+    return shadow;
+}
 
 float ShadowCalculation(vec4 fragPosLightSpace,vec3 lightDir,sampler2D shadowMap)
 {
@@ -53,8 +69,9 @@ float ShadowCalculation(vec4 fragPosLightSpace,vec3 lightDir,sampler2D shadowMap
     // 取得当前片元在光源视角下的深度
     float currentDepth = projCoords.z;
     // 检查当前片元是否在阴影中
-    float bias = max(0.0001 * (1.0 - dot(vNormal, lightDir)), 0.00001);
-    float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
+   // float bias = max(0.0005* (1.0 - dot(vNormal, lightDir)), 0.0001);
+    float bias = 0.0003;
+    float shadow = (currentDepth - bias) > closestDepth  ? 1.0 : 0.0;
 
     vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
     for(int x = -1; x <= 1; ++x)
@@ -68,7 +85,6 @@ float ShadowCalculation(vec4 fragPosLightSpace,vec3 lightDir,sampler2D shadowMap
     shadow /= 9.0;
 
     return shadow;
-
 }
 
 
@@ -88,7 +104,7 @@ void main()
         vec3 lightDir = normalize(pointLight.position - vPosition);
 
      // 计算阴影
-        float shadow = ShadowCalculation(pointLight.matrix * vec4(vPosition,1.),lightDir,pointLight.depthTexture);
+        float shadow = PointShadowCalculation(vPosition,pointLight,pointLightCubeShadows[i]);
 
         //计算法线和入射光向量的点积。两个向量都是单位向量，实际结果为夹角的余弦值。如果是钝角余弦值可能出现负值，这里最小值限制为0。
         float diff = max(dot(norm, lightDir), 0.0);
@@ -114,13 +130,13 @@ void main()
         //法线向量单位化
         vec3 norm = normalize(vNormal);
         //入射光向量单位化
-        vec3 lightDir = directionLight.direction;
+        vec3 lightDir = normalize(directionLight.direction);
 
      // 计算阴影
-        float shadow = ShadowCalculation(directionLight.matrix * vec4(vPosition,1.),lightDir,directionLight.depthTexture);
+        float shadow = ShadowCalculation(directionLight.matrix * vec4(vPosition,1.),lightDir,directionLightShadows[i]);
 
         //计算法线和入射光向量的点积。两个向量都是单位向量，实际结果为夹角的余弦值。如果是钝角余弦值可能出现负值，这里最小值限制为0。
-        float diff = max(dot(norm, lightDir), 0.0);
+        float diff = max(dot(norm, -lightDir), 0.0);
         //夹角的余弦值和光照颜色相乘得到漫反射色值
         diffuse += (1-shadow) * diff * directionLight.color * directionLight.intensive;
 
@@ -137,11 +153,11 @@ void main()
 
         specular += (1-shadow) * specularStrength * spec * directionLight.color* directionLight.intensive;
     }
-    vec3 baseColor = objColor;
-    if(useTexture)
+    vec4 baseColor = vec4(objColor,1.0);
+    if(useTexture != 0)
         baseColor = texture2D(objTexture,vTexCoord);
 
-    vec3 color =  (ambient + diffuse + specular)  * baseColor;
-    gl_FragColor = vec4(color,1.0);
+    vec3 color =  (ambient + diffuse + specular)  * baseColor.rgb;
+    FragColor = vec4(color,1.0);
 }
 

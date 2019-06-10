@@ -1,11 +1,17 @@
 package com.se7en.opengl
 
 import com.se7en.opengl.utils.Debug
+import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL20.*
 import org.lwjgl.opengl.GL30.*
+import org.lwjgl.opengl.GL41
+import org.lwjgl.opengl.GL41.*
+import java.io.IOException
+import java.lang.Exception
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
+import org.lwjgl.stb.STBImage.*
 
 /**
  * Some OpenGL static utility functions.
@@ -16,7 +22,8 @@ object GlUtil {
     fun checkNoGLES2Error(msg: String) {
         val error = glGetError()
         if (error != GL_NO_ERROR) {
-            Debug.log("GlUtil","$msg: GLES20 error: $error")
+            throw Exception("$msg: GLES20 error: $error")
+//            Debug.log("GlUtil","$msg: GLES20 error: $error")
         }
     }
 
@@ -112,4 +119,47 @@ object GlUtil {
 
     }
 
+
+    fun createTextureFromResource(texturePath : String,textureType : Int = GL_TEXTURE_2D) : GlTexture{
+        val texture = glGenTextures()
+        glBindTexture(textureType, texture)
+        checkNoGLES2Error("glBindTexture")
+
+        glTexParameteri(textureType, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+        glTexParameteri(textureType, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+        val width = BufferUtils.createIntBuffer(1)
+        val height = BufferUtils.createIntBuffer(1)
+        val components = BufferUtils.createIntBuffer(1)
+
+        var imgArray = javaClass.classLoader.getResourceAsStream(texturePath).readBytes()
+
+        val imgBuffer = ByteBuffer.allocateDirect(imgArray.size)
+            .order(ByteOrder.nativeOrder())
+            .apply {
+                put(imgArray)
+                position(0)
+            }
+        if (!stbi_info_from_memory(imgBuffer, width, height, components))
+            throw IOException("Failed to read image information: " + stbi_failure_reason()!!)
+
+        val data = stbi_load_from_memory(
+            imgBuffer, width, height, components,
+            4
+        )
+
+        glTexImage2D(
+            textureType,
+            0,
+            GL_RGBA,
+            width.get(0),
+            height.get(0),
+            0,
+            GL_RGBA,
+            GL_UNSIGNED_BYTE,
+            data)
+        checkNoGLES2Error("glTexImage2D")
+
+        stbi_image_free(data)
+        return GlTexture(texture,width.get(0),height.get(0))
+    }
 }
