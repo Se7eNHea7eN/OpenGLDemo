@@ -63,8 +63,8 @@ class Transform {
         val baseMatrix = if (parent != null) parent!!.matrix() else Matrix4f()
 
         return baseMatrix
-            .rotate(localRotation)
-            .translate(localPosition)
+            .rotate(rotation)
+            .translate(position)
             .scale(localScale)
     }
 
