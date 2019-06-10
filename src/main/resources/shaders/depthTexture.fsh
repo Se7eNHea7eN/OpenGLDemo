@@ -9,9 +9,12 @@ uniform sampler2D inputImageTexture;
 float LinearizeDepth(in vec2 uv)
 {
     float zNear = 0.01;    // TODO: Replace by the zNear of your perspective projection
-    float zFar  = 100.0; // TODO: Replace by the zFar  of your perspective projection
-    float depth = texture2D(inputImageTexture, uv).x;
-    return (2.0 * zNear) / (zFar + zNear - depth * (zFar - zNear));
+    float zFar  = 1000.0; // TODO: Replace by the zFar  of your perspective projection
+    //float depth = texture2D(inputImageTexture, uv).x;
+
+    float closestDepth = texture(inputImageTexture, uv).r;
+
+    return closestDepth;
 }
 
 void main()

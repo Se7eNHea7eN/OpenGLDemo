@@ -8,6 +8,8 @@ import com.se7en.opengl.material.Material
 import com.se7en.opengl.material.Phong
 import com.se7en.opengl.utils.Debug
 import org.joml.Vector3f
+import org.lwjgl.opengl.GL11.GL_CULL_FACE
+import org.lwjgl.opengl.GL11.glEnable
 
 class ShadowTestScene : GlScene() {
     private val room = RoomObject().apply {
@@ -33,8 +35,10 @@ class ShadowTestScene : GlScene() {
             shininess = 64f
         }
     }.apply {
+//        doRender = false
         transform.localScale = Vector3f(0.75f)
         transform.localPosition = Vector3f(2f, 0f, 0f)
+//        transform.localRotation.rotateX(-Math.toRadians(90.0).toFloat())
     }
 
 
@@ -89,29 +93,38 @@ class ShadowTestScene : GlScene() {
 //        transform.parent = pointLight2.transform
 //    }
 
-    private val directionLightParent = GlObject().apply {
-        transform.localRotation.rotateY(Math.toRadians(45.0).toFloat())
-    }
+    private val directionLight = object : GlDirectionLight() {
+        init {
+            transform.localPosition = Vector3f(0f, 50f, 0f)
+            transform.lookAt(Vector3f())
+        }
+        var rotationZ = 0f
+        var rotationZDir = 1f
+        override fun update(deltaTime: Long) {
+            super.update(deltaTime)
+            if (Math.toDegrees(rotationZ.toDouble()) > 45f)
+                rotationZDir = -1f
+            else if (Math.toDegrees(rotationZ.toDouble()) < -45f)
+                rotationZDir = 1f
+            var rot = rotationZDir * 0.0002f * deltaTime.toFloat()
+            rotationZ += rot
 
-    private val directionLight = GlDirectionLight().apply {
-        transform.parent = directionLightParent.transform
-        transform.localPosition = Vector3f(0f, 100f, 0f)
-        transform.localRotation.rotateX(Math.toRadians(-90.0).toFloat())
-//        transform.lookAt(Vector3f(0f,0f,0f))
-//        transform.localRotation.rotateZ(30f)
+            transform.localPosition.rotateZ(rot)
+            transform.lookAt(Vector3f())
+        }
     }
 
     override fun update(deltaTime: Long) {
         super.update(deltaTime)
-//        directionLightParent.transform.localRotation.rotateZ(0.001f*deltaTime.toFloat())
     }
 
     init {
         mainCamera.transform.localPosition = Vector3f(0f, 6f, 10f)
         mainCamera.transform.localRotation.rotateY(Math.toRadians(180.0).toFloat())
         mainCamera.transform.localRotation.rotateX(Math.toRadians(20.0).toFloat())
-        Debug.log(directionLight.transform.position.toString())
-        Debug.log(directionLight.transform.forward().toString())
+//
+//        mainCamera.transform.localPosition = Vector3f(0f, 10f, 0f)
+//        mainCamera.transform.lookAt(Vector3f())
     }
 
     var mouseXLastFrame = 0.0

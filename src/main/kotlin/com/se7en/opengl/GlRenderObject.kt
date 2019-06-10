@@ -5,6 +5,7 @@ import org.joml.Matrix4f
 
 abstract class GlRenderObject : GlObject() {
     var material: Material
+    var doRender = true
     var castShadow = true
     protected abstract fun createMaterial(): Material
 

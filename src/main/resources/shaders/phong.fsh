@@ -54,7 +54,6 @@ float PointShadowCalculation(vec3 fragPos,PointLight pointLight,samplerCube shad
 
     closestDepth *= pointLight.farPlane;
 
-
     // Now get current linear depth as the length between the fragment and light position
     float currentDepth = length(fragToLight);
     // Now test for shadows
@@ -79,8 +78,9 @@ float ShadowCalculation(vec4 fragPosLightSpace,vec3 lightDir,sampler2D shadowMap
     // 取得当前片元在光源视角下的深度
     float currentDepth = projCoords.z;
     // 检查当前片元是否在阴影中
-    float bias = max(0.0001 * (1.0 - dot(vNormal, lightDir)), 0.00001);
-    float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
+   // float bias = max(0.0005* (1.0 - dot(vNormal, lightDir)), 0.0001);
+    float bias = 0.0003;
+    float shadow = (currentDepth - bias) > closestDepth  ? 1.0 : 0.0;
 
     vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
     for(int x = -1; x <= 1; ++x)

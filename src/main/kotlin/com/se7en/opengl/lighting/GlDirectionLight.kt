@@ -13,7 +13,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
 
-class GlDirectionLight : GlAbstractLight() {
+open class GlDirectionLight : GlAbstractLight() {
 
     internal val shadowMapSize = 2048
 
@@ -35,7 +35,7 @@ class GlDirectionLight : GlAbstractLight() {
         return lightProjectionMatrix().mul(lightViewMatrix)
     }
 
-    fun lightProjectionMatrix(): Matrix4f = Matrix4f().setOrtho(-10f, 10f, -10f, 10f, 0.01f, 1000f)
+    fun lightProjectionMatrix(): Matrix4f = Matrix4f().setOrtho(-10f, 10f, -10f, 10f, 0.01f, 100f)
 
 
     init {
@@ -82,10 +82,11 @@ class GlDirectionLight : GlAbstractLight() {
 
     override fun renderShadowMap(objects: List<GlObject>) {
         shadowMappingShader.useProgram()
-        GL11.glDisable(GL11.GL_CULL_FACE)
         glBindFramebuffer(GL_FRAMEBUFFER, fbo)
         glClear(GL_DEPTH_BUFFER_BIT)
         glViewport(0, 0, shadowMapSize, shadowMapSize)
+//        glEnable(GL_CULL_FACE)
+
 //        glCullFace(GL_FRONT)
         /* Only clear depth buffer, since we don't have a color draw buffer */
         objects.forEach { renderObject ->

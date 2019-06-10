@@ -21,7 +21,7 @@ class GlCamera : GlObject() {
             recalculateProjectionMatrix()
         }
 
-    var zFar = 1000.0f
+    var zFar = 100.0f
         set(value) {
             field = value
             recalculateProjectionMatrix()
@@ -46,7 +46,7 @@ class GlCamera : GlObject() {
 
     fun render(objects: List<GlObject>) {
         renderScene(objects)
-
+//
 //        val viewMatrix = Matrix4f().setLookAt(
 //            transform.localPosition, transform.localPosition + transform.forward() , transform.up()
 //        )
@@ -73,7 +73,7 @@ class GlCamera : GlObject() {
         glViewport(0, 0, width, height)
 
         objects.forEach {
-            if (it is GlRenderObject) {
+            if (it is GlRenderObject && it.doRender) {
                 if(it.material.enableLighting)
                     it.material.setLights(objects.filter { o -> o is GlAbstractLight } as List<GlAbstractLight>)
                 it.material.eyePos = transform.localPosition

@@ -178,7 +178,7 @@ class GlApp {
         currentScene = createScene()
 
         currentScene?.onWindowSizeChanged(width, height)
-        var lastUpdateTime: Long = 0
+        var lastUpdateTime: Long =  System.currentTimeMillis()
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
