@@ -65,7 +65,8 @@ class GlCamera : GlObject() {
         )
 
         objects.filter { it is GlAbstractLight }.forEach {
-            (it as GlAbstractLight).renderShadowMap(objects)
+            if((it as GlAbstractLight).projectShadow)
+                it.renderShadowMap(objects)
         }
 
         glClearColor(0f, 0f, 0f, 0f)
@@ -75,7 +76,7 @@ class GlCamera : GlObject() {
         objects.forEach {
             if (it is GlRenderObject && it.doRender) {
                 if(it.material.enableLighting)
-                    it.material.setLights(objects.filter { o -> o is GlAbstractLight } as List<GlAbstractLight>)
+                    it.material.setLights(objects.filter { o -> o is GlAbstractLight} as List<GlAbstractLight>)
                 it.material.eyePos = transform.localPosition
 
                 it.render(viewMatrix,projectionMatrix)

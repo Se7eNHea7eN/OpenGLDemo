@@ -1,11 +1,10 @@
-#version 430 core
+#version 330 core
 
 struct PointLight
 {
     vec3 position;
     vec3 color;
     float intensive;
-    //samplerCubeShadow depthTexture;
     float farPlane;
 };
 
@@ -20,7 +19,6 @@ struct DirectionLight
     vec3 color;
     float intensive;
     mat4 matrix;
-    //sampler2D depthTexture;
 };
 uniform DirectionLight directionLights[8];
 uniform sampler2D directionLightShadows[8];
@@ -48,19 +46,12 @@ float PointShadowCalculation(vec3 fragPos,PointLight pointLight,samplerCube shad
 {
     vec3 fragToLight = fragPos - pointLight.position;
     float closestDepth = texture(shadowMap, fragToLight).r;
-    if(closestDepth < 0){
-       closestDepth = 1.0;
-    }
 
     closestDepth *= pointLight.farPlane;
 
-    // Now get current linear depth as the length between the fragment and light position
     float currentDepth = length(fragToLight);
-    // Now test for shadows
-    float bias = 0.05;
-
-    float shadow = currentDepth -  bias > closestDepth ? 1.0 : 0.0;
-    //shadow = 0.;
+    float bias = 0.005;
+    float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
     return shadow;
 }
 

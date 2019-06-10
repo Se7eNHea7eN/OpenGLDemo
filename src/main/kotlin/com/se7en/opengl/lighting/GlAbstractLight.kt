@@ -9,7 +9,7 @@ import org.joml.Vector3f
 abstract class GlAbstractLight : GlObject() {
     var lightColor = Vector3f(1f, 1f, 1f)
     var intensive = 1f
-
+    var projectShadow = true
     abstract fun renderShadowMap(objects: List<GlObject>)
 
     open fun drawDebugShadowMap(viewMatrix: Matrix4f,

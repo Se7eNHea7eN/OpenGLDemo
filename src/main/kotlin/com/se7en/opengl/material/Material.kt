@@ -38,10 +38,6 @@ abstract class Material {
                 shader.setUniform3fv("pointLights[$index].color", light.lightColor.toFloatArray())
                 shader.setUniform1fv("pointLights[$index].intensive", light.intensive)
                 shader.setUniform1fv("pointLights[$index].farPlane", light.far)
-//                shader.setUniformMatrix4fv(
-//                    "pointLights[$index].matrix",
-//                    light.lightVPMatrix().get(FloatArray(16))
-//                )
 
                 glActiveTexture(GL_TEXTURE0 + index)
                 glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, light.depthTexture)

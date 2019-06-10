@@ -17,6 +17,9 @@ class Illumination : Material() {
     ) {
         if(mesh == null) return
         shader.useProgram()
+        shader.setUniformMatrix4fv("projectionMatrix", projectionMatrix.get(FloatArray(16)))
+        shader.setUniformMatrix4fv("viewMatrix", viewMatrix.get(FloatArray(16)))
+        shader.setUniformMatrix4fv("modelMatrix",modelMatrix.get(FloatArray(16)))
         shader.setUniform3fv("objColor", objColor.toFloatArray())
         shader.setVertexAttribArray("aPosition", 3, mesh!!.vertices!!)
         GL11.glDrawElements(GL11.GL_TRIANGLES, mesh!!.indices!!)

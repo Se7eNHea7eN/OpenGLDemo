@@ -37,6 +37,7 @@ import org.lwjgl.glfw.GLFWCursorPosCallback
 import org.lwjgl.glfw.GLFWErrorCallback
 import org.lwjgl.glfw.GLFWKeyCallback
 import org.lwjgl.opengl.GL.createCapabilities
+import java.lang.Exception
 
 
 class GlApp {
@@ -189,9 +190,23 @@ class GlApp {
             }
             val time = System.currentTimeMillis()
             val deltaTime = time - lastUpdateTime
-            currentScene?.update(deltaTime)
-            currentScene?.updateControls(deltaTime,input,width,height)
-            currentScene?.draw()
+            try{
+                currentScene?.update(deltaTime)
+            }catch (e: Exception){
+                Debug.log(e.message)
+            }
+            try{
+                currentScene?.updateControls(deltaTime,input,width,height)
+            }catch (e: Exception){
+                Debug.log(e.message)
+            }
+            try{
+                currentScene?.draw()
+            }catch (e: Exception){
+                Debug.log(e.message)
+            }
+
+
 
             glfwSwapBuffers(window) // swap the color buffers
 

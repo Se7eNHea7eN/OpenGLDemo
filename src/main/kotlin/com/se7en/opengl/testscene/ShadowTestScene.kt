@@ -47,7 +47,7 @@ class ShadowTestScene : GlScene() {
 
     private val pointLight1 = object : GlPointLight() {
         init {
-            transform.localPosition = Vector3f(5f, 5f, 5f)
+            transform.localPosition = Vector3f(2f, 3f, 2f)
             lightColor = WHITE
             intensive = 0.5f
         }
@@ -56,67 +56,47 @@ class ShadowTestScene : GlScene() {
             super.update(deltaTime)
             transform.localPosition.rotateAxis(3f / 1000f * deltaTime, 0f, 1f, 0f)
         }
-    }
+    }.run {
+        object : Sphere() {
+            override fun createMaterial(): Material = Illumination().apply {
+                objColor = Vector3f(1f, 1f, 1f)
+            }
 
+        }.apply {
+            castShadow = false
+            transform.parent = this@run.transform
 
-    private val sphere1 = object : Sphere() {
-        override fun createMaterial(): Material = Illumination().apply {
-            objColor = Vector3f(1f, 1f, 1f)
+            transform.localScale = Vector3f(0.5f)
+            transform.localPosition = Vector3f(0f, 0f, 0f)
         }
-    }.apply {
-        castShadow = false
-        transform.localScale = Vector3f(0.5f)
-        transform.localPosition = Vector3f(0f, 0f, 0f)
-        transform.parent = pointLight1.transform
+
     }
-
-
-//    private val pointLight2 = object : GlPointLight() {
-//        init {
-//            transform.localPosition = Vector3f(-5f, 5f, 5f)
-//            lightColor = WHITE
-//            intensive = 0.5f
-//        }
-//
-//        override fun update(deltaTime: Long) {
-//            super.update(deltaTime)
-//            transform.localPosition.rotateAxis(2f / 1000f * deltaTime, 0f, 1f, 0f)
-//        }
-//    }
-
-
-
-    private val sphere2 = object : Sphere() {
-        override fun createMaterial(): Material = Illumination().apply {
-            objColor = Vector3f(1f, 1f, 1f)
+    private val pointLight2 = object : GlPointLight() {
+        init {
+            transform.localPosition = Vector3f(-2f, 3f, 2f)
+            lightColor = WHITE
+            intensive = 0.5f
         }
-    }.apply {
-        castShadow = false
-        transform.localScale = Vector3f(0.5f)
-        transform.localPosition = Vector3f(0f, 3f, 0f)
-//        transform.parent = pointLight2.transform
-    }
 
-//    private val directionLight = object : GlDirectionLight() {
-//        init {
-//            transform.localPosition = Vector3f(0f, 50f, 0f)
-//            transform.lookAt(Vector3f())
-//        }
-//        var rotationZ = 0f
-//        var rotationZDir = 1f
-//        override fun update(deltaTime: Long) {
-//            super.update(deltaTime)
-//            if (Math.toDegrees(rotationZ.toDouble()) > 45f)
-//                rotationZDir = -1f
-//            else if (Math.toDegrees(rotationZ.toDouble()) < -45f)
-//                rotationZDir = 1f
-//            var rot = rotationZDir * 0.0002f * deltaTime.toFloat()
-//            rotationZ += rot
-//
-//            transform.localPosition.rotateZ(rot)
-//            transform.lookAt(Vector3f())
-//        }
-//    }
+        override fun update(deltaTime: Long) {
+            super.update(deltaTime)
+            transform.localPosition.rotateAxis(2f / 1000f * deltaTime, 0f, 1f, 0f)
+        }
+    }.run {
+        object : Sphere() {
+            override fun createMaterial(): Material = Illumination().apply {
+                objColor = Vector3f(1f, 1f, 1f)
+            }
+
+        }.apply {
+            castShadow = false
+            transform.parent = this@run.transform
+
+            transform.localScale = Vector3f(0.5f)
+            transform.localPosition = Vector3f(0f, 0f, 0f)
+        }
+
+    }
 
     override fun update(deltaTime: Long) {
         super.update(deltaTime)
@@ -126,9 +106,6 @@ class ShadowTestScene : GlScene() {
         mainCamera.transform.localPosition = Vector3f(0f, 6f, 10f)
         mainCamera.transform.localRotation.rotateY(Math.toRadians(180.0).toFloat())
         mainCamera.transform.localRotation.rotateX(Math.toRadians(20.0).toFloat())
-//
-//        mainCamera.transform.localPosition = Vector3f(0f, 10f, 0f)
-//        mainCamera.transform.lookAt(Vector3f())
     }
 
     var mouseXLastFrame = 0.0

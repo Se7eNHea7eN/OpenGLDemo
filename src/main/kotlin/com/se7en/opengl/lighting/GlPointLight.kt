@@ -8,6 +8,7 @@ import org.joml.Vector3f
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL41.*
 import java.nio.ByteBuffer
+import java.nio.FloatBuffer
 
 open class GlPointLight : GlAbstractLight() {
     internal val shadowMapSize = 2048
@@ -43,13 +44,13 @@ open class GlPointLight : GlAbstractLight() {
          */
         depthTexture = glGenTextures()
         glBindTexture(GL_TEXTURE_CUBE_MAP, depthTexture)
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_GENERATE_MIPMAP, GL_TRUE)
 
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-        glTexParameterfv(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_BORDER_COLOR, floatArrayOf(1.0f,1.0f,1.0f,1.0f))
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE)
+
 
         for (i in 0..5) {
             glTexImage2D(
@@ -60,8 +61,8 @@ open class GlPointLight : GlAbstractLight() {
                 shadowMapSize,
                 0,
                 GL_DEPTH_COMPONENT,
-                GL_UNSIGNED_BYTE,
-                null as ByteBuffer?
+                GL_FLOAT,
+                null as FloatBuffer?
             )
         }
 
@@ -70,13 +71,14 @@ open class GlPointLight : GlAbstractLight() {
         fbo = glGenFramebuffers()
         glBindFramebuffer(GL_FRAMEBUFFER, fbo)
         glBindTexture(GL_TEXTURE_CUBE_MAP, depthTexture)
-        glDrawBuffer(GL_NONE)
-        glReadBuffer(GL_NONE)
         glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTexture, 0)
         val fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER)
         if (fboStatus != GL_FRAMEBUFFER_COMPLETE) {
             throw AssertionError("Could not create FBO: $fboStatus")
         }
+        glDrawBuffer(GL_NONE)
+        glReadBuffer(GL_NONE)
+
         glBindTexture(GL_TEXTURE_CUBE_MAP, 0)
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
 

@@ -18,7 +18,7 @@ class Transform {
             if(parent == null)
                 return localPosition
             val positionUnderParent = Vector4f(localPosition,1f).mul(parent!!.matrix())
-            return Vector3f(positionUnderParent.x,positionUnderParent.y,positionUnderParent.z)
+            return parent!!.position + localPosition
         }
 
     var rotation : Quaternionf = Quaternionf()
