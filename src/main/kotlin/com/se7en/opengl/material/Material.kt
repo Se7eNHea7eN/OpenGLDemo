@@ -8,8 +8,13 @@ import com.se7en.opengl.lighting.GlPointLight
 import com.se7en.opengl.utils.ResourceUtils
 import org.joml.Matrix4f
 import org.joml.Vector3f
+import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL13
 import org.lwjgl.opengl.GL20.*
+import org.lwjgl.opengl.GL30
+import org.lwjgl.opengl.GL30.*
+import org.lwjgl.system.MemoryUtil.memAddress
+import org.lwjgl.system.MemoryUtil.memCopy
 
 abstract class Material {
     val shader: GlShader
@@ -18,6 +23,49 @@ abstract class Material {
     abstract fun fragmentShader(): String
     open fun geometryShader(): String? = null
     var mesh: Mesh? = null
+        set(value) {
+            field = value
+            if(field != null){
+                vao = glGenVertexArrays()
+                glBindVertexArray(vao)
+                val vbo = glGenBuffers()
+                glBindBuffer(GL_ARRAY_BUFFER, vbo)
+                val vertices = field!!.vertices!!
+                val verticesBytes = 4 * 3 * vertices.remaining()
+                val verticesFB = BufferUtils.createByteBuffer(verticesBytes).asFloatBuffer()
+                memCopy(vertices.address, memAddress(verticesFB), verticesBytes.toLong())
+                nglBufferData(GL_ARRAY_BUFFER, verticesBytes.toLong(), vertices.address, GL_STATIC_DRAW)
+                glEnableVertexAttribArray(0)
+                glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0L)
+                normalArrayBuffer = glGenBuffers()
+                glBindBuffer(GL_ARRAY_BUFFER, normalArrayBuffer)
+                val normals = mesh.mNormals()
+                val normalsBytes = 4 * 3 * normals!!.remaining()
+                normalsFB = BufferUtils.createByteBuffer(normalsBytes).asFloatBuffer()
+                memCopy(normals!!.address(), memAddress(normalsFB), normalsBytes.toLong())
+                nglBufferData(GL_ARRAY_BUFFER, normalsBytes.toLong(), normals!!.address(), GL_STATIC_DRAW)
+                glEnableVertexAttribArray(1)
+                glVertexAttribPointer(1, 3, GL_FLOAT, true, 0, 0L)
+                val faceCount = mesh.mNumFaces()
+                elementCount = faceCount * 3
+                indicesIB = BufferUtils.createIntBuffer(elementCount)
+                val facesBuffer = mesh.mFaces()
+                for (i in 0 until faceCount) {
+                    val face = facesBuffer.get(i)
+                    if (face.mNumIndices() != 3)
+                        throw IllegalStateException("AIFace.mNumIndices() != 3")
+                    indicesIB.put(face.mIndices())
+                }
+                indicesIB.flip()
+                elementArrayBuffer = glGenBuffers()
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementArrayBuffer)
+                glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesIB, GL_STATIC_DRAW)
+                glBindVertexArray(0)
+
+            }
+
+        }
+    var vao = 0
 
     var eyePos = Vector3f()
 
