@@ -102,7 +102,7 @@ open class GlDirectionLight : GlAbstractLight() {
                     )
 
                     shadowMappingShader.setVertexAttribArray(
-                        "aPosition",
+                        "iPosition",
                         3,
                         renderObject.material.mesh!!.vertices!!
                     )

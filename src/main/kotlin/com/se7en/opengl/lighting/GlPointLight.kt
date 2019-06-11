@@ -137,7 +137,7 @@ open class GlPointLight : GlAbstractLight() {
                     )
 
                     shadowMappingShader.setVertexAttribArray(
-                        "aPosition",
+                        "iPosition",
                         3,
                         renderObject.material.mesh!!.vertices!!
                     )
@@ -146,7 +146,6 @@ open class GlPointLight : GlAbstractLight() {
                 }
             }
         }
-        //glDisableVertexAttribArray(shadowMappingShader.getAttribLocation("aPosition"))
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
     }
 

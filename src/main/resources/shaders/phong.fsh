@@ -25,9 +25,9 @@ uniform sampler2D directionLightShadows[8];
 
 uniform int directionLightCount;
 
-in vec3 vPosition;
-in vec3 vNormal;
-in vec2 vTexCoord;
+in vec3 oPosition;
+in vec3 oNormal;
+in vec2 oTexCoord;
 
 uniform vec3 objColor;
 uniform sampler2D objTexture;
@@ -69,7 +69,7 @@ float ShadowCalculation(vec4 fragPosLightSpace,vec3 lightDir,sampler2D shadowMap
     // 取得当前片元在光源视角下的深度
     float currentDepth = projCoords.z;
     // 检查当前片元是否在阴影中
-   // float bias = max(0.0005* (1.0 - dot(vNormal, lightDir)), 0.0001);
+   // float bias = max(0.0005* (1.0 - dot(oNormal, lightDir)), 0.0001);
     float bias = 0.0003;
     float shadow = (currentDepth - bias) > closestDepth  ? 1.0 : 0.0;
 
@@ -99,12 +99,12 @@ void main()
     for(int i = 0 ; i < pointLightCount ; i++ ){
         PointLight pointLight = pointLights[i];
         //法线向量单位化
-        vec3 norm = normalize(vNormal);
+        vec3 norm = normalize(oNormal);
         //入射光向量单位化
-        vec3 lightDir = normalize(pointLight.position - vPosition);
+        vec3 lightDir = normalize(pointLight.position - oPosition);
 
      // 计算阴影
-        float shadow = PointShadowCalculation(vPosition,pointLight,pointLightCubeShadows[i]);
+        float shadow = PointShadowCalculation(oPosition,pointLight,pointLightCubeShadows[i]);
 
         //计算法线和入射光向量的点积。两个向量都是单位向量，实际结果为夹角的余弦值。如果是钝角余弦值可能出现负值，这里最小值限制为0。
         float diff = max(dot(norm, lightDir), 0.0);
@@ -112,7 +112,7 @@ void main()
         diffuse += (1-shadow) *diff * pointLight.color * pointLight.intensive;
 
         //视向量单位化
-        vec3 viewDir = normalize(eyePos - vPosition);
+        vec3 viewDir = normalize(eyePos - oPosition);
 
                 //计算出射向量
                 //vec3 reflectDir = reflect(-lightDir, norm);
@@ -128,12 +128,12 @@ void main()
     for(int i = 0 ; i < directionLightCount ; i++ ){
         DirectionLight directionLight = directionLights[i];
         //法线向量单位化
-        vec3 norm = normalize(vNormal);
+        vec3 norm = normalize(oNormal);
         //入射光向量单位化
         vec3 lightDir = normalize(directionLight.direction);
 
      // 计算阴影
-        float shadow = ShadowCalculation(directionLight.matrix * vec4(vPosition,1.),lightDir,directionLightShadows[i]);
+        float shadow = ShadowCalculation(directionLight.matrix * vec4(oPosition,1.),lightDir,directionLightShadows[i]);
 
         //计算法线和入射光向量的点积。两个向量都是单位向量，实际结果为夹角的余弦值。如果是钝角余弦值可能出现负值，这里最小值限制为0。
         float diff = max(dot(norm, -lightDir), 0.0);
@@ -141,7 +141,7 @@ void main()
         diffuse += (1-shadow) * diff * directionLight.color * directionLight.intensive;
 
         //视向量单位化
-        vec3 viewDir = normalize(eyePos - vPosition);
+        vec3 viewDir = normalize(eyePos - oPosition);
                 //计算出射向量
                 //vec3 reflectDir = reflect(-lightDir, norm);
                 //计算高光值 视向量和出射向量夹角余弦值的shininess次幂。
@@ -155,7 +155,7 @@ void main()
     }
     vec4 baseColor = vec4(objColor,1.0);
     if(useTexture != 0)
-        baseColor = texture2D(objTexture,vTexCoord);
+        baseColor = texture2D(objTexture,oTexCoord);
 
     vec3 color =  (ambient + diffuse + specular)  * baseColor.rgb;
     FragColor = vec4(color,1.0);

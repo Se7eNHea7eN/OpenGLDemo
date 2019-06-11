@@ -50,14 +50,14 @@ open class Phong : Material() {
         shader.setUniform1fv("shininess", shininess)
         shader.setUniform3fv("eyePos", eyePos.toFloatArray())
 
-        shader.setVertexAttribArray("aPosition", 3, mesh!!.vertices!!)
-        shader.setVertexAttribArray("aNormal", 3, mesh!!.normals!!)
+        shader.setVertexAttribArray("iPosition", 3, mesh!!.vertices!!)
+        shader.setVertexAttribArray("iNormal", 3, mesh!!.normals!!)
 
         if (texture > 0) {
             glEnable(GL_TEXTURE_2D)
             glActiveTexture(GL_TEXTURE20)
             glBindTexture(GL_TEXTURE_2D, texture)
-            shader.setVertexAttribArray("aTexCoord",2,mesh!!.texCoords!!)
+            shader.setVertexAttribArray("iTexCoord",2,mesh!!.texCoords!!)
             shader.setUniformInt("objTexture", 20)
             shader.setUniformInt("useTexture", 1)
         }

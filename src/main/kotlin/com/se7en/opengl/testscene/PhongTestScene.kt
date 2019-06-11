@@ -3,7 +3,6 @@ package com.se7en.opengl.testscene
 import com.se7en.opengl.GlObjMeshObject
 import com.se7en.opengl.lighting.GlPointLight
 import com.se7en.opengl.GlScene
-import com.se7en.opengl.material.Lambert
 import com.se7en.opengl.material.Material
 import com.se7en.opengl.material.Phong
 import org.joml.Vector3f
@@ -19,7 +18,7 @@ class PhongTestScene : GlScene() {
     }
     private val teapot = object : GlObjMeshObject() {
         override fun objFilePath(): String = "models/bunny.obj"
-        override fun createMaterial(): Material = Lambert()
+        override fun createMaterial(): Material = Phong()
     }.apply {
         transform.localScale = Vector3f(2f)
         transform.localPosition = Vector3f(3f,0f,0f)
