@@ -136,13 +136,14 @@ open class GlPointLight : GlAbstractLight() {
                         renderObject.transform.matrix().get(FloatArray(16))
                     )
 
-                    shadowMappingShader.setVertexAttribArray(
-                        "iPosition",
-                        3,
-                        renderObject.material.mesh!!.vertices!!
-                    )
+//                    shadowMappingShader.setVertexAttribArray(
+//                        "iPosition",
+//                        3,
+//                        renderObject.material.mesh!!.vertices!!
+//                    )
+                    glBindVertexArray(renderObject.material.vao)
 
-                    glDrawElements(GL_TRIANGLES, renderObject.material.mesh!!.indices!!)
+                    glDrawElements(GL_TRIANGLES, renderObject.material.mesh!!.numVertices, GL_UNSIGNED_INT, 0L)
                 }
             }
         }

@@ -1,5 +1,5 @@
 #version 330 core
-in vec3 iPosition;
+layout(location = 0) in vec3 iPosition;
 
 uniform mat4 modelMatrix;
 

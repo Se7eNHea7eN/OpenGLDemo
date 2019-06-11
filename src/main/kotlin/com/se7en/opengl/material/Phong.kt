@@ -30,6 +30,9 @@ open class Phong : Material() {
                 Debug.log(e.message)
             }
         }
+//        glBindAttribLocation(shader.program, 0, "iPosition")
+//        glBindAttribLocation(shader.program, 1, "iNormal")
+//        glBindAttribLocation(shader.program, 2, "iTexCoord")
     }
 
     override fun render(
@@ -58,10 +61,10 @@ open class Phong : Material() {
             glEnable(GL_TEXTURE_2D)
             glActiveTexture(GL_TEXTURE20)
             glBindTexture(GL_TEXTURE_2D, texture)
-            shader.setVertexAttribArray("iTexCoord",2,mesh!!.texCoords!!)
             shader.setUniformInt("objTexture", 20)
             shader.setUniformInt("useTexture", 1)
         }
-        glDrawElements(GL_TRIANGLES, mesh!!.indices!!)
+
+        glDrawElements(GL_TRIANGLES, mesh!!.numVertices, GL_UNSIGNED_INT, 0L)
     }
 }

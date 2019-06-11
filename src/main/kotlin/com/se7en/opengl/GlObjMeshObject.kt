@@ -12,6 +12,7 @@ abstract class GlObjMeshObject : GlMeshObject() {
             normals = ObjData.getNormals(obj)
             indices = ObjData.getFaceVertexIndices(obj)
             texCoords = ObjData.getTexCoords(obj,2)
+            numVertices = ObjData.getTotalNumFaceVertices(obj)
         }
     }
     abstract fun objFilePath() : String
