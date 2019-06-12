@@ -10,8 +10,29 @@ uniform vec3 ambientColor;
 
 out vec4 FragColor;
 
+struct PointLight
+{
+    vec3 position;
+    vec3 color;
+    float intensive;
+    float farPlane;
+};
+
+uniform PointLight pointLights[8];
+uniform int pointLightCount;
+
+
 void main()
 {
     vec3 ambient = ambientStrength * ambientColor;
-    FragColor = vec4(objColor * ambient,1.0);
+    vec3 diffuse = vec3(0.);
+    vec3 normal = normalize(oNormal);
+    for(int i = 0;i<pointLightCount;i++){
+        PointLight pointLight = pointLights[i];
+        vec3 lightDir = normalize(pointLight.position - oPosition);
+        float cosTheta = dot(lightDir,normal);
+        diffuse += pointLight.color * pointLight.intensive * cosTheta;
+    }
+    vec3 color = (ambient + diffuse) * objColor;
+    FragColor = vec4(color,1.0);
 }

@@ -1,5 +1,9 @@
 package com.se7en.opengl.material
 
+import com.se7en.opengl.RED
+import com.se7en.opengl.WHITE
+import com.se7en.opengl.geometry.Sphere
+import com.se7en.opengl.lighting.GlPointLight
 import com.se7en.opengl.toFloatArray
 import org.joml.Matrix4f
 import org.joml.Vector3f
@@ -9,7 +13,7 @@ import org.lwjgl.opengl.GL41
 
 class TestMaterial : Material() {
     init {
-        enableLighting = false
+        enableLighting = true
     }
     var objColor = Vector3f(1f, 1f, 1f)
     var ambientColor = Vector3f(1f, 1f, 1f)

@@ -17,7 +17,7 @@ class Transform {
         get() {
             if(parent == null)
                 return localPosition
-            val positionUnderParent = Vector4f(localPosition,1f).mul(parent!!.matrix())
+//            val positionUnderParent = Vector4f(localPosition,1f).mul(parent!!.matrix())
             return parent!!.position + localPosition
         }
 
