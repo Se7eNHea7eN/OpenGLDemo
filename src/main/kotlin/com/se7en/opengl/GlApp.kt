@@ -2,6 +2,7 @@ package com.se7en.opengl
 
 import com.se7en.opengl.input.Input
 import com.se7en.opengl.testscene.ShadowTestScene
+import com.se7en.opengl.testscene.SkyBoxTest
 import com.se7en.opengl.utils.Debug
 import org.joml.Vector3f
 
@@ -37,6 +38,7 @@ import org.lwjgl.glfw.GLFWCursorPosCallback
 import org.lwjgl.glfw.GLFWErrorCallback
 import org.lwjgl.glfw.GLFWKeyCallback
 import org.lwjgl.opengl.GL.createCapabilities
+import org.lwjgl.opengl.GL11.GL_TRUE
 import java.lang.Exception
 
 
@@ -82,6 +84,10 @@ class GlApp {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE) // the window will stay hidden after creation
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE) // the window will be resizable
         glfwWindowHint(GLFW_SAMPLES, 4)
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3)
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3)
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE)
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE)
 
         val primaryMonitor = glfwGetPrimaryMonitor()
         val vidmode = glfwGetVideoMode(primaryMonitor)
@@ -205,8 +211,6 @@ class GlApp {
             }catch (e: Exception){
                 Debug.log(e.message)
             }
-
-
 
             glfwSwapBuffers(window) // swap the color buffers
 

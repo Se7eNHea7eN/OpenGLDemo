@@ -33,17 +33,17 @@ class RoomObject : GlMeshObject() {
         )
 
         val _normals = floatArrayOf(
-            // Bottom face
+            // Bottom
             0.0f, 1.0f, 0.0f,
             0.0f, 1.0f, 0.0f,
             0.0f, 1.0f, 0.0f,
             0.0f, 1.0f, 0.0f
-//            // Left face
+            // Left
             , 1.0f, 0.0f, 0.0f,
             1.0f, 0.0f, 0.0f,
             1.0f, 0.0f, 0.0f,
             1.0f, 0.0f, 0.0f
-//            // Right face
+            // Right
             , -1.0f, 0.0f, 0.0f,
             -1.0f, 0.0f, 0.0f,
             -1.0f, 0.0f, 0.0f,
@@ -56,12 +56,13 @@ class RoomObject : GlMeshObject() {
         )
 
         val _indices = intArrayOf(
-            // Bottom face
+            // Bottom
             2, 1, 0, 2, 3,1
-            // Left face
+            // Left
             , 6, 5, 4, 6, 7, 5
-            //            // Right face
+            // Right
             , 10, 9, 8, 10, 11, 9
+            // Front
             , 12, 13, 14, 13, 15, 14
         )
 
@@ -104,10 +105,13 @@ class RoomObject : GlMeshObject() {
                 .put(_texCoords).apply {
                 position(0)
             }
+            numVertices = _vertices.size
         }
     }
 
     override fun createMaterial(): Material = object : Phong() {
+        init {
+        }
         override fun texturePath(): String = "textures/wood1.jpg"
     }
 }

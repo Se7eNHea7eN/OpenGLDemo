@@ -98,10 +98,6 @@ class ShadowTestScene : GlScene() {
 
     }
 
-    override fun update(deltaTime: Long) {
-        super.update(deltaTime)
-    }
-
     init {
         mainCamera.transform.localPosition = Vector3f(0f, 6f, 10f)
         mainCamera.transform.localRotation.rotateY(Math.toRadians(180.0).toFloat())

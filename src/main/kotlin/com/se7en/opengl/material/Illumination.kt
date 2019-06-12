@@ -4,6 +4,9 @@ import com.se7en.opengl.toFloatArray
 import org.joml.Matrix4f
 import org.joml.Vector3f
 import org.lwjgl.opengl.GL11
+import org.lwjgl.opengl.GL11.*
+import org.lwjgl.opengl.GL30.glBindVertexArray
+import org.lwjgl.opengl.GL41
 
 class Illumination : Material() {
     override fun vertexShader(): String = "shaders/common.vsh"
@@ -21,7 +24,11 @@ class Illumination : Material() {
         shader.setUniformMatrix4fv("viewMatrix", viewMatrix.get(FloatArray(16)))
         shader.setUniformMatrix4fv("modelMatrix",modelMatrix.get(FloatArray(16)))
         shader.setUniform3fv("objColor", objColor.toFloatArray())
-        shader.setVertexAttribArray("iPosition", 3, mesh!!.vertices!!)
-        GL11.glDrawElements(GL11.GL_TRIANGLES, mesh!!.indices!!)
+
+        glBindVertexArray(vao)
+
+        glDrawElements(GL_TRIANGLES, mesh!!.numVertices, GL_UNSIGNED_INT, 0L)
+        glBindVertexArray(0)
+
     }
 }

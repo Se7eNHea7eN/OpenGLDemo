@@ -6,6 +6,8 @@ import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL11.*
 import org.lwjgl.opengl.GL13
+import org.lwjgl.opengl.GL30
+import org.lwjgl.opengl.GL30.*
 import org.lwjgl.opengl.GL41.*
 import java.io.IOException
 import java.nio.ByteBuffer
@@ -38,7 +40,7 @@ abstract class SkyBoxMat : Material() {
 
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_GENERATE_MIPMAP, GL_TRUE)
+//        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_GENERATE_MIPMAP, GL_TRUE)
 
         GlUtil.checkNoGLES2Error("glTexParameteri")
         skyBoxTextures().forEachIndexed { index, s ->
@@ -76,9 +78,21 @@ abstract class SkyBoxMat : Material() {
         }
         glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS)
 
-        GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY)
-        GL11.glEnable(GL11.GL_DEPTH_TEST)
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE)
+        glEnableClientState(GL_VERTEX_ARRAY)
+        glEnable(GL_DEPTH_TEST)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE)
+
+        vao = glGenVertexArrays()
+        glBindVertexArray(vao)
+
+        val vbo = glGenBuffers()
+        glBindBuffer(GL_ARRAY_BUFFER, vbo)
+        glBufferData(GL_ARRAY_BUFFER, quadVertices, GL_STATIC_DRAW)
+        glEnableVertexAttribArray(0)
+        glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0L)
+        glBindBuffer(GL_ARRAY_BUFFER, 0)
+        glBindVertexArray(0)
+
     }
 
     override fun render(
@@ -89,14 +103,14 @@ abstract class SkyBoxMat : Material() {
         glEnable(GL_CULL_FACE)
         shader.useProgram()
         shader.setUniformMatrix4fv("invViewProjection",Matrix4f().set(projectionMatrix).mul(viewMatrix).invert().get(FloatArray(16)))
-        glVertexPointer(2, GL_FLOAT, 0, quadVertices)
+//        glVertexPointer(2, GL_FLOAT, 0, quadVertices)
 
-        glEnable(GL13.GL_TEXTURE_CUBE_MAP)
         glActiveTexture(GL_TEXTURE0)
         glBindTexture(GL_TEXTURE_CUBE_MAP, skyBoxTexture)
-        shader.setUniformInt("tex",0)
-
+        shader.setUniform1i("tex",0)
+        glBindVertexArray(vao)
         glDrawArrays(GL_TRIANGLES, 0, 6)
+        glBindVertexArray(0)
         glDisable(GL_CULL_FACE)
     }
 }
