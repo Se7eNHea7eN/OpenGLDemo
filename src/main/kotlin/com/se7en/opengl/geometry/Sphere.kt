@@ -23,7 +23,7 @@ abstract class Sphere : GlMeshObject() {
             indices =
                 ByteBuffer.allocateDirect(stackCount * (sectorCount -1) * 3 *2 * 4).order(ByteOrder.nativeOrder())
                     .asIntBuffer()
-            numVertices = (stackCount +1) * (sectorCount +1) * 3
+            numVertices = stackCount * (sectorCount -1) * 3 *2
 
             val sectorStep = 2 * PI / sectorCount
             val stackStep = PI / stackCount

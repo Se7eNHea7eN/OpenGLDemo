@@ -134,7 +134,7 @@ class GlShader {
         }
         val location = glGetAttribLocation(program, label)
         if (location < 0) {
-            throw RuntimeException("Could not locate '$label' in program")
+            Debug.log("Could not locate '$label' in program")
         }
         return location
     }

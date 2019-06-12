@@ -10,6 +10,7 @@ import org.joml.Matrix4f
 import org.joml.Vector3f
 import org.lwjgl.opengl.GL13
 import org.lwjgl.opengl.GL30.*
+import org.lwjgl.system.MemoryUtil.NULL
 
 abstract class Material {
     val shader: GlShader
@@ -17,10 +18,10 @@ abstract class Material {
     abstract fun vertexShader(): String
     abstract fun fragmentShader(): String
     open fun geometryShader(): String? = null
-    var mesh: Mesh? = null
+    open var mesh: Mesh? = null
         set(value) {
             field = value
-            if(field != null){
+            if (field != null) {
                 vao = glGenVertexArrays()
                 glBindVertexArray(vao)
 
@@ -29,25 +30,20 @@ abstract class Material {
                 val vertices = field!!.vertices!!
                 glBufferData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW)
                 glEnableVertexAttribArray(0)
-                glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0L)
+                glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, NULL)
 
                 val normalArrayBuffer = glGenBuffers()
                 glBindBuffer(GL_ARRAY_BUFFER, normalArrayBuffer)
                 glBufferData(GL_ARRAY_BUFFER, field!!.normals!!, GL_STATIC_DRAW)
                 glEnableVertexAttribArray(1)
-                glVertexAttribPointer(1, 3, GL_FLOAT, true, 0, 0L)
+                glVertexAttribPointer(1, 3, GL_FLOAT, true, 0, NULL)
 
-                val texCoordArrayBuffer = glGenBuffers()
-                glBindBuffer(GL_ARRAY_BUFFER, texCoordArrayBuffer)
-                glBufferData(GL_ARRAY_BUFFER, field!!.texCoords!!, GL_STATIC_DRAW)
-                glEnableVertexAttribArray(2)
-                glVertexAttribPointer(2, 2, GL_FLOAT, false, 0, 0L)
+                glBindBuffer(GL_ARRAY_BUFFER, 0)
 
                 val elementArrayBuffer = glGenBuffers()
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementArrayBuffer)
                 glBufferData(GL_ELEMENT_ARRAY_BUFFER, field!!.indices!!, GL_STATIC_DRAW)
                 glBindVertexArray(0)
-
             }
 
         }

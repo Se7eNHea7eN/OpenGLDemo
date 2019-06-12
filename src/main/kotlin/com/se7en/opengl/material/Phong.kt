@@ -1,11 +1,15 @@
 package com.se7en.opengl.material
 
 import com.se7en.opengl.GlUtil.createTextureFromResource
+import com.se7en.opengl.Mesh
 import com.se7en.opengl.toFloatArray
 import com.se7en.opengl.utils.Debug
 import org.joml.Matrix4f
 import org.joml.Vector3f
+import org.lwjgl.opengl.GL30
+import org.lwjgl.opengl.GL30.*
 import org.lwjgl.opengl.GL41.*
+import org.lwjgl.system.MemoryUtil
 
 open class Phong : Material() {
     override fun vertexShader(): String = "shaders/common.vsh"
@@ -20,6 +24,24 @@ open class Phong : Material() {
     protected var texture: Int = -1
 
     protected open fun texturePath(): String = ""
+    override var mesh: Mesh?
+        get() = super.mesh
+        set(value) {
+            super.mesh = value
+            if (value != null &&  texturePath().isNotEmpty()) {
+
+                glBindVertexArray(vao)
+                val texCoordArrayBuffer = glGenBuffers()
+                glBindBuffer(GL_ARRAY_BUFFER, texCoordArrayBuffer)
+                glBufferData(GL_ARRAY_BUFFER, value.texCoords!!, GL_STATIC_DRAW)
+                glEnableVertexAttribArray(2)
+                glVertexAttribPointer(2, 2, GL_FLOAT, false, 0, MemoryUtil.NULL)
+                glBindBuffer(GL_ARRAY_BUFFER, 0)
+
+                glBindVertexArray(0)
+            }
+
+        }
 
     init {
         enableLighting = true
@@ -29,6 +51,7 @@ open class Phong : Material() {
             } catch (e: Exception) {
                 Debug.log(e.message)
             }
+
         }
 
     }
@@ -42,7 +65,7 @@ open class Phong : Material() {
         shader.useProgram()
         shader.setUniformMatrix4fv("projectionMatrix", projectionMatrix.get(FloatArray(16)))
         shader.setUniformMatrix4fv("viewMatrix", viewMatrix.get(FloatArray(16)))
-        shader.setUniformMatrix4fv("modelMatrix",modelMatrix.get(FloatArray(16)))
+        shader.setUniformMatrix4fv("modelMatrix", modelMatrix.get(FloatArray(16)))
 
         shader.setUniform3fv("objColor", objColor.toFloatArray())
         shader.setUniform3fv("ambientColor", ambientColor.toFloatArray())
