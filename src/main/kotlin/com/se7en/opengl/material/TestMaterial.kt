@@ -28,8 +28,9 @@ class TestMaterial : Material() {
         shader.setUniform3fv("ambientColor", ambientColor.toFloatArray())
         shader.setUniform1fv("ambientStrength", ambientStrength)
 
-        shader.setVertexAttribArray("iPosition", 3, mesh!!.vertices!!)
-//        shader.setVertexAttribArray("iNormal", 3, mesh!!.normals!!)
-        glDrawElements(GL_TRIANGLES, mesh!!.indices!!)
+        GL41.glBindVertexArray(vao)
+
+        GL41.glDrawElements(GL41.GL_TRIANGLES, mesh!!.numVertices, GL41.GL_UNSIGNED_INT, 0L)
+        GL41.glBindVertexArray(0)
     }
 }
