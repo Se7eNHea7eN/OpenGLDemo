@@ -7,7 +7,6 @@ import org.joml.Matrix4f
 import org.joml.Vector3f
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL41.*
-import java.nio.ByteBuffer
 import java.nio.FloatBuffer
 
 open class GlPointLight : GlAbstractLight() {
@@ -177,7 +176,7 @@ open class GlPointLight : GlAbstractLight() {
         glEnable(GL_TEXTURE_CUBE_MAP)
         glActiveTexture(GL_TEXTURE0)
         glBindTexture(GL_TEXTURE_CUBE_MAP, depthTexture)
-        depthVisualShader.setUniformInt("tex", 0)
+        depthVisualShader.setUniform1i("tex", 0)
 
         glDrawArrays(GL_TRIANGLES, 0, 6)
     }

@@ -8,13 +8,8 @@ import com.se7en.opengl.lighting.GlPointLight
 import com.se7en.opengl.utils.ResourceUtils
 import org.joml.Matrix4f
 import org.joml.Vector3f
-import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL13
-import org.lwjgl.opengl.GL20.*
-import org.lwjgl.opengl.GL30
 import org.lwjgl.opengl.GL30.*
-import org.lwjgl.system.MemoryUtil.memAddress
-import org.lwjgl.system.MemoryUtil.memCopy
 
 abstract class Material {
     val shader: GlShader
@@ -28,7 +23,6 @@ abstract class Material {
             if(field != null){
                 vao = glGenVertexArrays()
                 glBindVertexArray(vao)
-
 
                 val vbo = glGenBuffers()
                 glBindBuffer(GL_ARRAY_BUFFER, vbo)
@@ -47,8 +41,7 @@ abstract class Material {
                 glBindBuffer(GL_ARRAY_BUFFER, texCoordArrayBuffer)
                 glBufferData(GL_ARRAY_BUFFER, field!!.texCoords!!, GL_STATIC_DRAW)
                 glEnableVertexAttribArray(2)
-                glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0L)
-
+                glVertexAttribPointer(2, 2, GL_FLOAT, false, 0, 0L)
 
                 val elementArrayBuffer = glGenBuffers()
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementArrayBuffer)
@@ -62,7 +55,6 @@ abstract class Material {
 
     var eyePos = Vector3f()
 
-
     fun setViewMatrix(viewMatrix: FloatArray) {
         shader.useProgram()
         shader.setUniformMatrix4fv("viewMatrix", viewMatrix)
@@ -70,16 +62,14 @@ abstract class Material {
 
     fun setLights(lights: List<GlAbstractLight>) {
         shader.useProgram()
-        shader.setUniformInt("pointLightCount", lights.count { it is GlPointLight })
-        shader.setUniformInt("directionLightCount", lights.count { it is GlDirectionLight })
-        glEnable(GL_TEXTURE_2D)
+        shader.setUniform1i("pointLightCount", lights.count { it is GlPointLight })
+        shader.setUniform1i("directionLightCount", lights.count { it is GlDirectionLight })
         lights.forEachIndexed { index, light ->
             if (light is GlPointLight) {
                 shader.setUniform3fv("pointLights[$index].position", light.transform.position.toFloatArray())
                 shader.setUniform3fv("pointLights[$index].color", light.lightColor.toFloatArray())
                 shader.setUniform1fv("pointLights[$index].intensive", light.intensive)
                 shader.setUniform1fv("pointLights[$index].farPlane", light.far)
-
                 glActiveTexture(GL_TEXTURE0 + index)
                 glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, light.depthTexture)
                 glUniform1i(shader.getUniformLocation("pointLightCubeShadows[$index]"), index)
@@ -88,7 +78,6 @@ abstract class Material {
                 shader.setUniform3fv("directionLights[$index].color", light.lightColor.toFloatArray())
                 shader.setUniform1fv("directionLights[$index].intensive", light.intensive)
                 shader.setUniformMatrix4fv("directionLights[$index].matrix", light.lightVPMatrix().get(FloatArray(16)))
-
                 glActiveTexture(GL_TEXTURE0 + index)
                 glBindTexture(GL_TEXTURE_2D, light.depthTexture)
                 glUniform1i(shader.getUniformLocation("directionLightShadows[$index]"), index)

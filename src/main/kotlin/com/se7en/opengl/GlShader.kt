@@ -154,14 +154,14 @@ class GlShader {
         return location
     }
 
-    fun setUniformInt(label: String, value: Int): Int {
+    fun setUniform1i(label: String, value: Int): Int {
         if (program == -1) {
             throw RuntimeException("The program has been released")
         }
 
         val location = getUniformLocation(label)
         glUniform1i(location, value)
-        GlUtil.checkNoGLES2Error("setUniformInt")
+        GlUtil.checkNoGLES2Error("setUniform1i")
         return location
     }
 

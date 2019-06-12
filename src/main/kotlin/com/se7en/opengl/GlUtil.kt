@@ -2,10 +2,12 @@ package com.se7en.opengl
 
 import com.se7en.opengl.utils.Debug
 import org.lwjgl.BufferUtils
+import org.lwjgl.opengl.GL11C
 import org.lwjgl.opengl.GL20.*
 import org.lwjgl.opengl.GL30.*
 import org.lwjgl.opengl.GL41
 import org.lwjgl.opengl.GL41.*
+import org.lwjgl.opengl.GL42C
 import java.io.IOException
 import java.lang.Exception
 import java.nio.ByteBuffer
@@ -146,6 +148,7 @@ object GlUtil {
             imgBuffer, width, height, components,
             4
         )
+
 
         glTexImage2D(
             textureType,
