@@ -71,35 +71,31 @@ class ShadowTestScene : GlScene() {
         }
 
     }
-//    private val pointLight2 = object : GlPointLight() {
-//        init {
-//            transform.localPosition = Vector3f(-2f, 3f, 2f)
-//            lightColor = WHITE
-//            intensive = 0.5f
-//        }
-//
-//        override fun update(deltaTime: Long) {
-//            super.update(deltaTime)
-//            transform.localPosition.rotateAxis(2f / 1000f * deltaTime, 0f, 1f, 0f)
-//        }
-//    }.run {
-//        object : Sphere() {
-//            override fun createMaterial(): Material = Illumination().apply {
-//                objColor = Vector3f(1f, 1f, 1f)
-//            }
-//
-//        }.apply {
-//            castShadow = false
-//            transform.parent = this@run.transform
-//
-//            transform.localScale = Vector3f(0.5f)
-//            transform.localPosition = Vector3f(0f, 0f, 0f)
-//        }
-//
-//    }
+    private val pointLight2 = object : GlPointLight() {
+        init {
+            transform.localPosition = Vector3f(-2f, 3f, 2f)
+            lightColor = WHITE
+            intensive = 0.5f
+        }
 
-    override fun update(deltaTime: Long) {
-        super.update(deltaTime)
+        override fun update(deltaTime: Long) {
+            super.update(deltaTime)
+            transform.localPosition.rotateAxis(2f / 1000f * deltaTime, 0f, 1f, 0f)
+        }
+    }.run {
+        object : Sphere() {
+            override fun createMaterial(): Material = Illumination().apply {
+                objColor = Vector3f(1f, 1f, 1f)
+            }
+
+        }.apply {
+            castShadow = false
+            transform.parent = this@run.transform
+
+            transform.localScale = Vector3f(0.5f)
+            transform.localPosition = Vector3f(0f, 0f, 0f)
+        }
+
     }
 
     init {
