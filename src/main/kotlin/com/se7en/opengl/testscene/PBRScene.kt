@@ -60,6 +60,7 @@ class PBRScene : GlScene() {
         mainCamera.transform.localRotation.rotateY(Math.toRadians(30.0).toFloat())
     }
 
+
     var mouseXLastFrame = 0.0
     var mouseYLastFrame = 0.0
     override fun updateControls(deltaTime: Long, input: Input, width: Int, height: Int) {
@@ -68,13 +69,24 @@ class PBRScene : GlScene() {
             val deltaX = input.mouseX - mouseXLastFrame
             val deltaY = input.mouseY - mouseYLastFrame
 
-            mainCamera.transform.localRotation.rotateAxis((deltaY / width).toFloat(), mainCamera.transform.left())
-            mainCamera.transform.localRotation.rotateAxis((deltaX / width).toFloat(), mainCamera.transform.up())
+            mainCamera.transform.localRotation.rotateAxis( 5 *(deltaY / width).toFloat(), mainCamera.transform.left())
+            mainCamera.transform.localRotation.rotateAxis(5 *(deltaX / width).toFloat(), mainCamera.transform.up())
         }
-
+        var moveVector : Vector3f = Vector3f()
         if(input.keyDown[GLFW.GLFW_KEY_W]){
-            mainCamera.transform.localPosition += mainCamera.transform.forward() * deltaTime.toFloat() * 0.0001f
+            moveVector =  mainCamera.transform.forward()
         }
+        if(input.keyDown[GLFW.GLFW_KEY_S]){
+            moveVector =  mainCamera.transform.backward()
+        }
+        if(input.keyDown[GLFW.GLFW_KEY_A]){
+            moveVector =  mainCamera.transform.right()
+        }
+        if(input.keyDown[GLFW.GLFW_KEY_D]){
+            moveVector =  mainCamera.transform.left()
+        }
+        mainCamera.transform.localPosition += moveVector * deltaTime.toFloat() * 0.001f
+
         mouseXLastFrame = input.mouseX
         mouseYLastFrame = input.mouseY
     }

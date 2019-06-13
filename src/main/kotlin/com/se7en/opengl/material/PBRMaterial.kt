@@ -32,8 +32,8 @@ class PBRMaterial : Material() {
         shader.setUniform1fv("roughness", roughness)
 
         GL41.glBindVertexArray(vao)
+        GL41.glDrawElements(GL41.GL_TRIANGLE_STRIP, mesh!!.numVertices, GL41.GL_UNSIGNED_INT, 0L)
 
-        GL41.glDrawElements(GL41.GL_TRIANGLES, mesh!!.numVertices, GL41.GL_UNSIGNED_INT, 0L)
         GL41.glBindVertexArray(0)
 
         GL41.glUseProgram(0)
