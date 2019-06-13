@@ -51,11 +51,6 @@ abstract class Material {
     var vao = 0
 
     var eyePos = Vector3f()
-    set(value) {
-        field = value
-        shader.useProgram()
-        shader.setUniform3fv("eyePos",value.toFloatArray())
-    }
 
     fun setViewMatrix(viewMatrix: FloatArray) {
         shader.useProgram()
@@ -64,6 +59,8 @@ abstract class Material {
 
     fun setLights(lights: List<GlAbstractLight>) {
         shader.useProgram()
+        shader.useProgram()
+        shader.setUniform3fv("eyePos",eyePos.toFloatArray())
         shader.setUniform1i("pointLightCount", lights.count { it is GlPointLight })
         shader.setUniform1i("directionLightCount", lights.count { it is GlDirectionLight })
         lights.forEachIndexed { index, light ->

@@ -45,79 +45,79 @@ class ShadowTestScene : GlScene() {
     }
 
 
-    private val pointLight1 = object : GlPointLight() {
-        init {
-            transform.localPosition = Vector3f(2f, 3f, 2f)
-            lightColor = WHITE
-            intensive = 0.5f
-        }
-
-        override fun update(deltaTime: Long) {
-            super.update(deltaTime)
-            transform.localPosition.rotateAxis(3f / 1000f * deltaTime, 0f, 1f, 0f)
-        }
-    }.run {
-        object : Sphere() {
-            override fun createMaterial(): Material = Illumination().apply {
-                objColor = Vector3f(1f, 1f, 1f)
-            }
-
-        }.apply {
-            castShadow = false
-            transform.parent = this@run.transform
-
-            transform.localScale = Vector3f(0.5f)
-            transform.localPosition = Vector3f(0f, 0f, 0f)
-        }
-
-    }
-    private val pointLight2 = object : GlPointLight() {
-        init {
-            transform.localPosition = Vector3f(-2f, 3f, 2f)
-            lightColor = WHITE
-            intensive = 0.5f
-        }
-
-        override fun update(deltaTime: Long) {
-            super.update(deltaTime)
-            transform.localPosition.rotateAxis(2f / 1000f * deltaTime, 0f, 1f, 0f)
-        }
-    }.run {
-        object : Sphere() {
-            override fun createMaterial(): Material = Illumination().apply {
-                objColor = Vector3f(1f, 1f, 1f)
-            }
-
-        }.apply {
-            castShadow = false
-            transform.parent = this@run.transform
-
-            transform.localScale = Vector3f(0.5f)
-            transform.localPosition = Vector3f(0f, 0f, 0f)
-        }
-
-    }
-
-//    private val directionLight = object : GlDirectionLight() {
+//    private val pointLight1 = object : GlPointLight() {
 //        init {
-//            transform.localPosition = Vector3f(0f, 50f, 0f)
-//            transform.lookAt(Vector3f())
+//            transform.localPosition = Vector3f(2f, 3f, 0f)
+//            lightColor = WHITE
+//            intensive = 0.5f
 //        }
-//        var rotationZ = 0f
-//        var rotationZDir = 1f
+//
 //        override fun update(deltaTime: Long) {
 //            super.update(deltaTime)
-//            if (Math.toDegrees(rotationZ.toDouble()) > 45f)
-//                rotationZDir = -1f
-//            else if (Math.toDegrees(rotationZ.toDouble()) < -45f)
-//                rotationZDir = 1f
-//            var rot = rotationZDir * 0.0002f * deltaTime.toFloat()
-//            rotationZ += rot
-//
-//            transform.localPosition.rotateZ(rot)
-//            transform.lookAt(Vector3f())
+//            transform.localPosition.rotateAxis(3f / 1000f * deltaTime, 0f, 1f, 0f)
 //        }
+//    }.run {
+//        object : Sphere() {
+//            override fun createMaterial(): Material = Illumination().apply {
+//                objColor = Vector3f(1f, 1f, 1f)
+//            }
+//
+//        }.apply {
+//            castShadow = false
+//            transform.parent = this@run.transform
+//
+//            transform.localScale = Vector3f(0.5f)
+//            transform.localPosition = Vector3f(0f, 0f, 0f)
+//        }
+//
 //    }
+//    private val pointLight2 = object : GlPointLight() {
+//        init {
+//            transform.localPosition = Vector3f(-2f, 3f, 2f)
+//            lightColor = WHITE
+//            intensive = 0.5f
+//        }
+//
+//        override fun update(deltaTime: Long) {
+//            super.update(deltaTime)
+//            transform.localPosition.rotateAxis(2f / 1000f * deltaTime, 0f, 1f, 0f)
+//        }
+//    }.run {
+//        object : Sphere() {
+//            override fun createMaterial(): Material = Illumination().apply {
+//                objColor = Vector3f(1f, 1f, 1f)
+//            }
+//
+//        }.apply {
+//            castShadow = false
+//            transform.parent = this@run.transform
+//
+//            transform.localScale = Vector3f(0.5f)
+//            transform.localPosition = Vector3f(0f, 0f, 0f)
+//        }
+//
+//    }
+
+    private val directionLight = object : GlDirectionLight() {
+        init {
+            transform.localPosition = Vector3f(0f, 50f, 0f)
+            transform.lookAt(Vector3f())
+        }
+        var rotationZ = 0f
+        var rotationZDir = 1f
+        override fun update(deltaTime: Long) {
+            super.update(deltaTime)
+            if (Math.toDegrees(rotationZ.toDouble()) > 45f)
+                rotationZDir = -1f
+            else if (Math.toDegrees(rotationZ.toDouble()) < -45f)
+                rotationZDir = 1f
+            var rot = rotationZDir * 0.0002f * deltaTime.toFloat()
+            rotationZ += rot
+
+            transform.localPosition.rotateZ(rot)
+            transform.lookAt(Vector3f())
+        }
+    }
     init {
         mainCamera.transform.localPosition = Vector3f(0f, 6f, 10f)
         mainCamera.transform.localRotation.rotateY(Math.toRadians(180.0).toFloat())

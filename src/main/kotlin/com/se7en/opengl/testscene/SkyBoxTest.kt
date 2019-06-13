@@ -18,7 +18,6 @@ class SkyBoxTest : GlScene() {
             )
     }
     init {
-
         glEnableClientState(GL_VERTEX_ARRAY)
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_CULL_FACE)
@@ -34,9 +33,6 @@ class SkyBoxTest : GlScene() {
 
             mainCamera.transform.localRotation.rotateAxis((deltaY / width).toFloat(), mainCamera.transform.left())
             mainCamera.transform.localRotation.rotateAxis((deltaX / width).toFloat(), mainCamera.transform.up())
-//            mainCamera.transform.localRotation.getEulerAnglesXYZ(Vector3f()).apply {
-//                mainCamera.transform.localRotation.rotateAxis(z,mainCamera.transform.backward())
-//            }
         }
 
         mouseXLastFrame = input.mouseX

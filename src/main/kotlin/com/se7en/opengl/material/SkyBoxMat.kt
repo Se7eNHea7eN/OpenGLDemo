@@ -38,9 +38,11 @@ abstract class SkyBoxMat : Material() {
         glBindTexture(GL_TEXTURE_CUBE_MAP, skyBoxTexture)
         GlUtil.checkNoGLES2Error("glBindTexture")
 
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-//        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_GENERATE_MIPMAP, GL_TRUE)
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE)
 
         GlUtil.checkNoGLES2Error("glTexParameteri")
         skyBoxTextures().forEachIndexed { index, s ->
@@ -72,7 +74,7 @@ abstract class SkyBoxMat : Material() {
                 height.get(0),
                 0,
                 GL_RGBA,
-                GL_UNSIGNED_BYTE,
+                GL11.GL_UNSIGNED_BYTE,
                 data)
             stbi_image_free(data)
         }
@@ -103,14 +105,15 @@ abstract class SkyBoxMat : Material() {
         glEnable(GL_CULL_FACE)
         shader.useProgram()
         shader.setUniformMatrix4fv("invViewProjection",Matrix4f().set(projectionMatrix).mul(viewMatrix).invert().get(FloatArray(16)))
-//        glVertexPointer(2, GL_FLOAT, 0, quadVertices)
 
         glActiveTexture(GL_TEXTURE0)
         glBindTexture(GL_TEXTURE_CUBE_MAP, skyBoxTexture)
         shader.setUniform1i("tex",0)
+
         glBindVertexArray(vao)
         glDrawArrays(GL_TRIANGLES, 0, 6)
         glBindVertexArray(0)
+
         glDisable(GL_CULL_FACE)
     }
 }
