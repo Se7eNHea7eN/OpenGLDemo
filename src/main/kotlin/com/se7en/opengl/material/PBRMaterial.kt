@@ -10,7 +10,7 @@ class PBRMaterial : Material() {
     override fun fragmentShader(): String = "shaders/pbr.fsh"
 
 
-    var albedo = Vector3f(0.5f,0.0f,0.0f)
+    var albedo = Vector3f(1f,1f,1f)
     var ao = 1.0f
     var metallic = 0.70f
     var roughness = 0.30f

@@ -48,26 +48,17 @@ class PBRScene : GlScene() {
             for(j in 0 ..7){
                 object : Sphere(){
                     override fun createMaterial(): Material = PBRMaterial().apply {
+                        albedo = Vector3f(0f,0f,0.5f)
                         metallic = j/7f
                         roughness = i/7f
-                    }
-
-                    override fun update(deltaTime: Long) {
-                        super.update(deltaTime)
-                        (material as PBRMaterial).apply {
-//                            metallic = Math.sin(0.001 *timeSinceStart.toDouble()).toFloat()
-//                            roughness = Math.cos(0.001 *timeSinceStart.toDouble()).toFloat()
-                        }
                     }
                 }.apply {
                     transform.localScale = Vector3f(0.7f)
                     transform.localPosition = Vector3f(7f - 2*i,7f - 2*j,-5f)
                 }
-
             }
         mainCamera.transform.localPosition = Vector3f(10f, 0f, -25f)
         mainCamera.transform.localRotation.rotateY(Math.toRadians(30.0).toFloat())
-//        mainCamera.transform.localRotation.rotateX(Math.toRadians(20.0).toFloat())
     }
 
 }
