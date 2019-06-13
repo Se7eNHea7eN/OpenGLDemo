@@ -47,7 +47,7 @@ class ShadowTestScene : GlScene() {
 
     private val pointLight1 = object : GlPointLight() {
         init {
-            transform.localPosition = Vector3f(2f, 3f, 2f)
+            transform.localPosition = Vector3f(2f, 3f, 0f)
             lightColor = WHITE
             intensive = 0.5f
         }
@@ -73,7 +73,7 @@ class ShadowTestScene : GlScene() {
     }
     private val pointLight2 = object : GlPointLight() {
         init {
-            transform.localPosition = Vector3f(-2f, 3f, 2f)
+            transform.localPosition = Vector3f(-2f, 3f, 0f)
             lightColor = WHITE
             intensive = 0.5f
         }
