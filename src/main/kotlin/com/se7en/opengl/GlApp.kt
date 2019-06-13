@@ -1,9 +1,7 @@
 package com.se7en.opengl
 
 import com.se7en.opengl.input.Input
-import com.se7en.opengl.testscene.PBRScene
-import com.se7en.opengl.testscene.ShadowTestScene
-import com.se7en.opengl.testscene.SkyBoxTest
+import com.se7en.opengl.testscene.*
 import com.se7en.opengl.utils.Debug
 import org.joml.Vector3f
 
@@ -226,5 +224,6 @@ class GlApp {
 
 //    protected open fun createScene(): GlScene = ShadowTestScene()
 //    protected open fun createScene(): GlScene = SkyBoxTest()
-    protected open fun createScene(): GlScene = PBRScene()
+    protected open fun createScene(): GlScene = PBRTexturedScene()
+//    protected open fun createScene(): GlScene = PBRScene()
 }

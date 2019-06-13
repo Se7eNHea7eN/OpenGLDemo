@@ -2,6 +2,9 @@ package com.se7en.opengl.geometry
 
 import com.se7en.opengl.GlMeshObject
 import com.se7en.opengl.Mesh
+import com.se7en.opengl.toFloatArray
+import com.se7en.opengl.utils.Debug
+import org.joml.Vector3f
 import java.lang.Math.*
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -9,84 +12,61 @@ import java.nio.ByteOrder
 abstract class Sphere : GlMeshObject() {
     override fun createMesh(): Mesh {
         return Mesh().apply {
-            val radius = 1f
-            val stackCount = 24
-            val sectorCount = 72
 
-            vertices = ByteBuffer.allocateDirect((stackCount +1) * (sectorCount +1) * 3 * 4).order(ByteOrder.nativeOrder())
+            val X_SEGMENTS = 64
+            val Y_SEGMENTS = 64
+
+            numVertices = (Y_SEGMENTS+1) * (X_SEGMENTS +1)
+
+            vertices = ByteBuffer.allocateDirect(numVertices * 3 * 4).order(ByteOrder.nativeOrder())
                 .asFloatBuffer()
-            normals = ByteBuffer.allocateDirect((stackCount +1) * (sectorCount +1) * 3 * 4).order(ByteOrder.nativeOrder())
+            normals = ByteBuffer.allocateDirect(numVertices * 3 * 4).order(ByteOrder.nativeOrder())
                 .asFloatBuffer()
             texCoords =
-                ByteBuffer.allocateDirect((stackCount  +1)* (sectorCount +1) * 2 * 4).order(ByteOrder.nativeOrder())
+                ByteBuffer.allocateDirect(numVertices * 2 * 4).order(ByteOrder.nativeOrder())
                     .asFloatBuffer()
+
+
             indices =
-                ByteBuffer.allocateDirect(stackCount * (sectorCount -1) * 3 *2 * 4).order(ByteOrder.nativeOrder())
+                ByteBuffer.allocateDirect(Y_SEGMENTS *(X_SEGMENTS +1) * 2 * 4).order(ByteOrder.nativeOrder())
                     .asIntBuffer()
-            numVertices = stackCount * (sectorCount -1) * 3 *2
 
-            val sectorStep = 2 * PI / sectorCount
-            val stackStep = PI / stackCount
-            var sectorAngle: Double
-            val lengthInv = 1.0f / radius
-            for (i in 0..stackCount) {
-                val stackAngle = PI / 2 - i * stackStep        // starting from pi/2 to -pi/2
-                val xy = radius * cos(stackAngle)            // r * cos(u)
-                val z = radius * sin(stackAngle).toFloat()               // r * sin(u)
-                for (j in 0..sectorCount) {
-
-                    sectorAngle = j * sectorStep           // starting from 0 to 2pi
-
-                    // vertex localPosition (x, y, z)
-                    val x = (xy * cos(sectorAngle)).toFloat()         // r * cos(u) * cos(v)
-                    val y = (xy * sin(sectorAngle)).toFloat()           // r * cos(u) * sin(v)
-                    vertices!!.put(x)
-                    vertices!!.put(y)
-                    vertices!!.put(z)
-
-                    // normalized vertex normal (nx, ny, nz)
-                    val nx = x * lengthInv
-                    val ny = y * lengthInv
-                    val nz = z * lengthInv
-                    normals!!.put(nx)
-                    normals!!.put(ny)
-                    normals!!.put(nz)
-
-                    // vertex tex coord (s, t) range between [0, 1]
-                    val s = j.toFloat() / sectorCount
-                    val t = i.toFloat() / stackCount
-                    texCoords!!.put(s)
-                    texCoords!!.put(t)
+            numVertices *= 4
+            for(y in 0 ..Y_SEGMENTS )
+                for (x in 0..X_SEGMENTS){
+                    val xSegment = x.toFloat() / X_SEGMENTS
+                    val ySegment = y.toFloat() / Y_SEGMENTS
+                    val xPos = (cos(xSegment * 2.0f * PI) * sin(ySegment * PI)).toFloat()
+                    val yPos = cos(ySegment * PI).toFloat()
+                    val zPos = (sin(xSegment * 2.0f * PI) * sin(ySegment * PI)).toFloat()
+                    vertices!!.put(xPos)
+                    vertices!!.put(yPos)
+                    vertices!!.put(zPos)
+                    texCoords!!.put(xSegment)
+                    texCoords!!.put(ySegment)
+                    normals!!.put(xPos)
+                    normals!!.put(yPos)
+                    normals!!.put(zPos)
                 }
-            }
-            var k1 : Int
-            var k2 : Int
-            for (i in 0 until stackCount) {
-                k1 = i * (sectorCount + 1)     // beginning of current stack
-                k2 = k1 + sectorCount + 1      // beginning of next stack
-
-                var j = 0
-                while (j < sectorCount) {
-                    // 2 triangles per sector excluding first and last stacks
-                    // k1 => k2 => k1+1
-                    if (i != 0) {
-                        indices!!.put(k1)
-                        indices!!.put(k2)
-                        indices!!.put(k1 + 1)
+            var oddRow = false
+            for(y in 0 until Y_SEGMENTS){
+                if (!oddRow) // even rows: y == 0, y == 2; and so on
+                {
+                    for(x in 0 .. X_SEGMENTS){
+                        indices!!.put(y       * (X_SEGMENTS + 1) + x)
+                        indices!!.put((y + 1) * (X_SEGMENTS + 1) + x)
                     }
-
-                    // k1+1 => k2 => k2+1
-                    if (i != stackCount - 1) {
-                        indices!!.put(k1 + 1)
-                        indices!!.put(k2)
-                        indices!!.put(k2 + 1)
-                    }
-                    ++j
-                    ++k1
-                    ++k2
                 }
-            }
+                else
+                {
+                    for (x in X_SEGMENTS downTo  0){
+                        indices!!.put((y + 1) * (X_SEGMENTS + 1) + x)
+                        indices!!.put(y       * (X_SEGMENTS + 1) + x)
 
+                    }
+                }
+                oddRow = !oddRow
+            }
             vertices!!.position(0)
             normals!!.position(0)
             texCoords!!.position(0)

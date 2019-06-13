@@ -127,6 +127,10 @@ object GlUtil {
 
         glTexParameteri(textureType, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
         glTexParameteri(textureType, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+//
+        glTexParameteri(textureType, GL_TEXTURE_WRAP_S, GL_REPEAT)
+        glTexParameteri(textureType, GL_TEXTURE_WRAP_T, GL_REPEAT)
+
         val width = BufferUtils.createIntBuffer(1)
         val height = BufferUtils.createIntBuffer(1)
         val components = BufferUtils.createIntBuffer(1)

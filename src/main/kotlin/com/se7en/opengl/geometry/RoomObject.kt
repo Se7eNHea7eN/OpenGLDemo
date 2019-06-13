@@ -112,6 +112,6 @@ class RoomObject : GlMeshObject() {
     override fun createMaterial(): Material = object : Phong() {
         init {
         }
-        override fun texturePath(): String = "textures/wood1.jpg"
+        override fun texturePath(): String = "textures/pbr/metal14/Metal14_col.jpg"
     }
 }
