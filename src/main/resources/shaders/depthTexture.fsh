@@ -1,8 +1,10 @@
-varying vec2 textureCoordinate;
+#version 330 core
+
+in vec2 textureCoordinate;
 
 uniform sampler2D inputImageTexture;
 
-
+out vec4 FragColor;
 // 'colorImage' is a sampler2D with the depth image
 // read from the current depth buffer bound to it.
 //
@@ -20,5 +22,5 @@ float LinearizeDepth(in vec2 uv)
 void main()
 {
     float d = LinearizeDepth(textureCoordinate);
-    gl_FragColor =  vec4(d,d,d,1.0);
+    FragColor =  vec4(d,d,d,1.0);
 }

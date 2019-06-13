@@ -1,7 +1,10 @@
-attribute vec4 position;
-attribute vec4 inputTextureCoordinate;
 
-varying vec2 textureCoordinate;
+#version 330 core
+
+layout(location = 0) in vec4 position;
+layout(location = 1) in vec2 inputTextureCoordinate;
+
+out vec2 textureCoordinate;
 
 void main()
 {
