@@ -1,8 +1,6 @@
 package com.se7en.opengl.testscene
 
-import com.se7en.opengl.GlObjMeshObject
-import com.se7en.opengl.GlScene
-import com.se7en.opengl.WHITE
+import com.se7en.opengl.*
 import com.se7en.opengl.geometry.Sphere
 import com.se7en.opengl.lighting.GlPointLight
 import com.se7en.opengl.material.Illumination
@@ -14,7 +12,10 @@ class TestScene : GlScene() {
 
     private val bunny = object : GlObjMeshObject() {
         override fun objFilePath(): String = "models/bunny.obj"
-        override fun createMaterial(): Material = TestMaterial()
+        override fun createMaterial(): Material = TestMaterial().apply {
+            objColor = RED
+            specularStrength = 0.5f
+        }
     }.apply {
         transform.localScale = Vector3f(2f)
         transform.localPosition = Vector3f(-3f, 0f, 0f)
@@ -22,7 +23,10 @@ class TestScene : GlScene() {
 
     private val teapot = object : GlObjMeshObject() {
         override fun objFilePath(): String = "models/teapot.obj"
-        override fun createMaterial(): Material = TestMaterial()
+        override fun createMaterial(): Material = TestMaterial().apply {
+            objColor = BLUE
+            shininess = 64f
+        }
     }.apply {
         transform.localScale = Vector3f(0.75f)
         transform.localPosition = Vector3f(3f, 0f, 0f)
@@ -30,7 +34,7 @@ class TestScene : GlScene() {
 
     private val pointLight1 = object : GlPointLight() {
         init {
-            transform.localPosition = Vector3f(2f, 3f, 2f)
+            transform.localPosition = Vector3f(3f, 3f, 0f)
             lightColor = WHITE
             intensive = 1f
         }

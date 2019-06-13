@@ -5,6 +5,7 @@ import com.se7en.opengl.*
 import com.se7en.opengl.lighting.GlAbstractLight
 import com.se7en.opengl.lighting.GlDirectionLight
 import com.se7en.opengl.lighting.GlPointLight
+import com.se7en.opengl.utils.Debug
 import com.se7en.opengl.utils.ResourceUtils
 import org.joml.Matrix4f
 import org.joml.Vector3f
@@ -50,6 +51,11 @@ abstract class Material {
     var vao = 0
 
     var eyePos = Vector3f()
+    set(value) {
+        field = value
+        shader.useProgram()
+        shader.setUniform3fv("eyePos",value.toFloatArray())
+    }
 
     fun setViewMatrix(viewMatrix: FloatArray) {
         shader.useProgram()

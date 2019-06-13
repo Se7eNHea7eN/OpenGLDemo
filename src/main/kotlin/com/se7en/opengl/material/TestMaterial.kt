@@ -18,6 +18,8 @@ class TestMaterial : Material() {
     var objColor = Vector3f(1f, 1f, 1f)
     var ambientColor = Vector3f(1f, 1f, 1f)
     var ambientStrength = 0.1f
+    var specularStrength = 1.5f
+    var shininess = 128f
 
     override fun vertexShader(): String  = "shaders/common.vsh"
     override fun fragmentShader(): String= "shaders/testLighting.fsh"
@@ -31,6 +33,8 @@ class TestMaterial : Material() {
         shader.setUniform3fv("objColor", objColor.toFloatArray())
         shader.setUniform3fv("ambientColor", ambientColor.toFloatArray())
         shader.setUniform1fv("ambientStrength", ambientStrength)
+        shader.setUniform1fv("specularStrength", specularStrength)
+        shader.setUniform1fv("shininess", shininess)
 
         GL41.glBindVertexArray(vao)
 
