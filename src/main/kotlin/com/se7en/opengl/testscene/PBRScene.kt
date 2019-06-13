@@ -48,8 +48,8 @@ class PBRScene : GlScene() {
             for(j in 0 ..7){
                 object : Sphere(){
                     override fun createMaterial(): Material = PBRMaterial().apply {
-                        metallic = 0.97f
-                        roughness = 0.3f
+                        metallic = j/7f
+                        roughness = i/7f
                     }
 
                     override fun update(deltaTime: Long) {
@@ -65,7 +65,7 @@ class PBRScene : GlScene() {
                 }
 
             }
-        mainCamera.transform.localPosition = Vector3f(7f, 0f, -15f)
+        mainCamera.transform.localPosition = Vector3f(10f, 0f, -25f)
         mainCamera.transform.localRotation.rotateY(Math.toRadians(30.0).toFloat())
 //        mainCamera.transform.localRotation.rotateX(Math.toRadians(20.0).toFloat())
     }
