@@ -143,37 +143,37 @@ open class GlPointLight : GlAbstractLight() {
         }
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
     }
-
-    var depthVisualShader =
-        GlShader(
-            ResourceUtils.ioResourceToByteBuffer("shaders/skyBox.vsh", 8192),
-            ResourceUtils.ioResourceToByteBuffer("shaders/cubeDepthTexure.fsh", 8192)
-        )
+//
+//    var depthVisualShader =
+//        GlShader(
+//            ResourceUtils.ioResourceToByteBuffer("shaders/skyBox.vsh", 8192),
+//            ResourceUtils.ioResourceToByteBuffer("shaders/cubeDepthTexure.fsh", 8192)
+//        )
 
     override fun drawDebugShadowMap(
         viewMatrix: Matrix4f,
         projectionMatrix: Matrix4f
     ) {
-        glEnableClientState(GL_VERTEX_ARRAY)
-        glEnable(GL_DEPTH_TEST)
-        glEnable(GL_CULL_FACE)
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE)
-
-        glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS)
-        depthVisualShader.useProgram()
-        glVertexPointer(2, GL_FLOAT, 0, quadVertices)
-
-        depthVisualShader.setUniformMatrix4fv(
-            "invViewProjection",
-            Matrix4f().set(projectionMatrix).mul(viewMatrix).invert().get(FloatArray(16))
-        )
-
-        glEnable(GL_TEXTURE_CUBE_MAP)
-        glActiveTexture(GL_TEXTURE0)
-        glBindTexture(GL_TEXTURE_CUBE_MAP, depthTexture)
-        depthVisualShader.setUniform1i("tex", 0)
-
-        glDrawArrays(GL_TRIANGLES, 0, 6)
+//        glEnableClientState(GL_VERTEX_ARRAY)
+//        glEnable(GL_DEPTH_TEST)
+//        glEnable(GL_CULL_FACE)
+//        glBlendFunc(GL_SRC_ALPHA, GL_ONE)
+//
+//        glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS)
+//        depthVisualShader.useProgram()
+//        glVertexPointer(2, GL_FLOAT, 0, quadVertices)
+//
+//        depthVisualShader.setUniformMatrix4fv(
+//            "invViewProjection",
+//            Matrix4f().set(projectionMatrix).mul(viewMatrix).invert().get(FloatArray(16))
+//        )
+//
+//        glEnable(GL_TEXTURE_CUBE_MAP)
+//        glActiveTexture(GL_TEXTURE0)
+//        glBindTexture(GL_TEXTURE_CUBE_MAP, depthTexture)
+//        depthVisualShader.setUniform1i("tex", 0)
+//
+//        glDrawArrays(GL_TRIANGLES, 0, 6)
     }
 
 }
