@@ -1,6 +1,7 @@
 package com.se7en.opengl
 
 import com.se7en.opengl.input.Input
+import com.se7en.opengl.testscene.PBRScene
 import com.se7en.opengl.testscene.ShadowTestScene
 import com.se7en.opengl.testscene.SkyBoxTest
 import com.se7en.opengl.utils.Debug
@@ -44,8 +45,8 @@ import java.lang.Exception
 
 class GlApp {
     private var window: Long = 0
-    private val windowWidth = 1280
-    private val windowHeight = 720
+    private val windowWidth = 1920
+    private val windowHeight = 1080
 
     private var width = windowWidth
     private var height = windowHeight
@@ -223,6 +224,7 @@ class GlApp {
         currentScene = null
     }
 
-    protected open fun createScene(): GlScene = ShadowTestScene()
+//    protected open fun createScene(): GlScene = ShadowTestScene()
 //    protected open fun createScene(): GlScene = SkyBoxTest()
+    protected open fun createScene(): GlScene = PBRScene()
 }

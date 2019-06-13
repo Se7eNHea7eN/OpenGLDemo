@@ -3,6 +3,7 @@ package com.se7en.opengl
 import com.se7en.opengl.input.Input
 
 open class GlScene {
+    var timeSinceStart = 0L
     companion object {
         var currentScene: GlScene? = null
     }
@@ -26,6 +27,7 @@ open class GlScene {
     }
 
     open fun update(deltaTime: Long) {
+        timeSinceStart += deltaTime
         objects.forEach {
             it.update(deltaTime)
         }

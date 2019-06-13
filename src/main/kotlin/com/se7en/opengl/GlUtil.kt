@@ -20,12 +20,10 @@ import org.lwjgl.stb.STBImage.*
  */
 object GlUtil {
 
-    // Assert that no OpenGL ES 2.0 error has been raised.
     fun checkNoGLES2Error(msg: String) {
         val error = glGetError()
         if (error != GL_NO_ERROR) {
-            throw Exception("$msg: GLES20 error: $error")
-//            Debug.log("GlUtil","$msg: GLES20 error: $error")
+            throw Exception("$msg: GL error: $error")
         }
     }
 
